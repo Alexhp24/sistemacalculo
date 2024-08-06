@@ -1,0 +1,66 @@
+<?php
+
+use App\Http\Controllers\DesingLosaController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+//==========================RUTA PARA LAS HOJAS DE CALCULO====================//
+Route::view('/admDvigas', 'hcalculo.admdesingvigas');
+Route::view('/admvigasG', 'hcalculo.admvigageneral');
+//===================RUTA DE LOSAS==========//
+Route::view('/admlosasaligerada', 'hcalculo.admlosasaligeradas');
+
+Route::post('/desingLosa', [DesingLosaController::class, 'store'])->name('desingLosa');
+
+Route::view('/admlosasmaciza', 'hcalculo.admlosasmacizas');
+//===================RUTA DE Muros de contencion==========//
+Route::view('/admMurosContencion', 'hcalculo.admMurosContencion');
+//===================RUTA DE zapata==========//
+
+//======================RUTAS PARA LAS IMAGENES===============================//
+Route::get('/assets/img/{filename}', function ($filename) {
+    $path = public_path('assets/img/' . $filename);
+    if (!File::exists($path)) {
+        return response()->json(['message' => 'Imagen no encontrada.'], 404);
+    }
+    $file = File::get($path);
+    $type = File::mimeType($path);
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+    return $response;
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Our resource routes
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+});
+
+require __DIR__ . '/auth.php';
