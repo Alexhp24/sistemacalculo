@@ -244,14 +244,16 @@ $(document).ready(function () {
     function generateUniqueName() {
         return 'input_' + Date.now();
     }
+
     $(document).ready(function () {
-        $('#FlexionViga').on('submit', function (event) {
+        $('#FlexionLosas').on('submit', function (event) {
             event.preventDefault();
             $.ajax({
                 url: $(this).attr('action'),
                 method: 'POST',
                 data: $(this).serialize(),
                 success: function (response) {
+                    console.log(response);
                     $('#ObtenerResultados').html(response);
                     // Llamar select y asignar evento de escucha Change
                     SelectChange('A');
@@ -266,6 +268,7 @@ $(document).ready(function () {
             });
         });
     });
+
 
     // document.getElementById('FlexionViga').addEventListener('submit', function (event) {
     //     event.preventDefault();

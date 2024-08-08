@@ -52,7 +52,7 @@
                     </div>
                 </div>
                 <a href="#" class="text-gray-950 dark:text-gray-100 hover:text-gray-700 dark:hover:text-white py-2">Contacto</a>
-                <a href="#" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Prueba Gratis</a>
+                <a href="{{url('admPredim')}}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Prueba Gratis</a>
             </div>
             <button class="md:hidden text-gray-300 focus:outline-none" id="menu-button">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -76,8 +76,8 @@
                     <a href="#" class="block px-4 py-2 hover:bg-gray-600">Opción 2</a>
                 </div>
             </div>
-            <a href="#" class="block text-gray-950 dark:text-gray-100 hover:text-gray-700 dark:hover:text-white px-4 py-2">Contacto</a>
-            <a href="#" class="block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Prueba Gratis</a>
+            <a href="#21" class="block text-gray-950 dark:text-gray-100 hover:text-gray-700 dark:hover:text-white px-4 py-2">Contacto</a>
+            <a href="{{url('admPredim')}}" class="block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Prueba Gratis</a>
         </div>
     </nav>
 

@@ -81,6 +81,7 @@ class DesingLosaController extends Controller
             $VultimoPositivo = $request->input("Vu+$i", 0);
             $tUltimoPositiva = $request->input("Tu+$i", 0);
         }
+
         // Retornar la vista con los datos procesados
         return view('hcalculo.resultadoLosasAligerdas', compact(
             'fc',
@@ -110,7 +111,7 @@ class DesingLosaController extends Controller
             'vu_',
             'tu_',
             'VultimoPositivo',
-            'tUltimoPositiva'
+            'tUltimoPositiva',
         ));
     }
 }

@@ -20,7 +20,7 @@
                     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
                         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Datos Generales</h3>
                         <div class="overflow-auto">
-                            <form  id="FlexionViga" method="POST" action="{{ route('desingLosa') }}">
+                            <form  id="FlexionLosas" method="POST" action="{{ route('desingLosa') }}">
                                 @csrf
                                 <table class="table-auto w-full text-gray-800 dark:text-white px-6">
                                     <thead class="bg-white dark:bg-gray-800">
@@ -159,7 +159,6 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
     <script src="{{ asset('assets/js/adm_losas_aligeradas.js') }}"></script>

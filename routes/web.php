@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CimientoCorridoController;
 use App\Http\Controllers\DesingLosaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -26,18 +27,21 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
+//==========================RUTA PARA LAS PRUEBAS PREDIM=======================//
+Route::view('/admPredim', 'predim.admpredim');
 //==========================RUTA PARA LAS HOJAS DE CALCULO====================//
 Route::view('/admDvigas', 'hcalculo.admdesingvigas');
 Route::view('/admvigasG', 'hcalculo.admvigageneral');
 //===================RUTA DE LOSAS==========//
 Route::view('/admlosasaligerada', 'hcalculo.admlosasaligeradas');
-
 Route::post('/desingLosa', [DesingLosaController::class, 'store'])->name('desingLosa');
 
 Route::view('/admlosasmaciza', 'hcalculo.admlosasmacizas');
 //===================RUTA DE Muros de contencion==========//
 Route::view('/admMurosContencion', 'hcalculo.admMurosContencion');
+//===================RUTA DE CIMIENTO CORRIDO=============================//
+Route::view('/admCimientoCorrido', 'hcalculo.admCimientoCorrido');
+Route::post('/cimientocorrido', [CimientoCorridoController::class, 'cimientocorrido'])->name('cimientocorrido');
 //===================RUTA DE zapata==========//
 
 //======================RUTAS PARA LAS IMAGENES===============================//

@@ -199,111 +199,74 @@
     </tbody>
 
     <!-- Diseño por flexion -->
-    @php
-    // Inicializar arrays para almacenar los resultados
-    $dValues = [];
-    $q4Values = [];
-    $aValues = [];
 
-    // Realizar los cálculos y almacenar los resultados
-    for ($i = 1; $i <= $num_tramos * 3; $i++) { 
-        $currentIndex=ceil($i / 3);
-        $dValue=$altura[$currentIndex] - 3; 
-        $dValues[$i]=$dValue; 
-        $baseValue=$base[$currentIndex]; 
-
-        $q4=pow($dValue, 2) - 2 * abs($mu[$i] * pow(10, 5)) / (0.90 * 0.85 * $fc * $baseValue); $q4Values[$i]=$q4; if ($q4> 0) {
-            $a = round($dValue - sqrt(pow($dValue, 2) - $q4), 2, PHP_ROUND_HALF_UP);
-        } else {
-            $a = null; // O puedes usar un valor específico si quieres indicar error
-        }
-
-        $aValues[$i] = $a;
-        }
-        @endphp
-
-        <thead class="bg-gray-200 dark:bg-gray-800">
-            <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                <th class="text-xl py-2 px-4 text-left" colspan="4">2.- Diseño por flexion</th>
-            </tr>
-            <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
-                <th class="text-lg py-2 px-4" scope="col">Nombre</th>
-                <th class="text-lg py-2 px-4" scope="col">Símbolo</th>
-                <th class="text-lg py-2 px-4" scope="col">Fórmula</th>
-                @for ($i = 1; $i <= $num_tramos; $i++) <th scope="col">START</th>
-                    <th scope="col">MIDDLE</th>
-                    <th scope="col">END</th>
-                    @endfor
-            </tr>
-        </thead>
-        <tbody class="bg-gray-100 dark:bg-gray-800  py-2">
-            <tr class="bg-gray-100 dark:bg-gray-600 text-center">
-                <td class='py-2 px-4'>Peralte efectivo</td>
-                <td class='py-2 px-4'>d</td>
-                <td class='py-2 px-4'>h - 3</td>
-                @foreach (range(1, $num_tramos * 3) as $i)
-                <td class='py-2 px-4 text-center'>{{ $dValues[$i] }} cm</td>
-                @endforeach
-            </tr>
-
-            <!-- Fila para Dimensión característica de la sección transversal -->
-            <tr class="bg-gray-100 dark:bg-gray-600 text-center">
-                <td class='py-2 px-4'>Dimensión característica de la sección transversal</td>
-                <td class='py-2 px-4'>a</td>
-                <td class='py-2 px-4'>d - (d² - 2 * |MU * 10^5| / (0.90 * 0.85 * f'c * base))^0.5</td>
-                @foreach (range(1, $num_tramos * 3) as $i)
-                @if ($q4Values[$i] > 0)
-                <td class='py-2 px-4 text-center'>{{ $aValues[$i] }} cm</td>
-                @else
-                <td class='py-2 px-4 text-center'>Raíz de negativo</td>
-                @endif
-                @endforeach
-            </tr>
-            <tr class="bg-gray-100 dark:bg-gray-600 text-center">
-                <td class='py-2 px-4'>Refuerzo usado en claro</td>
-                <td class='py-2 px-4'>As</td>
-                <td class='py-2 px-4'>(0.85 * f'c * base * a) / Fy</td>
-                @foreach (range(1, $num_tramos * 3) as $i)
-                @php
-                $As = isset($aValues[$i]) ? round((0.85 * $fc * $base[$currentIndex] * $aValues[$i]) / $fy, 2, PHP_ROUND_HALF_UP) : 'N/A';
-                @endphp
-                <td class='py-2 px-4 text-center'>{{ $As }} cm²</td>
-                @endforeach
-            </tr>
-            <tr class="bg-gray-100 dark:bg-gray-600 text-center">
-                <td class='py-2 px-4'>-</td>
-                <td class='py-2 px-4'>As min</td>
-                <td class='py-2 px-4'>max(0.7*(f'c)^0.5/Fy*base*d, 14*base*$d/Fy)</td>
-                @foreach (range(1, $num_tramos * 3) as $i)
-                @php
-                    $As_min = round(max(0.7 * sqrt($fc) / $fy * $base[$currentIndex] * $dValues[$i], 14 * $base[$currentIndex] * $dValues[$i] / $fy), 2, PHP_ROUND_HALF_UP);
-                @endphp
-                <td class='py-2 px-4 text-center'>{{ $As_min }} cm²</td>
-                @endforeach
-            </tr>
-            <tr class="bg-gray-100 dark:bg-gray-600 text-center">
-                <td class='py-2 px-4'>-</td>
-                <td class='py-2 px-4'>As Balanceado</td>
-                <td class='py-2 px-4'>(0.85 * β1 * f'c / Fy * (0.003 / (0.003 + 0.0021))) * base * d</td>
-                @foreach (range(1, $num_tramos * 3) as $i)
-                @php
-                    $β1 = 0.85;
-                    $As_max = round((0.85 * $β1 * $fc / $fy * (0.003 / (0.003 + 0.0021))) * $base[$currentIndex] * $dValues[$i], 2, PHP_ROUND_HALF_UP);
-                @endphp
-                <td class='py-2 px-4 text-center'>{{ $As_max }} cm²</td>
-                @endforeach
-            </tr>
-            <tr class="bg-gray-100 dark:bg-gray-600 text-center">
-                <td class='py-2 px-4'>-</td>
-                <td class='py-2 px-4'>As Max 75%Abs</td>
-                <td class='py-2 px-4'>0.75 * (0.85 * β1 * f'c / fy * (0.003 / (0.003 + 0.0021))) * base * d</td>
-                @foreach (range(1, $num_tramos * 3) as $i)
-                @php
-                    $β1 = 0.85;
-                    $As_maxabs = round(0.75 * (0.85 * $β1 * $fc / $fy * (0.003 / (0.003 + 0.0021))) * $base[$currentIndex] * $dValues[$i], 2, PHP_ROUND_HALF_UP);
-                @endphp
-                <td class='py-2 px-4 text-center'>{{ $As_maxabs }} cm²</td>
-                @endforeach
-            </tr>
-        </tbody>
+    <thead class="bg-gray-200 dark:bg-gray-800">
+        <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+            <th class="text-xl py-2 px-4 text-left" colspan="4">2.- Diseño por flexion</th>
+        </tr>
+        <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
+            <th class="text-lg py-2 px-4" scope="col">Nombre</th>
+            <th class="text-lg py-2 px-4" scope="col">Símbolo</th>
+            <th class="text-lg py-2 px-4" scope="col">Fórmula</th>
+            @for ($i = 1; $i <= $num_tramos; $i++) <th scope="col">START</th>
+                <th scope="col">MIDDLE</th>
+                <th scope="col">END</th>
+                @endfor
+        </tr>
+    </thead>
+    <tbody class="bg-gray-100 dark:bg-gray-800  py-2">
+        <tr class="bg-gray-100 dark:bg-gray-600 text-center">
+            <td class='py-2 px-4'>Peralte efectivo</td>
+            <td class='py-2 px-4'>d</td>
+            <td class='py-2 px-4'>h - 3</td>
+            @foreach (range(1, $num_tramos * 3) as $i)
+            @php
+            $d[$i] = $altura[ceil(($i / 3))] - 3;
+            @endphp
+            <td class='py-2 px-4'>{{ $d[$i] }} cm</td>
+            @endforeach
+        </tr>
+        <tr>
+            <th scope="row">(*) Dimensión característica de la sección transversal</th>
+            <th scope="row">a</th>
+            <th scope="row">d-(d²-2*|MU*10^5|/(0.90*0.85*f'c*base))^0.5</th>
+            @foreach (range(1, $num_tramos * 3) as $i)
+            @php
+            $q4 = pow($d[ceil(($i / 3))], 2) - 2 * ABS($mu[$i] * pow(10, 5)) / (0.90 * 0.85 * $fc * $base[ceil(($i / 3))]);
+            $a = round($d[ceil(($i / 3))] - sqrt(pow($d[ceil(($i / 3))], 2) - 2 * ABS($mu[$i] * pow(10, 5)) / (0.90 * 0.85 * $fc * $base[ceil(($i / 3))])), 2, PHP_ROUND_HALF_UP);
+            @endphp
+            @if($q4 > 0)
+            <td class='py-2 px-4'>{{ $a }} cm</td>
+            @else
+            <td class='py-2 px-4'>Ráiz de negativos</td>
+            @endif
+            @endforeach
+        </tr>
+        <tr>
+            <th scope="row">Refuerzo usado en claro (*)</th>
+            <th scope="row">As</th>
+            <th scope="row">(0.85 * f'c * base * a) / Fy (*)</th>
+            @foreach (range(1, $num_tramos * 3) as $i)
+            @php
+            $d_value = $altura[ceil(($i / 3))] - 3;
+            $a = round($d_value - sqrt(pow($d_value, 2) - 2 * abs($mu[$i] * pow(10, 5)) / ($FR * 0.85 * $fc * $base[ceil(($i / 3))])), 2, PHP_ROUND_HALF_UP);
+            $As = round(((0.85 * $fc * $base[ceil(($i / 3))] * $a) / $fy), 2, PHP_ROUND_HALF_UP);
+            @endphp
+            <td class='py-2 px-4'>{{ $As] }} cm²</td>
+            @endforeach
+        </tr>
+        <tr>
+            <th scope="row">(*)</th>
+            <th scope="row">As min</th>
+            <th scope="row">max(0.7*(f'c)^0.5/Fy*base*d, 14*base*$d/Fy)</th>
+            @foreach (range(1, $num_tramos * 3) as $i)
+            @php
+            $d_value = $altura[ceil(($i / 3))] - 3;
+            $base_value = $base[ceil(($i / 3))];
+            $As_min = round(max(0.7 * sqrt($fc) / $fy * $base_value * $d_value, 14 * $base_value * $d_value / $fy), 2, PHP_ROUND_HALF_UP);
+            @endphp
+            <td class='py-2 px-4'>{{ $As_min] }} cm²</td>
+            @endforeach
+        </tr>
+    </tbody>
 </table>

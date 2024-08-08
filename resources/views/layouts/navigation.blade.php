@@ -91,7 +91,9 @@
                     </x-nav-link>
 
                     <!-- Hojas de calculo de Viento -->
-
+                    <x-nav-link :href="url('admCimientoCorrido')" :active="request()->is('admCimientoCorrido*')">
+                        {{ __('Cimiento Corrido') }}
+                    </x-nav-link>
                     <!-- Hoja de calcilo de zapatas -->
                 </div>
             </div>
