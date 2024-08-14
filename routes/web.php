@@ -62,6 +62,20 @@ Route::get('/assets/img/{filename}', function ($filename) {
     $response->header("Content-Type", $type);
     return $response;
 });
+//=====================RUTAS PARA LOS PDF=======================================//
+Route::get('/assets/pdf/{filename}', function ($filename) {
+    $path = public_path('assets/pdf/' . $filename);
+    if (!File::exists($path)) {
+        return response()->json(['message' => 'PDF no encontrado..'], 404);
+    }
+    $file = File::get($path);
+    $type = File::mimeType($path);
+    $response = Response::make($file, 200);
+    $response->header("Content-Type", $type);
+    return $response;
+});
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
