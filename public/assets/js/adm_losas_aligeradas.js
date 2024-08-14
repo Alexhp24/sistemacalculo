@@ -646,16 +646,4 @@ $(document).ready(function () {
         tdB.textContent = `${Dfmaxa} cm`;
         tdC.textContent = verf;
     }
-
-    function scrollTable(direction) {
-        const tableContainer = document.querySelector('.tableContainer');
-        const table = tableContainer.querySelector('table');
-        const scrollStep = 100; // Ajusta este valor según la cantidad de desplazamiento deseado
-
-        if (direction === 'left') {
-            table.scrollLeft -= scrollStep;
-        } else if (direction === 'right') {
-            table.scrollLeft += scrollStep;
-        }
-    }
 });

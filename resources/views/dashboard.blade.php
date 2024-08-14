@@ -71,6 +71,25 @@
                             </div>
                         </div>
 
+                         <!-- Columnas -->
+                         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Losas</h3>
+                         <div class="overflow-auto">
+                             <div class="container mx-auto px-4">
+                                 <div class="grid grid-cols-4 gap-4">
+                                     <a href="{{url('admColumna')}}">
+                                         <div class="card bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                             <div class="flex items-center">
+                                                 <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-12 0v1z"></path>
+                                                 </svg>
+                                                 <span>Diseño de Columnas</span>
+                                             </div>
+                                         </div>
+                                     </a>
+                                     
+                                 </div>
+                             </div>
+                         </div>
                         <!-- Muros de contencion -->
                         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Muros de contencion</h3>
                         <div class="overflow-auto">

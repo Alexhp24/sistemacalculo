@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\CimientoCorridoController;
+use App\Http\Controllers\ColumnaController;
 use App\Http\Controllers\DesingLosaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ZapatacombinadaController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
@@ -42,8 +44,12 @@ Route::view('/admMurosContencion', 'hcalculo.admMurosContencion');
 //===================RUTA DE CIMIENTO CORRIDO=============================//
 Route::view('/admCimientoCorrido', 'hcalculo.admCimientoCorrido');
 Route::post('/cimientocorrido', [CimientoCorridoController::class, 'cimientocorrido'])->name('cimientocorrido');
+//===================RUTA DE COLUMNA==========//
+Route::view('/admColumna', 'hcalculo.admdesingcolumna');
+Route::post('/columacon', [ColumnaController::class, 'columna'])->name('columacon');
 //===================RUTA DE zapata==========//
-
+Route::view('/admZapataCombinada', 'hcalculo.admZapataCombinada');
+Route::post('/zapatacombCon', [ZapatacombinadaController::class, 'zapataCombinada'])->name('zapatacombCon');
 //======================RUTAS PARA LAS IMAGENES===============================//
 Route::get('/assets/img/{filename}', function ($filename) {
     $path = public_path('assets/img/' . $filename);
