@@ -116,7 +116,7 @@
                                 <x-dropdown-link :href="url('admZapataCombinada')">
                                     {{ __('Zapata Combinada') }}
                                 </x-dropdown-link>
-                                <x-dropdown-link :href="url('admlosasmaciza')">
+                                <x-dropdown-link :href="url('admZapataConectada')">
                                     {{ __('Zapata Conectada') }}
                                 </x-dropdown-link>
                             </x-slot>
