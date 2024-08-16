@@ -3,6 +3,7 @@
 use App\Http\Controllers\CimientoCorridoController;
 use App\Http\Controllers\ColumnaController;
 use App\Http\Controllers\DesingLosaController;
+use App\Http\Controllers\MuroAlbanieriaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -52,7 +53,10 @@ Route::post('/columacon', [ColumnaController::class, 'columna'])->name('columaco
 Route::view('/admZapataCombinada', 'hcalculo.admZapataCombinada');
 Route::post('/zapatacombCon', [ZapatacombinadaController::class, 'zapataCombinada'])->name('zapatacombCon');
 Route::view('/admZapataConectada', 'hcalculo.admZapataConectada');
-Route::post('/zapataconectadaCon',[ZapataconectadaController::class,'zapataConectada'])->name('zapataconectadaCon');
+Route::post('/zapataconectadaCon', [ZapataconectadaController::class, 'zapataConectada'])->name('zapataconectadaCon');
+//=====================RUTAS PARA MUROS DE ALBAÑIERIA=========================//
+Route::view('/admMalb', 'hcalculo.admMurosAlbanieria');
+Route::post('/malbaCont', [MuroAlbanieriaController::class, 'muroAlbanieria'])->name('malbaCont');
 //======================RUTAS PARA LAS IMAGENES===============================//
 Route::get('/assets/img/{filename}', function ($filename) {
     $path = public_path('assets/img/' . $filename);
