@@ -43,7 +43,92 @@
                             </x-dropdown>
                         </div>
                     @endif
-                    <!--Hojas de calculo de vigas-->
+                    {{-- Hojas de calculo R&A --}}
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                    <div>{{ __('Hojas de Calculo') }}</div>
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                {{-- Hoja de vigas --}}
+                                <x-dropdown-sub label="{{ __('Vigas') }}" :links="[
+                                    ['url' => 'admDvigas', 'label' => __('Diseño de vigas')],
+                                    ['url' => 'admvigasG', 'label' => __('Diseño de vigas General')],
+                                ]" />
+
+                                {{-- Hojas de losas --}}
+                                <x-dropdown-sub label="{{ __('Losas') }}" :links="[
+                                    ['url' => 'admlosasaligerada', 'label' => __('Diseño de Losas Aligeradas')],
+                                    ['url' => 'admlosasmaciza', 'label' => __('Diseño de Losas Macizas')],
+                                ]" />
+
+                                {{-- Hojas de muros --}}
+                                <x-dropdown-sub label="{{ __('Muros') }}" :links="[
+                                    ['url' => 'admMurosContencion', 'label' => __('Diseño Muros de Contencion')],
+                                    ['url' => 'admMalb', 'label' => __('Diseño Muros de albañilería')],
+                                ]" />
+
+                                {{-- Hojas de cimiento corrido --}}
+                                <x-dropdown-link :href="url('admCimientoCorrido')">
+                                    {{ __('Diseño de Cimiento Corrido') }}
+                                </x-dropdown-link>
+
+                                {{-- Hojas de columna --}}
+                                <x-dropdown-link :href="url('admColumna')">
+                                    {{ __('Diseño de Columna') }}
+                                </x-dropdown-link>
+
+                                {{-- Hojas de zapata --}}
+                                <x-dropdown-sub label="{{ __('Zapatas') }}" :links="[
+                                    ['url' => 'admZapataCombinada', 'label' => __('Diseño de Zapata Combinada')],
+                                    ['url' => 'admZapataConectada', 'label' => __('Diseño de Zapata Conectada')],
+                                    ['url' => 'admZapataGeneral', 'label' => __('Diseño de Zapata General')],
+                                ]" />
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+
+                    {{-- hojas de calculo de Autocad --}}
+                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                        <x-dropdown align="right" width="48">
+                            <x-slot name="trigger">
+                                <button
+                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                    <div>{{ __('Matlab') }}</div>
+                                    <div class="ms-1">
+                                        <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                            viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                {{-- Hoja de vigas --}}
+                                <x-dropdown-sub label="{{ __('Zapata') }}" :links="[
+                                    ['url' => 'admFuerzasCortantesGrafico', 'label' => __('Fuerza Cortante')],
+                                    ['url' => 'admDvigas', 'label' => __('Diseño de zapatas')],
+                                ]" />
+
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+
+
+                    {{-- <!--Hojas de calculo de vigas-->
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
@@ -123,12 +208,12 @@
                                 </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
-                    </div>
+                    </div> --}}
                     {{-- <x-nav-link :href="url('admMurosContencion')" :active="request()->is('admMurosContencion*')">
                         {{ __('Muros de Contencion') }}
                     </x-nav-link> --}}
 
-                    <!-- Hojas de calculo de Viento -->
+                    {{-- <!-- Hojas de calculo de Viento -->
                     <x-nav-link :href="url('admCimientoCorrido')" :active="request()->is('admCimientoCorrido*')">
                         {{ __('Cimiento Corrido') }}
                     </x-nav-link>
@@ -161,11 +246,12 @@
                                 <x-dropdown-link :href="url('admZapataConectada')">
                                     {{ __('Zapata Conectada') }}
                                 </x-dropdown-link>
+                                <x-dropdown-link :href="url('admZapataGeneral')">
+                                    {{ __('Zapata General') }}
+                                </x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
-                    </div>
-
-                    {{-- Pruebas Barra de menus --}}
+                    </div> --}}
                 </div>
             </div>
 

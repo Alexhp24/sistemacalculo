@@ -3,12 +3,14 @@
 use App\Http\Controllers\CimientoCorridoController;
 use App\Http\Controllers\ColumnaController;
 use App\Http\Controllers\DesingLosaController;
+use App\Http\Controllers\FuerzasCortantesController;
 use App\Http\Controllers\MuroAlbanieriaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ZapatacombinadaController;
 use App\Http\Controllers\ZapataconectadaController;
+use App\Http\Controllers\ZapatageneralController;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Route;
@@ -54,9 +56,16 @@ Route::view('/admZapataCombinada', 'hcalculo.admZapataCombinada');
 Route::post('/zapatacombCon', [ZapatacombinadaController::class, 'zapataCombinada'])->name('zapatacombCon');
 Route::view('/admZapataConectada', 'hcalculo.admZapataConectada');
 Route::post('/zapataconectadaCon', [ZapataconectadaController::class, 'zapataConectada'])->name('zapataconectadaCon');
+//-----------------------------------Z general -------------------------------//
+Route::view('/admZapataGeneral', 'hcalculo.admdesingZapataGeneral');
+Route::post('/zapataGenCon', [ZapatageneralController::class, 'zapataGeneral'])->name('zapataGenCon');
 //=====================RUTAS PARA MUROS DE ALBAÑIERIA=========================//
 Route::view('/admMalb', 'hcalculo.admMurosAlbanieria');
 Route::post('/malbaCont', [MuroAlbanieriaController::class, 'muroAlbanieria'])->name('malbaCont');
+//=========================OCTAVE============================================//
+Route::view('/admFuerzasCortantesGrafico', 'matlab.admFuerzasCortantesGrafico');
+Route::post('/fuerzasCortantes', [FuerzasCortantesController::class, 'graficarfc'])->name('fuerzasCortantes');
+
 //======================RUTAS PARA LAS IMAGENES===============================//
 Route::get('/assets/img/{filename}', function ($filename) {
     $path = public_path('assets/img/' . $filename);
@@ -81,9 +90,7 @@ Route::get('/assets/pdf/{filename}', function ($filename) {
     $response->header("Content-Type", $type);
     return $response;
 });
-
-
-
+///====================PERMISOS Y ROLES===============================================//
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -1,13 +1,13 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Cimiento Corrido') }}
+            {{ __('Diseño de zapata general') }}
         </h2>
     </x-slot>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/echarts@latest/dist/echarts.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/pdf-lib/dist/pdf-lib.min.js"></script>r
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script>
+
     <div class="py-12">
         <div class="container mx-auto w-full">
             <div class="flex flex-wrap">
@@ -16,7 +16,7 @@
                     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
                         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Datos Generales</h3>
                         <div class="overflow-auto">
-                            <form id="cimientosControler" method="POST" action="{{ route('cimientocorrido') }}">
+                            <form action="{{ route('zapataGenCon') }}" id="DataZapatageneral" method="post">
                                 @csrf
                                 <table class="table-auto w-full text-gray-800 dark:text-white px-6">
                                     <thead class="bg-white dark:bg-gray-800">
@@ -49,172 +49,206 @@
                                             <th class="py-2 px-4">kg/cm<sup>2</sup></th>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">-</th>
-                                            <th class="py-2 px-4">L1</th>
-                                            <th class="py-2 px-4"><input type="text" name="l1"
+                                            <th class="py-2 px-4"></th>
+                                            <th class="py-2 px-4">γs</th>
+                                            <th class="py-2 px-4"><input type="text" name="ys"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="l1" value="30" placeholder="L1" min="0"
+                                                    id="ys" value="1" placeholder="ys" min="0"
                                                     required
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                             </th>
-                                            <th class="py-2 px-4">cm</th>
+                                            <th class="py-2 px-4">tonf/m<sup>3</sup></th>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">-</th>
-                                            <th class="py-2 px-4">L2</th>
-                                            <th class="py-2 px-4"><input type="text" name="l2"
+                                            <th class="py-2 px-4"></th>
+                                            <th class="py-2 px-4">Df</th>
+                                            <th class="py-2 px-4"><input type="text" name="df"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="l2" value="50" placeholder="L2" min="0"
+                                                    id="df" value="1" placeholder="df" min="0"
                                                     required
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                             </th>
-                                            <th class="py-2 px-4">cm</th>
+                                            <th class="py-2 px-4">m</th>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">Ø Columna</th>
+                                            <th class="py-2 px-4"></th>
+                                            <th class="py-2 px-4">t</th>
+                                            <th class="py-2 px-4"><input type="text" name="t"
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    id="t" value="1" placeholder="1" min="0"
+                                                    required
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                            </th>
+                                            <th class="py-2 px-4">m</th>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <th class="py-2 px-4"></th>
+                                            <th class="py-2 px-4">b</th>
+                                            <th class="py-2 px-4"><input type="text" name="b"
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    id="b" value="1" placeholder="1" min="0"
+                                                    required
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                            </th>
+                                            <th class="py-2 px-4">m</th>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <th class="py-2 px-4"></th>
+                                            <th class="py-2 px-4">L</th>
+                                            <th class="py-2 px-4"><input type="text" name="l"
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    id="l" value="1" placeholder="1" min="0"
+                                                    required
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                            </th>
+                                            <th class="py-2 px-4">m</th>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <th class="py-2 px-4"></th>
+                                            <th class="py-2 px-4">B</th>
+                                            <th class="py-2 px-4"><input type="text" name="DZY"
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    id="DZY" value="1" placeholder="1" min="0"
+                                                    required
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                            </th>
+                                            <th class="py-2 px-4">m</th>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <th class="py-2 px-4"></th>
+                                            <th class="py-2 px-4">σs</th>
+                                            <th class="py-2 px-4"><input type="text" name="cps"
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    id="cps" value="1" placeholder="1" min="0"
+                                                    required
+                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                            </th>
+                                            <th class="py-2 px-4">kgf/m<sup>2</sup></th>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <th class="py-2 px-4">α s</th>
                                             <th class="py-2 px-4" colspan="3">
                                                 <select
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    name="columna" id="columna" aria-label="Default select example">
-                                                    <option value="" selected="selected" disabled>Seleccione
-                                                    </option>
-                                                    <option value="0.60">6 mm</option>
-                                                    <option value="0.80">8 mm</option>
-                                                    <option value="0.95">3/8"</option>
-                                                    <option value="1.20">12 mm</option>
-                                                    <option value="1.27">1/2"</option>
-                                                    <option value="1.59">5/8"</option>
-                                                    <option value="1.91" selected>3/4"</option>
-                                                    <option value="2.54">1"</option>
-                                                    <option value="3.49">1 3/8"</option>
+                                                    name="Columna" id="Columna"
+                                                    aria-label="Default select example">
+                                                    <option disabled>α s</option>
+                                                    <option value="40">Columna Interior</option>
+                                                    <option value="30" selected>Columna de Borde</option>
+                                                    <option value="20">Columna en Esquina</option>
                                                 </select>
                                             </th>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">-</th>
-                                            <th class="py-2 px-4">re</th>
-                                            <th class="py-2 px-4"><input type="text" name="re"
+                                            <th class="py-2 px-4">Ф Varilla X</th>
+                                            <th class="py-2 px-4" colspan="3">
+                                                <select
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="re" value="7.50" placeholder="re" min="0"
-                                                    required
+                                                    name="VarillaX" id="VarillaX"
+                                                    aria-label="Default select example">
+                                                    <option disabled>Ф Varilla</option>
+                                                    <option value="0">Ø 0"</option>
+                                                    <option value="0.283">6mm</option>
+                                                    <option value="0.503">8mm</option>
+                                                    <option value="0.713" selected>Ø 3/8"</option>
+                                                    <option value="1.131">12mm</option>
+                                                    <option value="1.267">Ø 1/2"</option>
+                                                    <option value="1.979">Ø 5/8"</option>
+                                                    <option value="2.850">Ø 3/4"</option>
+                                                    <option value="5.067">Ø 1"</option>
+                                                </select>
+                                            </th>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <th class="py-2 px-4">Ф Varilla Y</th>
+                                            <th class="py-2 px-4" colspan="3">
+                                                <select
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    name="VarillaY" id="VarillaY"
+                                                    aria-label="Default select example">
+                                                    <option disabled>Ф Varilla</option>
+                                                    <option value="0">Ø 0"</option>
+                                                    <option value="0.283">6mm</option>
+                                                    <option value="0.503">8mm</option>
+                                                    <option value="0.713" selected>Ø 3/8"</option>
+                                                    <option value="1.131">12mm</option>
+                                                    <option value="1.267">Ø 1/2"</option>
+                                                    <option value="1.979">Ø 5/8"</option>
+                                                    <option value="2.850">Ø 3/4"</option>
+                                                    <option value="5.067">Ø 1"</option>
+                                                </select>
+                                            </th>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <th class="py-2 px-4">Espaciamiento X</th>
+                                            <th class="py-2 px-4"></th>
+                                            <th class="py-2 px-4"><input type="text" name="espaciamientox"
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    id="espaciamientox" value="1" placeholder="1"
+                                                    min="0" required
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                             </th>
                                             <th class="py-2 px-4">cm</th>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">-</th>
-                                            <th class="py-2 px-4">γ albanileria</th>
-                                            <th class="py-2 px-4"><input type="text" name="yalba"
+                                            <th class="py-2 px-4">Espaciamiento Y</th>
+                                            <th class="py-2 px-4"></th>
+                                            <th class="py-2 px-4"><input type="text" name="espaciamientoy"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="yalba" value="1800" placeholder="1800" min="0"
-                                                    required
+                                                    id="espaciamientoy" value="1" placeholder="1"
+                                                    min="0" required
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                             </th>
-                                            <th class="py-2 px-4">kg/cm<sup>3</sup></th>
+                                            <th class="py-2 px-4">cm</th>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">-</th>
-                                            <th class="py-2 px-4">γ C° simple</th>
-                                            <th class="py-2 px-4"><input type="text" name="ycsimple"
+                                            <th class="py-2 px-4">Inercia</th>
+                                            <th class="py-2 px-4" colspan="3">
+                                                <select
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="ycsimple" value="2300" placeholder="2300" min="0"
-                                                    required
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                                    name="inercia" id="inercia"
+                                                    aria-label="Default select example">
+                                                    <option disabled>α s</option>
+                                                    </option>
+                                                    <option value="Sregular" selected>Seccion Regular</option>
+                                                    <option value="Sirregular">Seccion Irregular</option>
+                                                </select>
                                             </th>
-                                            <th class="py-2 px-4">kg/cm<sup>3</sup></th>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">-</th>
-                                            <th class="py-2 px-4"> γ C° armado</th>
-                                            <th class="py-2 px-4"><input type="text" name="ycarmado"
+                                            <th class="py-2 px-4"></th>
+                                            <th class="py-2 px-4">Ix</th>
+                                            <th class="py-2 px-4"><input type="text" name="B"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="ycarmado" value="2400" placeholder="2400" min="0"
+                                                    id="B" value="1" placeholder="1" min="0"
                                                     required
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                             </th>
-                                            <th class="py-2 px-4">kg/cm<sup>3</sup></th>
+                                            <th class="py-2 px-4">cm<sup>4</sup></th>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">-</th>
-                                            <th class="py-2 px-4">Esf Adm del Terr (σt)</th>
-                                            <th class="py-2 px-4"><input type="text" name="esadterr"
+                                            <th class="py-2 px-4"></th>
+                                            <th class="py-2 px-4">Iy</th>
+                                            <th class="py-2 px-4"><input type="text" name="By"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="esadterr" value="0.90" placeholder="0.90" min="0"
+                                                    id="By" value="1" placeholder="1" min="0"
                                                     required
                                                     oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                                             </th>
-                                            <th class="py-2 px-4">kg/cm<sup>2</sup></th>
+                                            <th class="py-2 px-4">cm<sup>4</sup></th>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">-</th>
-                                            <th class="py-2 px-4">Prof de la Ciment (Df)</th>
-                                            <th class="py-2 px-4"><input type="text" name="pdcimt"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="pdcimt" value="1.40" placeholder="1.40" min="0"
-                                                    required
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                            <th colspan="4">
+                                                <div id="CargaConServ"></div>
+                                                <div id="CargaConServ"></div>
                                             </th>
-                                            <th class="py-2 px-4">m</th>
                                         </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">-</th>
-                                            <th class="py-2 px-4">γ prom</th>
-                                            <th class="py-2 px-4"><input type="text" name="yprom"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="yprom" value="1" placeholder="1" min="0"
-                                                    required
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                                            </th>
-                                            <th class="py-2 px-4">Ton/m</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">-</th>
-                                            <th class="py-2 px-4">s/c</th>
-                                            <th class="py-2 px-4"><input type="text" name="sc"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="sc" value="0.20" placeholder="0.20" min="0"
-                                                    required
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                                            </th>
-                                            <th class="py-2 px-4">Ton/m</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">-</th>
-                                            <th class="py-2 px-4">Esp. muro</th>
-                                            <th class="py-2 px-4"><input type="text" name="esmuro"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="esmuro" value="0.25" placeholder="0.25" min="0"
-                                                    required
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                                            </th>
-                                            <th class="py-2 px-4">m</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">Carga Muerta</th>
-                                            <th class="py-2 px-4">CM</th>
-                                            <th class="py-2 px-4"><input type="text" name="CM"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="CM" value="6805" placeholder="6805" min="0"
-                                                    required
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                                            </th>
-                                            <th class="py-2 px-4">kg/m</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">Carga Viva</th>
-                                            <th class="py-2 px-4">CV</th>
-                                            <th class="py-2 px-4"><input type="text" name="CV"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="CV" value="600" placeholder="600" min="0"
-                                                    required
-                                                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                                            </th>
-                                            <th class="py-2 px-4">kg/m</th>
-                                        </tr>
+                                        <input type="hidden" name="dataFromHandsontable" id="dataFromHandsontable"
+                                            value="">
                                         <tr>
                                             <th class="py-2 px-4">
                                                 <div class="input-group mb-2">
-                                                    <button
+                                                    <button 
                                                         class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
                                                         type="submit">DISEÑAR</button>
                                                 </div>
@@ -231,44 +265,17 @@
                 <!-- Resultados -->
                 <div class="w-full md:w-2/3 px-4 mt-4 md:mt-0">
                     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4 text-center">DISEÑO DE
-                            CIMIENTO CORRIDO</h3>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Resultados</h3>
                         <div class="overflow-x-auto">
-                            <div id="main" style="width: 100%; height: 600px;"></div>
-                            <div class="card-body" id="ObtenerResultadosCimiento"></div>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <button onclick="createPdf()">Generar PDF</button>
-
-                            <script>
-                                async function createPdf() {
-                                    const pdfDoc = await PDFDocument.create()
-                                    const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman)
-
-                                    const page = pdfDoc.addPage()
-                                    const {
-                                        width,
-                                        height
-                                    } = page.getSize()
-                                    const fontSize = 30
-                                    page.drawText('Creating PDFs in JavaScript is awesome!', {
-                                        x: 50,
-                                        y: height - 4 * fontSize,
-                                        size: fontSize,
-                                        font: timesRomanFont,
-                                        color: rgb(0, 0.53, 0.71),
-                                    })
-
-                                    const pdfBytes = await pdfDoc.save()
-                                }
-                            </script>
+                            <div id="resultadosZapataGeneral"></div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
 
-    <script src="{{ asset('assets/js/adm_cimiento_corrido.js') }}"></script>
+    <script src="{{ asset('assets/js/adm_zapata_general.js') }}"></script>
 
 </x-app-layout>
