@@ -96,8 +96,8 @@ class OctavePlotController extends Controller
         $isOk = Self::runOctave($function, $stderr/* , $stdout, $stderr */) === 0;
 
         if ($isOk) {
-            $T1 = file_get_contents("./assets/img/fcsv/T1" . $_POST['_id'] . ".csv");
-            $T2 = file_get_contents("./assets/img/fcsv/T2" . $_POST['_id'] . ".csv");
+            $T1 = file_get_contents("./assets/img/fcsv/T1" . $request->input('_id', 0) . ".csv");
+            $T2 = file_get_contents("./assets/img/fcsv/T2" . $request->input('_id', 0) . ".csv");
 
             echo json_encode([
                 "response" => "ok",
