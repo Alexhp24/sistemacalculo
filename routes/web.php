@@ -3,7 +3,7 @@
 use App\Http\Controllers\CimientoCorridoController;
 use App\Http\Controllers\ColumnaController;
 use App\Http\Controllers\DesingLosaController;
-use App\Http\Controllers\FuerzasCortantesController;
+use App\Http\Controllers\OctavePlotController;
 use App\Http\Controllers\MuroAlbanieriaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
@@ -66,7 +66,7 @@ Route::post('/malbaCont', [MuroAlbanieriaController::class, 'muroAlbanieria'])->
 Route::view('/admplacasL', 'hcalculo.admdesingPlacasL');
 //=========================OCTAVE============================================//
 Route::view('/admFuerzasCortantesGrafico', 'matlab.admFuerzasCortantesGrafico');
-Route::post('/fuerzasCortantes', [FuerzasCortantesController::class, 'graficarfc'])->name('fuerzasCortantes');
+Route::post('/fuerzasCortantes', [OctavePlotController::class, 'graficarFC'])->name('fuerzasCortantes');
 
 //======================RUTAS PARA LAS IMAGENES===============================//
 Route::get('/assets/img/{filename}', function ($filename) {
