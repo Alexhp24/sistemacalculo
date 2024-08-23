@@ -363,11 +363,11 @@ function fuerzas_cortantes(id, fc, fy, e, b, h, lt, wd, wv, anchoTributario)
         title('Diagrama de Momentos Flectores (Tn-m)')
         xlabel('Longitud (m)')
         ylabel('Momentos flectores (Tn)')
-        print("-dpng", ["/home/u112634954/domains/ryaie.com/public_html/public/assets/img/fcsv/fuerzasCortantes" id ".png"])
+        print("-dpng", ["./assets/img/fcsv/fuerzasCortantes" id ".png"])
     end
     end
     % Guardar la imagen en la ruta específica
-    %filename = ["/home/u112634954/domains/ryaie.com/public_html/public/assets/img/fcsv/fuerzasCortantes" id ".png"];
+    %filename = ["./assets/img/fcsv/fuerzasCortantes" id ".png"];
     %print("-dpng", filename);
     hold off
   
@@ -429,7 +429,7 @@ function fuerzas_cortantes(id, fc, fy, e, b, h, lt, wd, wv, anchoTributario)
     %save('T1.mat', 'T1');
     data1 = [T1.Mu, T1.Asd, T1.Asmin];
     %csvwrite(["T1" id ".csv"], data1);
-    filename1 = ["/home/u112634954/domains/ryaie.com/public_html/public/assets/img/fcsv/T1" id ".csv"];
+    filename1 = ["./assets/img/fcsv/T1" id ".csv"];
     csvwrite(filename1, data1);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Diseño por cortante
@@ -453,7 +453,7 @@ function fuerzas_cortantes(id, fc, fy, e, b, h, lt, wd, wv, anchoTributario)
     T2.Ratio = CORT(:,3);
     data2 = [T2.Vu, T2.Vc, T2.Ratio];
     %csvwrite(["T2" id ".csv"], data2);
-    filename2 = ["/home/u112634954/domains/ryaie.com/public_html/public/assets/img/fcsv/T2" id ".csv"];
+    filename2 = ["./assets/img/fcsv/T2" id ".csv"];
     csvwrite(filename2, data2);
   endfunction
   
