@@ -93,7 +93,7 @@
 
         if (startCell) {
           //get data from clipboard into array of columns and rows.
-          clipboard = clipboard.replace("\r\n", "\n").split("\n");
+          clipboard = clipboard.replaceAll("\r\n", "\n").split("\n");
 
           clipboard.forEach(function (row) {
             data.push(row.split("\t"));
