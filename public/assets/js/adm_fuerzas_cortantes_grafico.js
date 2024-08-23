@@ -93,7 +93,7 @@
 
         if (startCell) {
           //get data from clipboard into array of columns and rows.
-          clipboard = clipboard.split("\n");
+          clipboard = clipboard.replaceAll("\r\n", "\n").split("\n");
 
           clipboard.forEach(function (row) {
             data.push(row.split("\t"));
@@ -342,6 +342,26 @@
 
     const T1Model = {
       id: "#T1",
+      mutators: {
+        diametro: {
+          deps: ["Asd"],
+          mutator: function (value, data) {
+            const asd = parseFloat(data.Asd);
+            if (asd <= 0.71) {
+              return '1 Ø 3/8"';
+            } else if (asd <= 1.27) {
+              return '1 Ø 1/2"';
+            } else if (asd <= 2) {
+              return '1 Ø 5/8"';
+            } else if (asd <= 2.71) {
+              return '1 Ø 5/8" + 1 Ø 3/8"';
+            } else if (asd <= 3.27) {
+              return '5/8" + 1/2"';
+            }
+            return "";
+          },
+        },
+      },
       config: {
         layout: "fitColumns",
         columns: [
@@ -371,6 +391,10 @@
                   const value = parseFloat(cell.getValue());
                   return isNaN(value) ? "" : value.toFixed(2) + " cm²";
                 },
+              },
+              {
+                title: "Diametro",
+                field: "diametro",
               },
             ],
           },
@@ -458,6 +482,25 @@
           <div class="border-t-4 ${!isLast ? "border-l-4" : "border-l-4 border-r-4"}">${width} m</div>
         </div>`;
       };
+      const asdComponent = (percentX, asd1, d1, asd2, d2, asd3, d3, isLast) => {
+        return `<div class="text-center" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+          <div class="flex justify-between">
+            <div class="border-l-4 px-2">${parseFloat(asd1).toFixed(2)} cm²<br>${d1}</div>
+            <div class="${!isLast ? "" : "border-r-4"} px-2">${parseFloat(asd3).toFixed(2)} cm²<br>${d3}</div>
+          </div>
+          <div class="border-t-4 ${!isLast ? "border-l-4" : "border-l-4 border-r-4"}">${parseFloat(asd2).toFixed(2)} cm²<br>${d2}</div>
+        </div>`;
+      };
+
+      const vuComponent = (percentX, vu1, vu2, isLast) => {
+        return `<div class="text-center" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+          <div class="flex justify-between">
+            <div class="border-l-4 px-2">${parseFloat(vu1).toFixed(2)} Tn</div>
+            <div class="${!isLast ? "" : "border-r-4"} px-2">${parseFloat(vu2).toFixed(2)} Tn</div>
+          </div>
+          <div class="border-t-4 ${!isLast ? "border-l-4" : "border-l-4 border-r-4"}">&nbsp</div>
+        </div>`;
+      };
 
       const total = propiedades
         .getData()
@@ -502,7 +545,6 @@
       formData.append("WD", octaveVector(propiedades, "wdi"));
       formData.append("WV", octaveVector(propiedades, "wvi"));
 
-      //id = btoa(JSON.stringify(Object.fromEntries(formData))).slice(0, 256);
       id = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(Object.fromEntries(formData))))))
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("");
@@ -528,8 +570,25 @@
             });
           T1Model.config.data = json.T1;
           T2Model.config.data = json.T2;
-          createSpreeadSheetTable(T1Model);
-          createSpreeadSheetTable(T2Model);
+          const T1 = createSpreeadSheetTable(T1Model);
+          const T2 = createSpreeadSheetTable(T2Model);
+          setTimeout(() => {
+            const asdValues = T1.getData();
+            document.getElementById("asd").innerHTML = propiedades.getData().reduce((html, row, index, data) => {
+              const percentX = (parseFloat(row.lti) / total) * 100;
+              return (
+                html + asdComponent(percentX, asdValues[index * 3].Asd, asdValues[index * 3].diametro, asdValues[index * 3 + 1].Asd, asdValues[index * 3 + 1].diametro, asdValues[index * 3 + 2].Asd, asdValues[index * 3 + 2].diametro, index === data.length - 1)
+              );
+            }, "");
+  
+            const vuValues = T2.getData();
+            document.getElementById("vu").innerHTML = propiedades.getData().reduce((html, row, index, data) => {
+              const percentX = (parseFloat(row.lti) / total) * 100;
+              return (
+                html + vuComponent(percentX, vuValues[index * 2].Vu, vuValues[index * 2 + 1].Vu, index === data.length - 1)
+              );
+            }, "");
+          }, 500);
           document.getElementById("fuerzasCortantes").src = "/assets/img/fcsv/fuerzasCortantes" + id + ".png?t=" + new Date().getTime();
         })
         .catch((error) => {

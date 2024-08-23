@@ -92,7 +92,7 @@
                             <table class="min-w-full text-gray-800 dark:text-white">
                                 <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
                                     <th class="text-xl py-2 px-4 text-left" colspan="4">
-                                        1.- Viguetas
+                                        1.- Geometria
                                     </th>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
@@ -119,12 +119,17 @@
                                 </tr>
                                 <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
                                     <th class="text-xl py-2 px-4 text-left" colspan="4">
-                                        4.- Plot
+                                        4.- Analisis Estructural
                                     </th>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
                                     <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
                                             alt="" id="fuerzasCortantes"></td>
+                                </tr>
+                                <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+                                    <th class="text-xl py-2 px-4 text-left" colspan="4">
+                                        5.- Diseño a Flexion
+                                    </th>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
                                     <td class="py-2 px-4" colspan="2">
@@ -132,8 +137,21 @@
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4" id="asd">
+                                    </td>
+                                </tr>
+                                <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+                                    <th class="text-xl py-2 px-4 text-left" colspan="4">
+                                        6.- Diseño a Cortante
+                                    </th>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
                                     <td class="py-2 px-4" colspan="2">
                                         <div id="T2"></div>
+                                    </td>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4" id="vu">
                                     </td>
                                 </tr>
                             </table>
