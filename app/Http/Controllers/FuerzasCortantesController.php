@@ -18,7 +18,7 @@ class FuerzasCortantesController extends Controller
         $OCTAVE_VERSION = "8.0.0";
 
         // Ruta de octave
-        $SNAP =  "assets/matlab/content/octave"; //"/home/scqutz9qwlhh/public_html/content/octave";
+        $SNAP =  "/home/u112634954/domains/ryaie.com/public_html/public/assets/matlab/content/octave"; //"/home/scqutz9qwlhh/public_html/content/octave";
 
         // Variables de entorno
         $env = array(
@@ -29,7 +29,7 @@ class FuerzasCortantesController extends Controller
             "FONTCONFIG_PATH" => "$SNAP/etc/fonts",
             "FONTCONFIG_FILE" => "$SNAP/etc/fonts/fonts.conf",
             "XDG_DATA_HOME" => "$SNAP/usr/share",
-            "PATH" => "\$PATH:$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin",
+            //"PATH" => "\$PATH:$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin",
             "GNUPLOT_DRIVER_DIR" => "$SNAP/usr/lib/gnuplot",
             "GNUPLOT_LUA_DIR" => "$SNAP/usr/share/gnuplot/gnuplot/5.2/lua",
             "GNUPLOT_PS_DIR" => "$SNAP/usr/share/gnuplot/gnuplot/5.2/PostScript",
@@ -42,7 +42,7 @@ class FuerzasCortantesController extends Controller
             "LD_LIBRARY_PATH" => "$SNAP/lib/octave:$SNAP/lib/octave/$OCTAVE_VERSION:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib:$SNAP/lib/x86_64-linux-gnu:$SNAP/bin"
         );
         $function = sprintf(
-            "fuerzas_cortantes('%s', %s, %s, %s, %s, %s, %s, %s, %s);",
+            "fuerzas_cortantes('%s', %s, %s, %s, %s, %s, %s, %s, %s, %s);",
             $request->input('_id'),
             $request->input('fc'),
             $request->input('Fy'),
@@ -51,14 +51,13 @@ class FuerzasCortantesController extends Controller
             $request->input('h'),
             $request->input('Lt'),
             $request->input('WD'),
-            $request->input('WV')
+            $request->input('WV'),
+            $request->input('anchoTributario')
         );
 
-        $process = proc_open('octave-cli -p .assets/matlab/fuerzas_cortantes --no-gui -H -f -W --quiet --eval "' . $function . '"', $descriptorspec, $pipes, null, $env);
+        //$process = proc_open('octave-cli -p /home/u112634954/domains/ryaie.com/public_html/public/assets/matlab/ --no-gui -H -f -W --quiet --eval "' . $function . '"', $descriptorspec, $pipes, null, $env);
+        $process = proc_open("PATH=$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:" . '$PATH' . ' octave-cli -p /home/u112634954/domains/ryaie.com/public_html/public/assets/matlab/ --no-gui -H -f -W --quiet --eval "' . $function . '"', $descriptorspec, $pipes,null,$env);
         if (is_resource($process)) {
-
-            // echo "STDOUT:" . stream_get_contents($pipes[1])  . "<br>";
-            // echo "STDERR:" . stream_get_contents($pipes[2])  . "<br>";
 
             fclose($pipes[0]);
             fclose($pipes[1]);
@@ -70,8 +69,9 @@ class FuerzasCortantesController extends Controller
             // echo "command returned $return_value\n";
         }
 
-        $T1 = file_get_contents("T1" . $_POST['_id'] . ".csv");
-        $T2 = file_get_contents("T2" . $_POST['_id'] . ".csv");
+        $T1 = file_get_contents("/home/u112634954/domains/ryaie.com/public_html/public/assets/img/fcsv/T1" . $_POST['_id'] . ".csv");
+        $T2 = file_get_contents("/home/u112634954/domains/ryaie.com/public_html/public/assets/img/fcsv/T2" . $_POST['_id'] . ".csv");
+
         echo json_encode([
             "T1" => $T1,
             "T2" => $T2,

@@ -95,6 +95,11 @@
                                     ['url' => 'admZapataConectada', 'label' => __('Diseño de Zapata Conectada')],
                                     ['url' => 'admZapataGeneral', 'label' => __('Diseño de Zapata General')],
                                 ]" />
+
+                                {{-- PLACAS --}}
+                                <x-dropdown-sub label="{{ __('Placas') }}" :links="[
+                                    ['url' => 'admplacasL', 'label' => __('Diseño de Placas en L')],
+                                ]" />
                             </x-slot>
                         </x-dropdown>
                     </div>

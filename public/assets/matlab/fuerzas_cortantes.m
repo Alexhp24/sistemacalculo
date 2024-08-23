@@ -1,4 +1,4 @@
-function fuerzas_cortantes(id, fc, fy, e, b, h, lt, wd, wv)
+function fuerzas_cortantes(id, fc, fy, e, b, h, lt, wd, wv, anchoTributario)
     %%clear all, clc
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %PROPIEDADES DE LA SECCION Y CARGAS
@@ -10,8 +10,8 @@ function fuerzas_cortantes(id, fc, fy, e, b, h, lt, wd, wv)
     h  = h;    % Altura de la vigueta
     ht = h;           % Altura de la vigueta
     Lt = lt;          % Longuitud de las viguetas
-    WD = wd*1.4*0.4;  % Carga distribuida muerta
-    WV = wv*1.7*0.4;  % Carga distribuida viva
+    WD = wd*1.4*anchoTributario;  % Carga distribuida muerta
+    WV = wv*1.7*anchoTributario;  % Carga distribuida viva
   
     %%%%%%INERCIA%%%%%%%%%%%
     for ui = 1 : 1: length(b)
@@ -68,6 +68,7 @@ function fuerzas_cortantes(id, fc, fy, e, b, h, lt, wd, wv)
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     % % %Valores del eje 'xx' para el dibujo de fuerzas cortantes Y carguitas
     % % Li=0;
+    % % L2=0;
     % % for i = 1:h
     % %     Li             = Li + Lt(1,i);
     % %     L2(1+2*(i-1),1)= Li;
@@ -362,9 +363,12 @@ function fuerzas_cortantes(id, fc, fy, e, b, h, lt, wd, wv)
         title('Diagrama de Momentos Flectores (Tn-m)')
         xlabel('Longitud (m)')
         ylabel('Momentos flectores (Tn)')
-        print("-dpng", ["fuerzasCortantes" id ".png"])
+        print("-dpng", ["/home/u112634954/domains/ryaie.com/public_html/public/assets/img/fcsv/fuerzasCortantes" id ".png"])
     end
     end
+    % Guardar la imagen en la ruta específica
+    %filename = ["/home/u112634954/domains/ryaie.com/public_html/public/assets/img/fcsv/fuerzasCortantes" id ".png"];
+    %print("-dpng", filename);
     hold off
   
     %otra forma de dibujar a este le falta hacerla paroabolica
@@ -424,7 +428,9 @@ function fuerzas_cortantes(id, fc, fy, e, b, h, lt, wd, wv)
     %disp(T1);
     %save('T1.mat', 'T1');
     data1 = [T1.Mu, T1.Asd, T1.Asmin];
-    csvwrite(["T1" id ".csv"], data1);
+    %csvwrite(["T1" id ".csv"], data1);
+    filename1 = ["/home/u112634954/domains/ryaie.com/public_html/public/assets/img/fcsv/T1" id ".csv"];
+    csvwrite(filename1, data1);
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %Diseño por cortante
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -446,6 +452,8 @@ function fuerzas_cortantes(id, fc, fy, e, b, h, lt, wd, wv)
     T2.Vc = CORT(:,2);
     T2.Ratio = CORT(:,3);
     data2 = [T2.Vu, T2.Vc, T2.Ratio];
-    csvwrite(["T2" id ".csv"], data2);
+    %csvwrite(["T2" id ".csv"], data2);
+    filename2 = ["/home/u112634954/domains/ryaie.com/public_html/public/assets/img/fcsv/T2" id ".csv"];
+    csvwrite(filename2, data2);
   endfunction
   

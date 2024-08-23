@@ -33,7 +33,7 @@
   const makeCreateDeleteColumn = (id) => {
     return {
       headerSort: false,
-      width: 75,
+      width: 50,
       resizable: false,
       titleFormatter: function (cell, formatterParams, onRendered) {
         const fname = `makeCreateDeleteColumn_addItem_tbl_${id.substring(1)}`;
@@ -306,15 +306,17 @@
       return {
         id: id,
         config: {
+          layout: "fitDataTable",
+          height: 360,
           columns: [
             makeCreateDeleteColumn(id),
             {
-              title: "Bi",
+              title: "B",
               field: "bi",
               editor: "number",
             },
             {
-              title: "Hi",
+              title: "T",
               field: "hi",
               editor: "number",
             },
@@ -324,12 +326,12 @@
               editor: "number",
             },
             {
-              title: "Wdi",
+              title: "Cm",
               field: "wdi",
               editor: "number",
             },
             {
-              title: "Wvi",
+              title: "Cv",
               field: "wvi",
               editor: "number",
             },
@@ -344,19 +346,31 @@
         layout: "fitColumns",
         columns: [
           {
-            title: "T1",
+            title: "Diseño a Flexión",
             columns: [
               {
-                title: "Mu",
+                title: "Mu Tn-m",
                 field: "Mu",
+                formatter: function (cell, formatterParams, onRendered) {
+                  const value = parseFloat(cell.getValue());
+                  return isNaN(value) ? "" : value.toFixed(2) + " Tn-m";
+                },
               },
               {
-                title: "Asd",
+                title: "Asd cm²",
                 field: "Asd",
+                formatter: function (cell, formatterParams, onRendered) {
+                  const value = parseFloat(cell.getValue());
+                  return isNaN(value) ? "" : value.toFixed(2) + " cm²";
+                },
               },
               {
-                title: "Asmin",
+                title: "Asmin cm²",
                 field: "Asmin",
+                formatter: function (cell, formatterParams, onRendered) {
+                  const value = parseFloat(cell.getValue());
+                  return isNaN(value) ? "" : value.toFixed(2) + " cm²";
+                },
               },
             ],
           },
@@ -370,19 +384,31 @@
         layout: "fitColumns",
         columns: [
           {
-            title: "T2",
+            title: "Diseño a Cortante",
             columns: [
               {
-                title: "Vu",
+                title: "Vu Tn",
                 field: "Vu",
+                formatter: function (cell, formatterParams, onRendered) {
+                  const value = parseFloat(cell.getValue());
+                  return isNaN(value) ? "" : value.toFixed(2) + " Tn";
+                },
               },
               {
-                title: "Vc",
+                title: "Vc Tn",
                 field: "Vc",
+                formatter: function (cell, formatterParams, onRendered) {
+                  const value = parseFloat(cell.getValue());
+                  return isNaN(value) ? "" : value.toFixed(2) + " Tn";
+                },
               },
               {
-                title: "Ratio",
+                title: "Ratio Vu/Vc%",
                 field: "Ratio",
+                formatter: function (cell, formatterParams, onRendered) {
+                  const value = parseFloat(cell.getValue());
+                  return isNaN(value) ? "" : value.toFixed(2) + " %";
+                },
               },
             ],
           },
@@ -405,70 +431,97 @@
       );
     };
 
-    // $('#fuerzasCortantesForm').on('submit', function (event) {
-    //   event.preventDefault();
-    //   let id;
-    //   event.preventDefault();
-    //   const updater = setInterval(() => {
-    //     document.getElementById("fuerzasCortantes").src = "./assets/img/fuerzascortantes/" + id + ".png?t=" + new Date().getTime();
-    //   }, 500);
-
-    //   const formData = new FormData(event.target);
-    //   formData.append("b", octaveVector(propiedades, "bi"));
-    //   formData.append("h", octaveVector(propiedades, "hi"));
-    //   formData.append("Lt", octaveVector(propiedades, "lti"));
-    //   formData.append("WD", octaveVector(propiedades, "wdi"));
-    //   formData.append("WV", octaveVector(propiedades, "wvi"));
-
-    //   id = btoa(formData);
-    //   formData.append("_id", id);
-    //   console.log(Object.fromEntries(formData));
-
-    //   $.ajax({
-    //     url: $(this).attr('action'),
-    //     method: 'POST',
-    //     data: $(this).serialize(),
-    //     success: function (response) {
-          
-    //       console.log(response.text());
-    //     },
-    //     error: function (xhr, status, error) {
-    //       console.error('Error al enviar la solicitud AJAX', error);
-    //     }
-    //   });
-    // });
-
-    document.getElementById("fuerzasCortantesForm").addEventListener("submit", (event) => {
+    document.getElementById("fuerzasCortantesForm").addEventListener("submit",async (event) => {
       let id;
       event.preventDefault();
       const updater = setInterval(() => {
-        document.getElementById("fuerzasCortantes").src = "./assets/img/fuerzascortantes/" + id + ".png?t=" + new Date().getTime();
+        document.getElementById("fuerzasCortantes").src = "/assets/img/fcsv/fuerzasCortantes" + id + ".png?t=" + new Date().getTime();
       }, 500);
 
+      const viguetaComponent = (percent, width, b, t, isLast) => {
+        return `<div class="text-center" style="width: calc(${percent}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        <div>
+          <p>Vigueta</p>
+          <p>${b.toFixed(2)} m x ${t.toFixed(2)} m</p>
+        </div>
+        <div class="border-t-4 ${!isLast ? "border-l-4" : "border-l-4 border-r-4"}">${width} m</div>
+      </div>`;
+      };
+
+      const carga = (name, percentX, percentY, width, cm, isLast) => {
+        return `<div class="text-center" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+          <p style="transform: translateY(calc(128px - 128px * ${percentY} / 100))">${name}=${cm.toFixed(2)} tn/m</p>
+          <div class="mb-2 h-[128px] relative flex items-center justify-center">
+            <div class="absolute bottom-0 border-4 w-full border-indigo-500 h-[${percentY}%]">
+            </div>
+          </div>
+          <div class="border-t-4 ${!isLast ? "border-l-4" : "border-l-4 border-r-4"}">${width} m</div>
+        </div>`;
+      };
+
+      const total = propiedades
+        .getData()
+        .map((row) => {
+          const value = parseFloat(row.lti);
+          return isNaN(value) ? 0 : value;
+        })
+        .reduce((acc, value) => {
+          return acc + value;
+        }, 0);
+      const topHeigthWdi = Math.max(
+        ...propiedades.getData().map((row) => {
+          return row.wdi;
+        })
+      );
+      const topHeigthWvi = Math.max(
+        ...propiedades.getData().map((row) => {
+          return row.wvi;
+        })
+      );
+
+      document.getElementById("viguetas").innerHTML = propiedades.getData().reduce((html, row, index, data) => {
+        const percent = (parseFloat(row.lti) / total) * 100;
+        return html + viguetaComponent(percent, row.lti, parseFloat(row.bi), parseFloat(row.hi), index === data.length - 1);
+      }, "");
+      document.getElementById("cargaMuerta").innerHTML = propiedades.getData().reduce((html, row, index, data) => {
+        const percentX = (parseFloat(row.lti) / total) * 100;
+        const percentY = (parseFloat(row.wdi) / topHeigthWdi) * 100;
+        return html + carga("Cm", percentX, percentY, row.lti, parseFloat(row.wdi), index === data.length - 1);
+      }, "");
+      document.getElementById("cargaViva").innerHTML = propiedades.getData().reduce((html, row, index, data) => {
+        const percentX = (parseFloat(row.lti) / total) * 100;
+        const percentY = (parseFloat(row.wvi) / topHeigthWvi) * 100;
+        return html + carga("Cv", percentX, percentY, row.lti, parseFloat(row.wvi), index === data.length - 1);
+      }, "");
+
       const formData = new FormData(event.target);
+      formData.append("function", "fuerzas_cortantes");
       formData.append("b", octaveVector(propiedades, "bi"));
       formData.append("h", octaveVector(propiedades, "hi"));
       formData.append("Lt", octaveVector(propiedades, "lti"));
       formData.append("WD", octaveVector(propiedades, "wdi"));
       formData.append("WV", octaveVector(propiedades, "wvi"));
 
-      id = btoa(formData);
+      //id = btoa(JSON.stringify(Object.fromEntries(formData))).slice(0, 256);
+      id = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(Object.fromEntries(formData))))))
+        .map((b) => b.toString(16).padStart(2, "0"))
+        .join("");
       formData.append("_id", id);
       console.log(Object.fromEntries(formData));
       fetch("/fuerzasCortantes", {
         method: "POST",
         body: formData,
       })
-        .then((response) => response.text())
+        .then((response) => response.json())
         .then((json) => {
           clearInterval(updater);
           console.log(json);
-          json.T1 = json.T1.split("\r\n")
+          json.T1 = json.T1.split("\n")
             .map((row) => row.split(","))
             .map((row) => {
               return { Mu: row[0], Asd: row[1], Asmin: row[2] };
             });
-          json.T2 = json.T2.split("\r\n")
+          json.T2 = json.T2.split("\n")
             .map((row) => row.split(","))
             .map((row) => {
               return { Vu: row[0], Vc: row[1], Ratio: row[2] };
@@ -477,7 +530,7 @@
           T2Model.config.data = json.T2;
           createSpreeadSheetTable(T1Model);
           createSpreeadSheetTable(T2Model);
-          document.getElementById("fuerzasCortantes").src = "./assets/img/fuerzascortantes/" + id + ".png?t=" + new Date().getTime();
+          document.getElementById("fuerzasCortantes").src = "/assets/img/fcsv/fuerzasCortantes" + id + ".png?t=" + new Date().getTime();
         })
         .catch((error) => {
           clearInterval(updater);
@@ -485,4 +538,5 @@
         });
     });
   });
+
 })();

@@ -62,6 +62,8 @@ Route::post('/zapataGenCon', [ZapatageneralController::class, 'zapataGeneral'])-
 //=====================RUTAS PARA MUROS DE ALBAÑIERIA=========================//
 Route::view('/admMalb', 'hcalculo.admMurosAlbanieria');
 Route::post('/malbaCont', [MuroAlbanieriaController::class, 'muroAlbanieria'])->name('malbaCont');
+//=====================RUTAS PARA PLACAS ===================================//
+Route::view('/admplacasL', 'hcalculo.admdesingPlacasL');
 //=========================OCTAVE============================================//
 Route::view('/admFuerzasCortantesGrafico', 'matlab.admFuerzasCortantesGrafico');
 Route::post('/fuerzasCortantes', [FuerzasCortantesController::class, 'graficarfc'])->name('fuerzasCortantes');

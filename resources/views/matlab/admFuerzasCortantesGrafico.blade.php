@@ -14,7 +14,7 @@
                     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
                         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Datos Generales</h3>
                         <div class="overflow-auto">
-                            <form id="fuerzasCortantesForm" >
+                            <form id="fuerzasCortantesForm">
                                 @csrf
                                 <table class="table-auto w-full text-gray-800 dark:text-white px-6">
                                     <thead class="bg-white dark:bg-gray-800">
@@ -29,26 +29,34 @@
                                         <tr class="bg-white dark:bg-gray-800">
                                             <td class="py-2 px-4">Resistencia a la compresion del concreto</td>
                                             <td class="py-2 px-4">fc</td>
-                                            <td class="py-2 px-4"><input type="number" step="fc" name="fc"
+                                            <td class="py-2 px-4"><input type="number" name="fc"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="d" min="0" value="210" required></td>
+                                                    id="fc" min="0" value="210" required></td>
                                             <td class="py-2 px-4">Tn/m</td>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
                                             <td class="py-2 px-4">Esfuerzo de fluencia del acero</td>
                                             <td class="py-2 px-4">Fy</td>
-                                            <td class="py-2 px-4"><input type="number" step="Fy" name="Fy"
+                                            <td class="py-2 px-4"><input type="number" name="Fy"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="l" min="0" value="4200" required></td>
+                                                    id="Fy" min="0" value="4200" required></td>
                                             <td class="py-2 px-4">Tn/m</td>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
                                             <td class="py-2 px-4">Modulo de Elasticidad del concreto</td>
                                             <td class="py-2 px-4">E</td>
-                                            <td class="py-2 px-4"><input type="number" step="E" name="E"
+                                            <td class="py-2 px-4"><input type="number" name="E"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="vi" min="0" value="2173000" required></td>
+                                                    id="E" min="0" value="2173000" required></td>
                                             <td class="py-2 px-4">Tn/m</td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="py-2 px-4">Ancho Tributario</td>
+                                            <td class="py-2 px-4"></td>
+                                            <td class="py-2 px-4"><input type="number" name="anchoTributario"
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    id="anchoTributario" value="1" required step="any" ></td>
+                                            <td class="py-2 px-4"></td>
                                         </tr>
                                         <tr>
                                             <th class="text-xl py-2 px-4 text-left border-b border-gray-600"
@@ -77,22 +85,54 @@
                 </div>
 
                 <!-- Resultados -->
-                <div class="w-full md:w-2/3 px-4 mt-4 md:mt-0">
+                 <div class="w-full md:w-2/3 px-4 mt-4 md:mt-0">
                     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
                         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Resultados</h3>
                         <div class="overflow-x-auto" id="resultados">
                             <table class="min-w-full text-gray-800 dark:text-white">
+                                <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+                                    <th class="text-xl py-2 px-4 text-left" colspan="4">
+                                        1.- Viguetas
+                                    </th>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4" id="viguetas">
+                                    </td>
+                                </tr>
+                                <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+                                    <th class="text-xl py-2 px-4 text-left" colspan="4">
+                                        2.- Cargas Muertas
+                                    </th>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4" id="cargaMuerta">
+                                    </td>
+                                </tr>
+                                <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+                                    <th class="text-xl py-2 px-4 text-left" colspan="4">
+                                        3.- Cargas Vivas
+                                    </th>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4" id="cargaViva">
+                                    </td>
+                                </tr>
+                                <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+                                    <th class="text-xl py-2 px-4 text-left" colspan="4">
+                                        4.- Plot
+                                    </th>
+                                </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
                                     <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
                                             alt="" id="fuerzasCortantes"></td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4" colspan="2">
                                         <div id="T1"></div>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4" colspan="2">
                                         <div id="T2"></div>
                                     </td>
                                 </tr>
