@@ -45,13 +45,13 @@ class OctavePlotController extends Controller
             "UNITSFILE" => "$SNAP/usr/share/units/definitions.units",
             "LD_LIBRARY_PATH" => "$SNAP/lib/octave:$SNAP/lib/octave/$OCTAVE_VERSION:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib:$SNAP/lib/x86_64-linux-gnu:$SNAP/bin"
         );
-        $pipes = [];
-        $args = ['octave-cli -p ' . $MATLABS . ' --no-gui -H -f -W --quiet --eval "' . $fun . '"', $DESCRIPTORSPEC, $pipes, null];
+        $command = 'octave-cli --path ' . $MATLABS . ' --no-gui --no-history --norc --no-window-system --quiet --eval "' . $fun . '"';
         if (PHP_OS_FAMILY !== "Windows") {
-            $args[0] = "PATH=$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:\$PATH " . $args[0];
-            array_push($args, $ENV);
+            $command = "PATH=$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:\$PATH " . $command;
+            $process = proc_open($command, $DESCRIPTORSPEC, $pipes, null, $ENV);
+        } else {
+            $process = proc_open($command, $DESCRIPTORSPEC, $pipes);
         }
-        $process = proc_open(...$args);
         if (is_resource($process)) {
             // $pipes now looks like this:
             // 0 => writeable handle connected to child stdin
@@ -122,8 +122,6 @@ class OctavePlotController extends Controller
 
     public function graficarZapatas(Request $request)
     {
-        // A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, xv, yv
-        // A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, xv, yv
         $function = sprintf(
             "zapatas('%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
             $request->input("_id"),
