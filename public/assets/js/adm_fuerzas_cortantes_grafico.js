@@ -471,7 +471,7 @@
       }, 500);
 
       const viguetaComponent = (percent, width, b, t, isLast) => {
-        return `<div class="text-center" style="width: calc(${percent}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        return `<div class="text-center text-sm" style="width: calc(${percent}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
         <div>
           <p>Vigueta</p>
           <p>${b.toFixed(2)} m x ${t.toFixed(2)} m</p>
@@ -481,7 +481,7 @@
       };
 
       const carga = (name, percentX, percentY, width, cm, isLast) => {
-        return `<div class="text-center" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        return `<div class="text-center text-sm" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
           <p style="transform: translateY(calc(128px - 128px * ${percentY} / 100))">${name}=${cm.toFixed(2)} tn/m</p>
           <div class="mb-2 h-[128px] relative flex items-center justify-center">
             <div class="absolute bottom-0 border-4 w-full border-indigo-500 h-[${percentY}%]">
@@ -491,7 +491,7 @@
         </div>`;
       };
       const asdComponent = (percentX, asd1, d1, asd2, d2, asd3, d3, isLast) => {
-        return `<div class="text-center" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        return `<div class="text-center text-xs" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
           <div class="flex justify-between">
             <div class="border-l-4 px-2">${parseFloat(asd1).toFixed(2)} cm²<br>${d1}</div>
             <div class="${!isLast ? "" : "border-r-4"} px-2">${parseFloat(asd3).toFixed(2)} cm²<br>${d3}</div>
@@ -501,7 +501,7 @@
       };
 
       const vuComponent = (percentX, vu1, vu2, isLast) => {
-        return `<div class="text-center" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        return `<div class="text-center text-xs" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
           <div class="flex justify-between">
             <div class="border-l-4 px-2">${parseFloat(vu1).toFixed(2)} Tn</div>
             <div class="${!isLast ? "" : "border-r-4"} px-2">${parseFloat(vu2).toFixed(2)} Tn</div>
@@ -576,8 +576,7 @@
             .map((row) => {
               return { Vu: row[0], Vc: row[1], Ratio: row[2] };
             });
-/*           T1Model.config.data = json.T1;
-          T2Model.config.data = json.T2; */
+
           const T1 = createSpreeadSheetTable(T1Model);
           const T2 = createSpreeadSheetTable(T2Model);
           setTimeout(() => {
