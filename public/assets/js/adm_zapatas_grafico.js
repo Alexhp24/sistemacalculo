@@ -475,9 +475,9 @@
       let id;
       event.preventDefault();
       const updater = setInterval(() => {
-        updateImgSrc("zapatas1", id, document.getElementById("zapata1"));
-        updateImgSrc("zapatas2", id, document.getElementById("zapata2"));
-      }, 500);
+        updateImgSrc("zapatasComb1", id, document.getElementById("zapata1"));
+        updateImgSrc("zapatasComb2", id, document.getElementById("zapata2"));
+      }, 1000);
 
       const formData = new FormData(event.target);
       propiedades.getData().forEach((row) => {
@@ -500,12 +500,17 @@
         method: "POST",
         body: formData,
       })
-        .then((response) => response.text())
+        .then((response) => response.json())
         .then((json) => {
           clearInterval(updater);
           console.log(json);
           updateImgSrc("zapatas1", id, document.getElementById("zapata1"));
           updateImgSrc("zapatas2", id, document.getElementById("zapata2"));
+          const sigmas = json.split("\n")
+            .map((row) => row.split(","))
+            .map((row) => {
+              return { min: row[0], max: row[1] };
+            });
         })
         .catch((error) => {
           clearInterval(updater);

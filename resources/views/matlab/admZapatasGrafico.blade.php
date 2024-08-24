@@ -92,6 +92,46 @@
                                     <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
                                             alt="" id="zapata2"></td>
                                 </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
+                                            alt="" id="zapata1"></td>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
+                                            alt="" id="zapata2"></td>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
+                                            alt="" id="zapata1"></td>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
+                                            alt="" id="zapata2"></td>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
+                                            alt="" id="zapata1"></td>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
+                                            alt="" id="zapata2"></td>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
+                                            alt="" id="zapata1"></td>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
+                                            alt="" id="zapata2"></td>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
+                                            alt="" id="zapata1"></td>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
+                                            alt="" id="zapata2"></td>
+                                </tr>
                             </table>
                         </div>
                     </div>

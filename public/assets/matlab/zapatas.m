@@ -25,8 +25,11 @@ in = inpolygon(xq,yq,xv,yv);
 XL= xq(in);
 YL= yq(in);
 ZL= zeros(length(XL),5) ;
-figure('Name','ADFUN V4.0','NumberTitle','off', 'Visible', 'off')
+
+vmins = [];
+vmaxs = [];
 for i =1:6
+figure('Name','ADFUN V4.0','NumberTitle','off', 'Visible', 'off')
     P = Co(i,1)+1.8*A*Df;
     M2= Co(i,2);
     M3= Co(i,3);
@@ -35,9 +38,11 @@ for i =1:6
     ZL(:,i)  = k;
     vmin =min(k);
     vmax =max(k);
+    vmins = [vmins vmin];
+    vmaxs = [vmaxs vmin];
     pin  = i;
 %PLOT
-subplot(2,3,i)
+%subplot(2,3,i)
 plot(xv,yv,'k-','LineWidth',1) % polygon
 hold on
 % plot(xq(in),yq(in),'r+') % points inside
@@ -50,12 +55,12 @@ c = colorbar;
 ylabel(c, 'Presion Admisible (Tn/m)');
 view(0,90)
 %title(vmin)
-title({['Comb ' num2str(pin)];['\sigma_m_i_n = ' num2str(vmin),'Tn/m'];['\sigma_m_a_x = ' num2str(vmax),'Tn/m']})
-print("-dpng", ["./assets/img/fcsv/zapatas1" id ".png"])
+%title({['Comb ' num2str(pin)];['\sigma_m_i_n = ' num2str(vmin),'Tn/m'];['\sigma_m_a_x = ' num2str(vmax),'Tn/m']})
+print("-dpng", ["./assets/img/fcsv/zapatasComb" num2str(pin) id ".png"])
 end
 
-figure('Name','ADFUN V4.0','NumberTitle','off', 'Visible', 'off')
 for i =7:11
+figure('Name','ADFUN V4.0','NumberTitle','off', 'Visible', 'off')
     P = Co(i,1)+1.8*A*1.8;
     M2= Co(i,2);
     M3= Co(i,3);
@@ -64,9 +69,11 @@ for i =7:11
     ZL(:,i)  = k;
     vmin =min(k);
     vmax =max(k);
+    vmins = [vmins vmin];
+    vmaxs = [vmaxs vmin];
     pin  = i;
 %PLOT
-subplot(2,3,i-6)
+%subplot(2,3,i-6)
 plot(xv,yv,'k-','LineWidth',1) % polygon
 hold on
 % plot(xq(in),yq(in),'r+') % points inside
@@ -79,7 +86,8 @@ c = colorbar;
 ylabel(c, 'Presion Admisible (Tn/m)');
 view(0,90)
 %title(vmin)
-title({['Comb ' num2str(pin)];['\sigma_m_i_n = ' num2str(vmin),'Tn/m'];['\sigma_m_a_x = ' num2str(vmax),'Tn/m']})
+%title({['Comb ' num2str(pin)];['\sigma_m_i_n = ' num2str(vmin),'Tn/m'];['\sigma_m_a_x = ' num2str(vmax),'Tn/m']})
+print("-dpng", ["./assets/img/fcsv/zapatasComb" num2str(pin) id ".png"])
 end
-print("-dpng", ["./assets/img/fcsv/zapatas2" id ".png"])
+csvwrite(["./assets/img/fcsv/zapatasComb" id ".csv"], [vmins', vmaxs']);
 endfunction
