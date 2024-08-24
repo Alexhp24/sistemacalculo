@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use PhpParser\Node\Arg;
 
 class OctavePlotController extends Controller
 {
@@ -32,7 +33,7 @@ class OctavePlotController extends Controller
             "FONTCONFIG_PATH" => "$SNAP/etc/fonts",
             "FONTCONFIG_FILE" => "$SNAP/etc/fonts/fonts.conf",
             "XDG_DATA_HOME" => "$SNAP/usr/share",
-            "PATH" => "$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:\$PATH",
+            //"PATH" => "$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:\$PATH",
             "GNUPLOT_DRIVER_DIR" => "$SNAP/usr/lib/gnuplot",
             "GNUPLOT_LUA_DIR" => "$SNAP/usr/share/gnuplot/gnuplot/5.2/lua",
             "GNUPLOT_PS_DIR" => "$SNAP/usr/share/gnuplot/gnuplot/5.2/PostScript",
@@ -44,7 +45,13 @@ class OctavePlotController extends Controller
             "UNITSFILE" => "$SNAP/usr/share/units/definitions.units",
             "LD_LIBRARY_PATH" => "$SNAP/lib/octave:$SNAP/lib/octave/$OCTAVE_VERSION:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib:$SNAP/lib/x86_64-linux-gnu:$SNAP/bin"
         );
-        $process = proc_open('octave-cli -p ' . $MATLABS . ' --no-gui -H -f -W --quiet --eval "' . $fun . '"', $DESCRIPTORSPEC, $pipes, null/* , $env */);
+        $pipes = [];
+        $args = ['octave-cli -p ' . $MATLABS . ' --no-gui -H -f -W --quiet --eval "' . $fun . '"', $DESCRIPTORSPEC, $pipes, null];
+        if (PHP_OS_FAMILY !== "Windows") {
+            $args[0] = "PATH=$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:\$PATH " . $args[0];
+            array_push($args, $ENV);
+        }
+        $process = proc_open(...$args);
         if (is_resource($process)) {
             // $pipes now looks like this:
             // 0 => writeable handle connected to child stdin
