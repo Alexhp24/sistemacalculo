@@ -468,7 +468,7 @@
       event.preventDefault();
       const updater = setInterval(() => {
         document.getElementById("fuerzasCortantes").src = "/assets/img/fcsv/fuerzasCortantes" + id + ".png?t=" + new Date().getTime();
-      }, 500);
+      }, 1000);
 
       const viguetaComponent = (percent, width, b, t, isLast) => {
         return `<div class="text-center text-sm" style="width: calc(${percent}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
