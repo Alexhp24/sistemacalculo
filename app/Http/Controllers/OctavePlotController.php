@@ -60,7 +60,7 @@ class OctavePlotController extends Controller
             /* fwrite($pipes[0], '<?php print_r($_ENV); ?>'); */
 
             //$stdout = stream_get_contents($pipes[1]);
-            //$stderr = stream_get_contents($pipes[2]);
+            $stderr = stream_get_contents($pipes[2], 1024);
 
             fclose($pipes[0]);
             fclose($pipes[1]);
@@ -88,7 +88,7 @@ class OctavePlotController extends Controller
     {
         $function = sprintf(
             "fuerzas_cortantes('%s', %s, %s, %s, %s, %s, %s, %s, %s, %s);",
-            $request->input('_id'),
+            $request->input('_id', 0),
             $request->input('fc'),
             $request->input('Fy'),
             $request->input('E'),
@@ -124,7 +124,7 @@ class OctavePlotController extends Controller
     {
         $function = sprintf(
             "zapatas('%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
-            $request->input("_id"),
+            $request->input("_id", 0),
             $request->input("A"),
             $request->input("Ixx"),
             $request->input("Iyy"),
@@ -146,7 +146,8 @@ class OctavePlotController extends Controller
 
         if ($isOk) {
             echo json_encode([
-                "response" => "ok"
+                "response" => "ok",
+                "combs" => file_get_contents("./assets/img/fcsv/zapatasComb" . $request->input('_id', 0) . ".csv")
             ]);
         } else {
             echo json_encode([
