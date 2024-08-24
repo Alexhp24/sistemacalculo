@@ -434,6 +434,14 @@
                   return isNaN(value) ? "" : value.toFixed(2) + " %";
                 },
               },
+              {
+                title: "X",
+                field: "x",
+                formatter: function (cell, formatterParams, onRendered) {
+                  const value = parseFloat(cell.getValue());
+                  return isNaN(value) ? "" : value.toFixed(2);
+                },
+              },
             ],
           },
         ],
@@ -568,11 +576,13 @@
             .map((row) => {
               return { Vu: row[0], Vc: row[1], Ratio: row[2] };
             });
-          T1Model.config.data = json.T1;
-          T2Model.config.data = json.T2;
+/*           T1Model.config.data = json.T1;
+          T2Model.config.data = json.T2; */
           const T1 = createSpreeadSheetTable(T1Model);
           const T2 = createSpreeadSheetTable(T2Model);
           setTimeout(() => {
+            T1.addData(json.T1);
+            T2.addData(json.T2);
             const asdValues = T1.getData();
             document.getElementById("asd").innerHTML = propiedades.getData().reduce((html, row, index, data) => {
               const percentX = (parseFloat(row.lti) / total) * 100;
@@ -588,6 +598,18 @@
                 html + vuComponent(percentX, vuValues[index * 2].Vu, vuValues[index * 2 + 1].Vu, index === data.length - 1)
               );
             }, "");
+            let dVu, x;
+            T2.getData().forEach((row, index, data) => {
+              if (index % 2 === 0) {
+                dVu = data[index + 1].Vu - data[index].Vu;
+              }
+              if (dVu !== 0) {
+                x = (row.Vc - row.Vu) / dVu;
+              } else {
+                x = 0;
+              }
+              T2.getRow(index + 1).update({x: x});
+            });
           }, 500);
           document.getElementById("fuerzasCortantes").src = "/assets/img/fcsv/fuerzasCortantes" + id + ".png?t=" + new Date().getTime();
         })
