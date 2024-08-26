@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use PhpParser\Node\Arg;
+
+ini_set('max_execution_time', 300);
+ini_set('memory_limit', '512M');
 
 class OctavePlotController extends Controller
 {
-    private function runOctave($fun, &$stderr/* , &$stdout, &$stderr */)
+    private function runOctave($fun, &$stdout, &$stderr)
     {
         $DESCRIPTORSPEC = array(
             0 => array("pipe", "r"), // stdin is a pipe that the child will read from
-            1 => array("pipe", "w"), // stdout is a pipe that the child will write to
+            1 => array("pipe", "wb"), // stdout is a pipe that the child will write to
             2 => array("pipe", "w")  // stderr is a file to write to
         );
 
@@ -56,10 +58,8 @@ class OctavePlotController extends Controller
             // $pipes now looks like this:
             // 0 => writeable handle connected to child stdin
             // 1 => readable handle connected to child stdout
-            // Any error output will be appended to /tmp/error-output.txt
-            /* fwrite($pipes[0], '<?php print_r($_ENV); ?>'); */
 
-            //$stdout = stream_get_contents($pipes[1]);
+            $stdout = stream_get_contents($pipes[1]);
             $stderr = stream_get_contents($pipes[2], 1024);
 
             fclose($pipes[0]);
@@ -68,27 +68,30 @@ class OctavePlotController extends Controller
 
             // It is important that you close any pipes before calling
             // proc_close in order to avoid a deadlock
-            // $ret_code = proc_close($process);
             return proc_close($process);
-            /* if ($ret_code !== 0) {
-                $stderr = stream_get_contents($pipes[2]);
-            } else {
-                $stderr = "";
-            }
-            fclose($pipes[2]);
-
-            return $ret_code; */
-            // echo "command returned $return_value\n";
         } else {
             return -1;
+        }
+    }
+
+    private function returnOctaveResult($function)
+    {
+        $isOk = Self::runOctave($function, $stdout, $stderr) === 0;
+
+        if ($isOk) {
+            ob_end_clean();
+            header('Content-Type: application/octet-stream');
+            header('Content-Length: ' . strlen($stdout));
+            echo $stdout;
+        } else {
+            echo $stderr;
         }
     }
 
     public function graficarFC(Request $request)
     {
         $function = sprintf(
-            "fuerzas_cortantes('%s', %s, %s, %s, %s, %s, %s, %s, %s, %s);",
-            $request->input('_id', 0),
+            "fuerzas_cortantes(%s, %s, %s, %s, %s, %s, %s, %s, %s);",
             $request->input('fc'),
             $request->input('Fy'),
             $request->input('E'),
@@ -100,31 +103,13 @@ class OctavePlotController extends Controller
             $request->input('anchoTributario'),
         );
 
-        $isOk = Self::runOctave($function, $stderr/* , $stdout, $stderr */) === 0;
-
-        if ($isOk) {
-            $T1 = file_get_contents("./assets/img/fcsv/T1" . $request->input('_id', 0) . ".csv");
-            $T2 = file_get_contents("./assets/img/fcsv/T2" . $request->input('_id', 0) . ".csv");
-
-            echo json_encode([
-                "response" => "ok",
-                "T1" => $T1,
-                "T2" => $T2,
-            ]);
-        } else {
-            echo json_encode([
-                "response" => "error",
-                //"stdout" => $stdout,
-                "stderr" => $stderr
-            ]);
-        }
+        self::returnOctaveResult($function);
     }
 
     public function graficarZapatas(Request $request)
     {
         $function = sprintf(
-            "zapatas('%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
-            $request->input("_id", 0),
+            "zapatas(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
             $request->input("A"),
             $request->input("Ixx"),
             $request->input("Iyy"),
@@ -142,19 +127,6 @@ class OctavePlotController extends Controller
             $request->input("yv")
         );
 
-        $isOk = Self::runOctave($function, $stderr/* , $stdout, $stderr */) === 0;
-
-        if ($isOk) {
-            echo json_encode([
-                "response" => "ok",
-                "combs" => file_get_contents("./assets/img/fcsv/zapatasComb" . $request->input('_id', 0) . ".csv")
-            ]);
-        } else {
-            echo json_encode([
-                "response" => "error",
-                //"stdout" => $stdout,
-                "stderr" => $stderr
-            ]);
-        }
+        self::returnOctaveResult($function);
     }
 }
