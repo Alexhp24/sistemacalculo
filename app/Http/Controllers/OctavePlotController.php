@@ -4,13 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+ini_set('max_execution_time', 300);
+ini_set('memory_limit', '512M');
+
 class OctavePlotController extends Controller
 {
-    private function runOctave($fun, &$stderr/* , &$stdout, &$stderr */)
+    private function runOctave($fun, &$stdout, &$stderr)
     {
         $DESCRIPTORSPEC = array(
             0 => array("pipe", "r"), // stdin is a pipe that the child will read from
-            1 => array("pipe", "w"), // stdout is a pipe that the child will write to
+            1 => array("pipe", "wb"), // stdout is a pipe that the child will write to
             2 => array("pipe", "w")  // stderr is a file to write to
         );
 
@@ -32,7 +35,7 @@ class OctavePlotController extends Controller
             "FONTCONFIG_PATH" => "$SNAP/etc/fonts",
             "FONTCONFIG_FILE" => "$SNAP/etc/fonts/fonts.conf",
             "XDG_DATA_HOME" => "$SNAP/usr/share",
-            "PATH" => "$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:\$PATH",
+            //"PATH" => "$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:\$PATH",
             "GNUPLOT_DRIVER_DIR" => "$SNAP/usr/lib/gnuplot",
             "GNUPLOT_LUA_DIR" => "$SNAP/usr/share/gnuplot/gnuplot/5.2/lua",
             "GNUPLOT_PS_DIR" => "$SNAP/usr/share/gnuplot/gnuplot/5.2/PostScript",
@@ -44,16 +47,20 @@ class OctavePlotController extends Controller
             "UNITSFILE" => "$SNAP/usr/share/units/definitions.units",
             "LD_LIBRARY_PATH" => "$SNAP/lib/octave:$SNAP/lib/octave/$OCTAVE_VERSION:$SNAP/usr/lib/x86_64-linux-gnu:$SNAP/usr/lib:$SNAP/lib/x86_64-linux-gnu:$SNAP/bin"
         );
-        $process = proc_open('octave-cli -p ' . $MATLABS . ' --no-gui -H -f -W --quiet --eval "' . $fun . '"', $DESCRIPTORSPEC, $pipes, null/* , $env */);
+        $command = 'octave-cli --path ' . $MATLABS . ' --no-gui --no-history --norc --no-window-system --quiet --eval "' . $fun . '"';
+        if (PHP_OS_FAMILY !== "Windows") {
+            $command = "PATH=$SNAP/usr/sbin:$SNAP/usr/bin:$SNAP/sbin:$SNAP/bin:\$PATH " . $command;
+            $process = proc_open($command, $DESCRIPTORSPEC, $pipes, null, $ENV);
+        } else {
+            $process = proc_open($command, $DESCRIPTORSPEC, $pipes);
+        }
         if (is_resource($process)) {
             // $pipes now looks like this:
             // 0 => writeable handle connected to child stdin
             // 1 => readable handle connected to child stdout
-            // Any error output will be appended to /tmp/error-output.txt
-            /* fwrite($pipes[0], '<?php print_r($_ENV); ?>'); */
 
-            //$stdout = stream_get_contents($pipes[1]);
-            //$stderr = stream_get_contents($pipes[2]);
+            $stdout = stream_get_contents($pipes[1]);
+            $stderr = stream_get_contents($pipes[2], 1024);
 
             fclose($pipes[0]);
             fclose($pipes[1]);
@@ -61,27 +68,30 @@ class OctavePlotController extends Controller
 
             // It is important that you close any pipes before calling
             // proc_close in order to avoid a deadlock
-            // $ret_code = proc_close($process);
             return proc_close($process);
-            /* if ($ret_code !== 0) {
-                $stderr = stream_get_contents($pipes[2]);
-            } else {
-                $stderr = "";
-            }
-            fclose($pipes[2]);
-
-            return $ret_code; */
-            // echo "command returned $return_value\n";
         } else {
             return -1;
+        }
+    }
+
+    private function returnOctaveResult($function)
+    {
+        $isOk = Self::runOctave($function, $stdout, $stderr) === 0;
+
+        if ($isOk) {
+            ob_end_clean();
+            header('Content-Type: application/octet-stream');
+            header('Content-Length: ' . strlen($stdout));
+            echo $stdout;
+        } else {
+            echo $stderr;
         }
     }
 
     public function graficarFC(Request $request)
     {
         $function = sprintf(
-            "fuerzas_cortantes('%s', %s, %s, %s, %s, %s, %s, %s, %s, %s);",
-            $request->input('_id'),
+            "fuerzas_cortantes(%s, %s, %s, %s, %s, %s, %s, %s, %s);",
             $request->input('fc'),
             $request->input('Fy'),
             $request->input('E'),
@@ -93,33 +103,13 @@ class OctavePlotController extends Controller
             $request->input('anchoTributario'),
         );
 
-        $isOk = Self::runOctave($function, $stderr/* , $stdout, $stderr */) === 0;
-
-        if ($isOk) {
-            $T1 = file_get_contents("./assets/img/fcsv/T1" . $request->input('_id', 0) . ".csv");
-            $T2 = file_get_contents("./assets/img/fcsv/T2" . $request->input('_id', 0) . ".csv");
-
-            echo json_encode([
-                "response" => "ok",
-                "T1" => $T1,
-                "T2" => $T2,
-            ]);
-        } else {
-            echo json_encode([
-                "response" => "error",
-                //"stdout" => $stdout,
-                "stderr" => $stderr
-            ]);
-        }
+        self::returnOctaveResult($function);
     }
 
     public function graficarZapatas(Request $request)
     {
-        // A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, xv, yv
-        // A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, xv, yv
         $function = sprintf(
-            "zapatas('%s', %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
-            $request->input("_id"),
+            "zapatas(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
             $request->input("A"),
             $request->input("Ixx"),
             $request->input("Iyy"),
@@ -137,18 +127,6 @@ class OctavePlotController extends Controller
             $request->input("yv")
         );
 
-        $isOk = Self::runOctave($function, $stderr/* , $stdout, $stderr */) === 0;
-
-        if ($isOk) {
-            echo json_encode([
-                "response" => "ok"
-            ]);
-        } else {
-            echo json_encode([
-                "response" => "error",
-                //"stdout" => $stdout,
-                "stderr" => $stderr
-            ]);
-        }
+        self::returnOctaveResult($function);
     }
 }

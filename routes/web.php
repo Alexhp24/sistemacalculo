@@ -67,7 +67,8 @@ Route::view('/admplacasL', 'hcalculo.admdesingPlacasL');
 //=========================OCTAVE============================================//
 Route::view('/admFuerzasCortantesGrafico', 'matlab.admFuerzasCortantesGrafico');
 Route::post('/fuerzasCortantes', [OctavePlotController::class, 'graficarFC'])->name('fuerzasCortantes');
-
+Route::view('/admZapatasGrafico', 'matlab.admZapatasGrafico');
+Route::post('/zapatas', [OctavePlotController::class, 'graficarZapatas'])->name('zapatas');
 //======================RUTAS PARA LAS IMAGENES===============================//
 Route::get('/assets/img/{filename}', function ($filename) {
     $path = public_path('assets/img/' . $filename);

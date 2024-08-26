@@ -1,5 +1,5 @@
 (function () {
-  'use strict';
+  "use strict";
 
   function* recursiveColumnLeafIterator(colDef) {
     if (!colDef.columns) {
@@ -439,6 +439,14 @@
                 field: "x",
                 formatter: function (cell, formatterParams, onRendered) {
                   const value = parseFloat(cell.getValue());
+                  return isNaN(value) ? "" : value.toFixed(2) + " m";
+                },
+              },
+              {
+                title: "B",
+                field: "b",
+                formatter: function (cell, formatterParams, onRendered) {
+                  const value = parseFloat(cell.getValue());
                   return isNaN(value) ? "" : value.toFixed(2);
                 },
               },
@@ -463,15 +471,11 @@
       );
     };
 
-    document.getElementById("fuerzasCortantesForm").addEventListener("submit",async (event) => {
-      let id;
+    document.getElementById("fuerzasCortantesForm").addEventListener("submit", async (event) => {
       event.preventDefault();
-      const updater = setInterval(() => {
-        document.getElementById("fuerzasCortantes").src = "/assets/img/fcsv/fuerzasCortantes" + id + ".png?t=" + new Date().getTime();
-      }, 500);
 
       const viguetaComponent = (percent, width, b, t, isLast) => {
-        return `<div class="text-center" style="width: calc(${percent}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        return `<div class="text-center text-sm" style="width: calc(${percent}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
         <div>
           <p>Vigueta</p>
           <p>${b.toFixed(2)} m x ${t.toFixed(2)} m</p>
@@ -479,9 +483,8 @@
         <div class="border-t-4 ${!isLast ? "border-l-4" : "border-l-4 border-r-4"}">${width} m</div>
       </div>`;
       };
-
       const carga = (name, percentX, percentY, width, cm, isLast) => {
-        return `<div class="text-center" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        return `<div class="text-center text-sm" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
           <p style="transform: translateY(calc(128px - 128px * ${percentY} / 100))">${name}=${cm.toFixed(2)} tn/m</p>
           <div class="mb-2 h-[128px] relative flex items-center justify-center">
             <div class="absolute bottom-0 border-4 w-full border-indigo-500 h-[${percentY}%]">
@@ -491,7 +494,7 @@
         </div>`;
       };
       const asdComponent = (percentX, asd1, d1, asd2, d2, asd3, d3, isLast) => {
-        return `<div class="text-center" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        return `<div class="text-center text-xs" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
           <div class="flex justify-between">
             <div class="border-l-4 px-2">${parseFloat(asd1).toFixed(2)} cm²<br>${d1}</div>
             <div class="${!isLast ? "" : "border-r-4"} px-2">${parseFloat(asd3).toFixed(2)} cm²<br>${d3}</div>
@@ -499,14 +502,13 @@
           <div class="border-t-4 ${!isLast ? "border-l-4" : "border-l-4 border-r-4"}">${parseFloat(asd2).toFixed(2)} cm²<br>${d2}</div>
         </div>`;
       };
-
-      const vuComponent = (percentX, vu1, vu2, isLast) => {
-        return `<div class="text-center" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+      const vuComponent = (width, percentX, vu1, x1, vu2, x2, isLast) => {
+        return `<div class="text-center text-xs" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
           <div class="flex justify-between">
-            <div class="border-l-4 px-2">${parseFloat(vu1).toFixed(2)} Tn</div>
-            <div class="${!isLast ? "" : "border-r-4"} px-2">${parseFloat(vu2).toFixed(2)} Tn</div>
+            <div class="border-l-4 px-2">${parseFloat(vu1).toFixed(2)} Tn<br>${x1.toFixed(2)} m</div>
+            <div class="${!isLast ? "" : "border-r-4"} px-2">${parseFloat(vu2).toFixed(2)} Tn<br>${x2.toFixed(2)} m</div>
           </div>
-          <div class="border-t-4 ${!isLast ? "border-l-4" : "border-l-4 border-r-4"}">&nbsp</div>
+          <div class="border-t-4 ${!isLast ? "border-l-4" : "border-l-4 border-r-4"}">${width} m</div>
         </div>`;
       };
 
@@ -546,78 +548,163 @@
       }, "");
 
       const formData = new FormData(event.target);
-      formData.append("function", "fuerzas_cortantes");
       formData.append("b", octaveVector(propiedades, "bi"));
       formData.append("h", octaveVector(propiedades, "hi"));
       formData.append("Lt", octaveVector(propiedades, "lti"));
       formData.append("WD", octaveVector(propiedades, "wdi"));
       formData.append("WV", octaveVector(propiedades, "wvi"));
 
-      id = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(JSON.stringify(Object.fromEntries(formData))))))
-        .map((b) => b.toString(16).padStart(2, "0"))
-        .join("");
-      formData.append("_id", id);
       console.log(Object.fromEntries(formData));
       fetch("/fuerzasCortantes", {
         method: "POST",
         body: formData,
       })
-        .then((response) => response.json())
-        .then((json) => {
-          clearInterval(updater);
-          console.log(json);
-          json.T1 = json.T1.split("\n")
-            .map((row) => row.split(","))
-            .map((row) => {
-              return { Mu: row[0], Asd: row[1], Asmin: row[2] };
-            });
-          json.T2 = json.T2.split("\n")
-            .map((row) => row.split(","))
-            .map((row) => {
-              return { Vu: row[0], Vc: row[1], Ratio: row[2] };
-            });
-/*           T1Model.config.data = json.T1;
-          T2Model.config.data = json.T2; */
+        .then(async (response) => {
+          const contentType = response.headers.get("Content-Type");
+          if (contentType && contentType.includes("application/octet-stream")) {
+            return response.arrayBuffer();
+          } else {
+            const error = await response.text();
+            return Promise.reject(error);
+          }
+        })
+        .then((matData) => {
+          const aligerados = mat4js.read(matData);
+          console.log(aligerados);
+
+          // Loop through each vector in the SHEAR array
+          const tracesFC = aligerados.data.SHEART.map((sheari) => ({
+            x: aligerados.data.L4,
+            y: sheari,
+            mode: "lines",
+            line: { width: 2 },
+          }));
+
+          // Add the axexx vector as another trace
+          tracesFC.push({
+            x: aligerados.data.L4,
+            y: aligerados.data.axexx,
+            mode: "lines",
+            line: { width: 2 },
+          });
+
+          const layoutFC = {
+            showlegend: false,
+            title: "Diagrama de Fuerzas cortantes (Tn)",
+            xaxis: {
+              title: "Longitud (m)",
+            },
+            yaxis: {
+              title: "Fuerzas cortantes (Tn)",
+            },
+          };
+          Plotly.newPlot("fuerzasCortantes", tracesFC, layoutFC);
+
+          // Loop through each vector in the SHEAR array
+          const tracesMF = aligerados.data.x1n
+            .map((x1, index) => ({
+              x: x1,
+              y: aligerados.data.y1n[index],
+              mode: "lines",
+              line: { width: 2 },
+            }))
+            .concat(
+              aligerados.data.x2n.map((x2, index) => ({
+                x: x2,
+                y: aligerados.data.y2n[index],
+                mode: "lines",
+                line: { width: 2 },
+              }))
+            );
+
+          // Add the axexx vector as another trace
+          tracesMF.push({
+            x: aligerados.data.L5,
+            y: aligerados.data.L5.map((_) => 0),
+            mode: "lines",
+            line: { width: 2 },
+          });
+
+          const layout = {
+            showlegend: false,
+            title: "Diagrama de Momentos Flectores (Tn-m)",
+            xaxis: {
+              title: "Longitud (m)",
+            },
+            yaxis: {
+              title: "Momentos flectores (Tn)",
+            },
+          };
+          Plotly.newPlot("momentosFlectores", tracesMF, layout);
           const T1 = createSpreeadSheetTable(T1Model);
           const T2 = createSpreeadSheetTable(T2Model);
           setTimeout(() => {
-            T1.addData(json.T1);
-            T2.addData(json.T2);
+            T1.addData(
+              Object.keys(aligerados.data.T1).reduce((acc, key) => {
+                aligerados.data.T1[key].forEach((value, index) => {
+                  acc[index] ??= {};
+                  acc[index][key] = value;
+                });
+                return acc;
+              }, [])
+            );
+            T2.addData(
+              Object.keys(aligerados.data.T2).reduce((acc, key) => {
+                aligerados.data.T2[key].forEach((value, index) => {
+                  acc[index] ??= {};
+                  acc[index][key] = value;
+                });
+                return acc;
+              }, [])
+            );
             const asdValues = T1.getData();
             document.getElementById("asd").innerHTML = propiedades.getData().reduce((html, row, index, data) => {
               const percentX = (parseFloat(row.lti) / total) * 100;
               return (
-                html + asdComponent(percentX, asdValues[index * 3].Asd, asdValues[index * 3].diametro, asdValues[index * 3 + 1].Asd, asdValues[index * 3 + 1].diametro, asdValues[index * 3 + 2].Asd, asdValues[index * 3 + 2].diametro, index === data.length - 1)
+                html +
+                asdComponent(
+                  percentX,
+                  asdValues[index * 3].Asd,
+                  asdValues[index * 3].diametro,
+                  asdValues[index * 3 + 1].Asd,
+                  asdValues[index * 3 + 1].diametro,
+                  asdValues[index * 3 + 2].Asd,
+                  asdValues[index * 3 + 2].diametro,
+                  index === data.length - 1
+                )
               );
             }, "");
-  
+
             const vuValues = T2.getData();
-            document.getElementById("vu").innerHTML = propiedades.getData().reduce((html, row, index, data) => {
-              const percentX = (parseFloat(row.lti) / total) * 100;
-              return (
-                html + vuComponent(percentX, vuValues[index * 2].Vu, vuValues[index * 2 + 1].Vu, index === data.length - 1)
-              );
-            }, "");
             let dVu, x;
             T2.getData().forEach((row, index, data) => {
               if (index % 2 === 0) {
-                dVu = data[index + 1].Vu - data[index].Vu;
+                dVu = -data[index + 1].Vu - data[index].Vu;
               }
               if (dVu !== 0) {
-                x = (row.Vc - row.Vu) / dVu;
+                const L = propiedades.getData()[index % 2].lti;
+                x = ((row.Vc - row.Vu) * L) / dVu;
               } else {
                 x = 0;
               }
-              T2.getRow(index + 1).update({x: x});
+              T2.getRow(index + 1).update({ x: x });
             });
+            T2.getData().forEach((row, index, data) => {
+              const fc = parseFloat(document.getElementById("fc").value);
+              const b = row.Vu * 1000 / (0.85 * 0.53 * Math.sqrt(fc) * propiedades.getData()[index % 2].hi);
+              T2.getRow(index + 1).update({ b: b });
+            });
+            document.getElementById("vu").innerHTML = propiedades.getData().reduce((html, row, index, data) => {
+              const percentX = (parseFloat(row.lti) / total) * 100;
+              const x1 = T2.getData()[2 * index].x;
+              const x2 = T2.getData()[2 * index + 1].x;
+              return html + vuComponent(row.lti, percentX, vuValues[index * 2].Vu, x1, vuValues[index * 2 + 1].Vu, x2, index === data.length - 1);
+            }, "");
           }, 500);
-          document.getElementById("fuerzasCortantes").src = "/assets/img/fcsv/fuerzasCortantes" + id + ".png?t=" + new Date().getTime();
         })
         .catch((error) => {
-          clearInterval(updater);
           console.log(error);
         });
     });
   });
-
 })();

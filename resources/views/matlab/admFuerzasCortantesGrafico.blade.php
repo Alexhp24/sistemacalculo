@@ -6,6 +6,7 @@
     </x-slot>
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <div class="py-12">
         <div class="container mx-auto w-full">
             <div class="flex flex-wrap">
@@ -55,7 +56,7 @@
                                             <td class="py-2 px-4"></td>
                                             <td class="py-2 px-4"><input type="number" name="anchoTributario"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="anchoTributario" value="1" required step="any" ></td>
+                                                    id="anchoTributario" value="1" required step="any"></td>
                                             <td class="py-2 px-4"></td>
                                         </tr>
                                         <tr>
@@ -85,7 +86,7 @@
                 </div>
 
                 <!-- Resultados -->
-                 <div class="w-full md:w-2/3 px-4 mt-4 md:mt-0">
+                <div class="w-full md:w-2/3 px-4 mt-4 md:mt-0">
                     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
                         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Resultados</h3>
                         <div class="overflow-x-auto" id="resultados">
@@ -123,8 +124,14 @@
                                     </th>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4"><img style="width: 100%;" src=""
-                                            alt="" id="fuerzasCortantes"></td>
+                                    <td class="py-2 px-4" colspan="4">
+                                        <div id="fuerzasCortantes"></div>
+                                    </td>
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4">
+                                        <div id="momentosFlectores"></div>
+                                    </td>
                                 </tr>
                                 <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
                                     <th class="text-xl py-2 px-4 text-left" colspan="4">
@@ -163,6 +170,7 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('assets/js/adm_fuerzas_cortantes_grafico.js') }}"></script>
+    <script src="{{ asset('assets/js/mat4js.index.min.js') }}"></script>
+    <script src="{{ asset('assets/js/adm_fuerzas_cortantes_grafico.js') }}" type="module"></script>
 
 </x-app-layout>
