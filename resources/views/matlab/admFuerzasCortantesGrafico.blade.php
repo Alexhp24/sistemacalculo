@@ -32,7 +32,7 @@
                                             <td class="py-2 px-4">fc</td>
                                             <td class="py-2 px-4"><input type="number" name="fc"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="fc" min="0" value="210" required></td>
+                                                    id="fc" min="0" value="210" step="any" required></td>
                                             <td class="py-2 px-4">Tn/m</td>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
@@ -40,23 +40,39 @@
                                             <td class="py-2 px-4">Fy</td>
                                             <td class="py-2 px-4"><input type="number" name="Fy"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="Fy" min="0" value="4200" required></td>
+                                                    id="Fy" min="0" value="4200" step="any" required></td>
                                             <td class="py-2 px-4">Tn/m</td>
                                         </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
+                                        {{-- <tr class="bg-white dark:bg-gray-800">
                                             <td class="py-2 px-4">Modulo de Elasticidad del concreto</td>
                                             <td class="py-2 px-4">E</td>
                                             <td class="py-2 px-4"><input type="number" name="E"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
                                                     id="E" min="0" value="2173000" required></td>
                                             <td class="py-2 px-4">Tn/m</td>
+                                        </tr> --}}
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="py-2 px-4">Factor rm</td>
+                                            <td class="py-2 px-4"></td>
+                                            <td class="py-2 px-4"><input type="number" name="frm"
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    id="frm" min="0" value="1.4" step="any" required></td>
+                                            <td class="py-2 px-4"></td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="py-2 px-4">Factor rv</td>
+                                            <td class="py-2 px-4"></td>
+                                            <td class="py-2 px-4"><input type="number" name="frv"
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    id="frv" min="0" value="1.7" step="any" required></td>
+                                            <td class="py-2 px-4"></td>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
                                             <td class="py-2 px-4">Ancho Tributario</td>
                                             <td class="py-2 px-4"></td>
                                             <td class="py-2 px-4"><input type="number" name="anchoTributario"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="anchoTributario" value="1" required step="any"></td>
+                                                    id="anchoTributario" value="1" step="any" required></td>
                                             <td class="py-2 px-4"></td>
                                         </tr>
                                         <tr>

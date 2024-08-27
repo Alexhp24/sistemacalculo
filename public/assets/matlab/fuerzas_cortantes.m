@@ -1,17 +1,17 @@
-function fuerzas_cortantes(fc, fy, e, b, h, lt, wd, wv, anchoTributario)
+function fuerzas_cortantes(fc, fy, b, h, lt, wd, wv, anchoTributario, frm, frv)
     %%clear all, clc
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %PROPIEDADES DE LA SECCION Y CARGAS
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     fc = fc; % Resistencia a la compresion del concreto
     Fy = fy; % Esfuerzo de fluencia del acero
-    E  = e;  % Modulo de Elasticidad del concreto
+    E  = 1500 * fc^0.5; % Modulo de Elasticidad del concreto
     b  = b;  % Base de las viguetas
     h  = h;  % Altura de la vigueta
     ht = h;  % Altura de la vigueta
     Lt = lt; % Longuitud de las viguetas
-    WD = wd*1.4*anchoTributario; % Carga distribuida muerta
-    WV = wv*1.7*anchoTributario; % Carga distribuida viva
+    WD = wd*frm*anchoTributario; % Carga distribuida muerta
+    WV = wv*frv*anchoTributario; % Carga distribuida viva
 
     %%%%%%INERCIA%%%%%%%%%%%
     for ui = 1 : 1: length(b)
@@ -365,5 +365,5 @@ function fuerzas_cortantes(fc, fy, e, b, h, lt, wd, wv, anchoTributario)
     T2.Ratio = CORT(:,3);
 
     SHEART = SHEAR';
-    save("-mat7-binary", "-", "SHEART", "L4", "L5", "axexx", "x1n", "y1n", "x2n", "y2n", "T1", "T2");
+    save("-mat7-binary", "-", "SHEART", "L4", "L5", "axexx", "x1n", "y1n", "x2n", "y2n", "T1", "T2", "E");
 endfunction
