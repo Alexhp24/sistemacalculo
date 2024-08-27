@@ -381,7 +381,9 @@
                 field: "Asd",
                 formatter: function (cell, formatterParams, onRendered) {
                   const value = parseFloat(cell.getValue());
-                  return isNaN(value) ? "" : value.toFixed(2) + " cm²";
+                  return isNaN(value)
+                    ? `${cell.getValue().r.toFixed(2)}${cell.getValue().i < 0 ? "" : "+"}${cell.getValue().i.toFixed(2)}i`
+                    : value.toFixed(2) + " cm²";
                 },
               },
               {
@@ -691,7 +693,7 @@
             });
             T2.getData().forEach((row, index, data) => {
               const fc = parseFloat(document.getElementById("fc").value);
-              const b = row.Vu * 1000 / (0.85 * 0.53 * Math.sqrt(fc) * parseFloat(propiedades.getData()[index % 2].hi) * 100);
+              const b = (row.Vu * 1000) / (0.85 * 0.53 * Math.sqrt(fc) * parseFloat(propiedades.getData()[index % 2].hi) * 100);
               T2.getRow(index + 1).update({ b: b });
             });
             document.getElementById("vu").innerHTML = propiedades.getData().reduce((html, row, index, data) => {

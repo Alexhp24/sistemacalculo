@@ -285,10 +285,10 @@ function fuerzas_cortantes(fc, fy, e, b, h, lt, wd, wv, anchoTributario)
     end
     L5=[L5;sum(Lt)];
 
-    x1n = [];
-    y1n = [];
-    x2n = [];
-    y2n = [];
+    x1n = {};
+    y1n = {};
+    x2n = {};
+    y2n = {};
     %Aproximacion de la curva parabolica para momentos flectores
     for jkj= 1:1:6
         for i  = 1:h+1
@@ -304,10 +304,10 @@ function fuerzas_cortantes(fc, fy, e, b, h, lt, wd, wv, anchoTributario)
             a2 =(P2(1,2) - V(1,2))/(P2(1,1)-V(1,1))^2;
             y2 = a2*(x2-V(1,1)).^2 + V(1,2);
 
-            x1n = [x1n; x1];
-            y1n = [y1n; y1];
-            x2n = [x2n; x2];
-            y2n = [y2n; y2];
+            x1n{end+1} = x1;
+            y1n{end+1} = y1;
+            x2n{end+1} = x2;
+            y2n{end+1} = y2;
         end
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -366,4 +366,4 @@ function fuerzas_cortantes(fc, fy, e, b, h, lt, wd, wv, anchoTributario)
 
     SHEART = SHEAR';
     save("-mat7-binary", "-", "SHEART", "L4", "L5", "axexx", "x1n", "y1n", "x2n", "y2n", "T1", "T2");
-  endfunction
+endfunction
