@@ -435,7 +435,7 @@
                 },
               },
               {
-                title: "X",
+                title: "Longitud de ensanche",
                 field: "x",
                 formatter: function (cell, formatterParams, onRendered) {
                   const value = parseFloat(cell.getValue());
@@ -443,11 +443,11 @@
                 },
               },
               {
-                title: "B",
+                title: "Ancho de ensanche",
                 field: "b",
                 formatter: function (cell, formatterParams, onRendered) {
                   const value = parseFloat(cell.getValue());
-                  return isNaN(value) ? "" : value.toFixed(2);
+                  return isNaN(value) ? "" : value.toFixed(2) + " cm";
                 },
               },
             ],
@@ -691,7 +691,7 @@
             });
             T2.getData().forEach((row, index, data) => {
               const fc = parseFloat(document.getElementById("fc").value);
-              const b = row.Vu * 1000 / (0.85 * 0.53 * Math.sqrt(fc) * propiedades.getData()[index % 2].hi);
+              const b = row.Vu * 1000 / (0.85 * 0.53 * Math.sqrt(fc) * parseFloat(propiedades.getData()[index % 2].hi) * 100);
               T2.getRow(index + 1).update({ b: b });
             });
             document.getElementById("vu").innerHTML = propiedades.getData().reduce((html, row, index, data) => {
