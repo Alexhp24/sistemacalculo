@@ -18,13 +18,14 @@
     </style>
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <div class="py-12">
         <div class="container mx-auto w-full">
             <div class="flex flex-wrap">
                 <!-- Formulario -->
                 <div class="w-full md:w-1/3">
                     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-                        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Datos Generales</h3>
+                        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Datoss Generales</h3>
                         <div class="overflow-auto">
                             <form id="zapatasForm">
                                 @csrf
@@ -143,6 +144,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
-    <script src="{{ asset('assets/js/adm_zapatas_grafico.js') }}"></script>
+    <script src="{{ asset('assets/js/mat4js.index.min.js') }}"></script>
+    <script src="{{ asset('assets/js/adm_zapatas_grafico.js') }}" type="module"></script>
 
 </x-app-layout>
