@@ -91,16 +91,18 @@ class OctavePlotController extends Controller
     public function graficarFC(Request $request)
     {
         $function = sprintf(
-            "fuerzas_cortantes(%s, %s, %s, %s, %s, %s, %s, %s, %s);",
+            "fuerzas_cortantes(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
             $request->input('fc'),
             $request->input('Fy'),
-            $request->input('E'),
+            /* $request->input('E'), */
             $request->input('b'),
             $request->input('h'),
             $request->input('Lt'),
             $request->input('WD'),
             $request->input('WV'),
             $request->input('anchoTributario'),
+            $request->input('frm'),
+            $request->input('frv')
         );
 
         self::returnOctaveResult($function);
