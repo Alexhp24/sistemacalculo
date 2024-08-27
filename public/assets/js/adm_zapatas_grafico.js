@@ -469,15 +469,8 @@
       );
     };
 
-    const updateImgSrc = (name, id, img) => (img.src = `/assets/img/fcsv/${name}${id}.png?t=${new Date().getTime()}`);
-
     document.getElementById("zapatasForm").addEventListener("submit", (event) => {
-      let id;
       event.preventDefault();
-      const updater = setInterval(() => {
-        updateImgSrc("zapatasComb1", id, document.getElementById("zapata1"));
-        updateImgSrc("zapatasComb2", id, document.getElementById("zapata2"));
-      }, 1000);
 
       const formData = new FormData(event.target);
       propiedades.getData().forEach((row) => {
@@ -493,27 +486,53 @@
       formData.append("xv", octaveVector(poligono, "xv"));
       formData.append("yv", octaveVector(poligono, "yv"));
 
-      id = btoa(JSON.stringify(Object.fromEntries(formData))).slice(0, 32);
-      formData.append("_id", id);
       console.log(Object.fromEntries(formData));
       fetch("/zapatas", {
         method: "POST",
         body: formData,
       })
-        .then((response) => response.json())
-        .then((json) => {
-          clearInterval(updater);
-          console.log(json);
-          updateImgSrc("zapatas1", id, document.getElementById("zapata1"));
-          updateImgSrc("zapatas2", id, document.getElementById("zapata2"));
-          const sigmas = json.split("\n")
-            .map((row) => row.split(","))
-            .map((row) => {
-              return { min: row[0], max: row[1] };
-            });
+        .then(async (response) => {
+          const contentType = response.headers.get("Content-Type");
+          if (contentType && contentType.includes("application/octet-stream")) {
+            return response.arrayBuffer();
+          } else {
+            const error = await response.text();
+            return Promise.reject(error);
+          }
+        })
+        .then((matData) => {
+          const zapatas = mat4js.read(matData);
+          console.log(zapatas);
+          // Assuming XL, YL, ZL, and ZL_col0 are JavaScript arrays holding the corresponding data
+          var trace = {
+            x: zapatas.data.XL, // X-axis data
+            y: zapatas.data.YL, // Y-axis data
+            z: zapatas.data.ZLT[0], // Z-axis data
+            mode: "markers", // Scatter plot mode
+            marker: {
+              size: 2, // Size of the markers
+              color: zapatas.data.ZLT[0], // Color of the markers, based on Z data
+              colorscale: "Viridis", // Color scale
+              showscale: true, // Show the color scale
+            },
+            type: "scatter3d", // 3D scatter plot type
+          };
+          var layout = {
+            title: "3D Scatter Plot",
+            scene: {
+              camera: {
+                eye: { x: 0, y: 0, z: 2 }, // Position the camera to look down along the Z-axis (2D view)
+                projection: {
+                  type: "orthographic", // Set the projection type to orthographic
+                },
+              },
+            },
+          };
+          var data = [trace];
+          // Plot the chart using Plotly
+          Plotly.newPlot("zapata1", data, layout);
         })
         .catch((error) => {
-          clearInterval(updater);
           console.log(error);
         });
     });
