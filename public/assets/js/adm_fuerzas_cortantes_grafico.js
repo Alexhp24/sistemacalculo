@@ -706,6 +706,14 @@
         })
         .catch((error) => {
           console.log(error);
+          Swal.fire({
+            icon: "error",
+            html: `
+              ${error}
+            `,
+            showCloseButton: true,
+            focusConfirm: false,
+          });
         });
     });
   });
