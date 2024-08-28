@@ -327,9 +327,9 @@
     const cargasModel = (id) => {
       return {
         data: [
-          { nombres: "P", sismica: 0, muerta: 1700, viva: 1320 },
-          { nombres: "MX", sismica: 2909, muerta: 3529, viva: 1441 },
-          { nombres: "MY", sismica: 0, muerta: 0, viva: 0 },
+          { nombres: "P", sismica: 0, muerta: 2909, viva: 0 },
+          { nombres: "MX", sismica: 1700, muerta: 3529, viva: 0 },
+          { nombres: "MY", sismica: 1320, muerta: 1441, viva: 0 },
         ],
         id: id,
         config: {
@@ -503,34 +503,39 @@
         .then((matData) => {
           const zapatas = mat4js.read(matData);
           console.log(zapatas);
-          // Assuming XL, YL, ZL, and ZL_col0 are JavaScript arrays holding the corresponding data
-          var trace = {
-            x: zapatas.data.XL, // X-axis data
-            y: zapatas.data.YL, // Y-axis data
-            z: zapatas.data.ZLT[0], // Z-axis data
-            mode: "markers", // Scatter plot mode
-            marker: {
-              size: 2, // Size of the markers
-              color: zapatas.data.ZLT[0], // Color of the markers, based on Z data
-              colorscale: "Viridis", // Color scale
-              showscale: true, // Show the color scale
-            },
-            type: "scatter3d", // 3D scatter plot type
-          };
-          var layout = {
-            title: "3D Scatter Plot",
-            scene: {
-              camera: {
-                eye: { x: 0, y: 0, z: 2 }, // Position the camera to look down along the Z-axis (2D view)
-                projection: {
-                  type: "orthographic", // Set the projection type to orthographic
+          zapatas.data.ZLT.forEach((zl, index) => {
+            const trace = {
+              x: zapatas.data.XL, // X-axis data
+              y: zapatas.data.YL, // Y-axis data
+              z: zl, // Z-axis data
+              mode: "markers", // Scatter plot mode
+              marker: {
+                size: 2, // Size of the markers
+                color: zl, // Color of the markers, based on Z data
+                colorscale: "Viridis", // Color scale
+                showscale: true, // Show the color scale
+                colorbar: {
+                  title: {
+                    text: "Presion Admisible (Tn/m)",
+                    side: "right",
+                  },
                 },
               },
-            },
-          };
-          var data = [trace];
-          // Plot the chart using Plotly
-          Plotly.newPlot("zapata1", data, layout);
+              type: "scattergl", // 3D scatter plot type
+              /* type: "pointcloudgl", // 3D scatter plot type */
+              scene: `scene${index + 1}`,
+            };
+            const layout = {
+              height: 500,
+              width: 400,
+              showlegend: false,
+              title: `<b>Comb ${index + 1}<br>σ<sub>min</sub> = ${zapatas.data.vmins[index].toFixed(2)}<br>σ<sub>max</sub> = ${zapatas.data.vmaxs[index].toFixed(
+                2
+              )}</b>`,
+            };
+            // Plot the chart using Plotly
+            Plotly.react(`zapata${index + 1}`, [trace], layout, { responsive: false });
+          });
         })
         .catch((error) => {
           console.log(error);
