@@ -84,7 +84,7 @@ class OctavePlotController extends Controller
             header('Content-Length: ' . strlen($stdout));
             echo $stdout;
         } else {
-            echo $stderr;
+            echo $stderr . "<br>" . $function;
         }
     }
 
