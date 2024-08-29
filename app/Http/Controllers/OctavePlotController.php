@@ -111,7 +111,7 @@ class OctavePlotController extends Controller
     public function graficarZapatas(Request $request)
     {
         $function = sprintf(
-            "zapatas(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
+            "zapatas(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
             $request->input("A"),
             $request->input("Ixx"),
             $request->input("Iyy"),
@@ -125,8 +125,7 @@ class OctavePlotController extends Controller
             $request->input("Pv"),
             $request->input("MXv"),
             $request->input("MYv"),
-            $request->input("xv"),
-            $request->input("yv")
+            $request->input("poligonos"),
         );
 
         self::returnOctaveResult($function);

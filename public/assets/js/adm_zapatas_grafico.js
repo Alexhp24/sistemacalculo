@@ -93,7 +93,7 @@
 
         if (startCell) {
           //get data from clipboard into array of columns and rows.
-          clipboard = clipboard.split("\n");
+          clipboard = clipboard.replaceAll("\r\n", "\n").split("\n");
 
           clipboard.forEach(function (row) {
             data.push(row.split("\t"));
@@ -395,78 +395,91 @@
       };
     };
 
-    const poligonoModel = (id) => {
+    const poligonoModel = (id, title, data) => {
       return {
-        data: [
-          { xv: -7.0389, yv: 11.6025 },
-          { xv: 7.0539, yv: 11.6025 },
-          { xv: 7.0539, yv: -8.4825 },
-          { xv: -7.0389, yv: -8.4825 },
-          { xv: -7.0389, yv: -8.4825 },
-          { xv: -5.5291, yv: 10.1025 },
-          { xv: -5.5597, yv: 6.0669 },
-          { xv: -3.3975, yv: 6.0669 },
-          { xv: -3.3975, yv: 2.6826 },
-          { xv: -5.5589, yv: 2.6826 },
-          { xv: -5.5491, yv: -0.2575 },
-          { xv: 5.5539, yv: -0.2575 },
-          { xv: 5.5539, yv: 2.6826 },
-          { xv: 2.5561, yv: 2.6826 },
-          { xv: 2.5561, yv: 6.0666 },
-          { xv: 5.5539, yv: 6.0666 },
-          { xv: 5.5539, yv: 10.1025 },
-          { xv: -5.5291, yv: 10.1025 },
-          { xv: -5.5291, yv: 10.1025 },
-          { xv: -5.5291, yv: -1.7575 },
-          { xv: -5.5291, yv: -4.5928 },
-          { xv: -3.3975, yv: -4.5928 },
-          { xv: -3.392, yv: -6.9824 },
-          { xv: -0.5897, yv: -6.9824 },
-          { xv: -0.5897, yv: -6.2075 },
-          { xv: 1.5553, yv: -6.2075 },
-          { xv: 1.5571, yv: -6.971 },
-          { xv: 2.5557, yv: -6.971 },
-          { xv: 2.5557, yv: -4.5928 },
-          { xv: 5.5539, yv: -4.5928 },
-          { xv: 5.5539, yv: -1.7575 },
-          { xv: -5.5291, yv: -1.7575 },
-        ],
+        data: data,
         id: id,
         config: {
           layout: "fitDataTable",
           height: 200,
           columns: [
-            makeCreateDeleteColumn(id),
             {
-              title: "X",
-              field: "xv",
-              editor: "number",
-            },
-            {
-              title: "Y",
-              field: "yv",
-              editor: "number",
+              title: title,
+              columns: [
+                makeCreateDeleteColumn(id),
+                {
+                  title: "X",
+                  field: "xv",
+                  editor: "number",
+                },
+                {
+                  title: "Y",
+                  field: "yv",
+                  editor: "number",
+                },
+              ],
             },
           ],
         },
       };
     };
 
+    const data1 = [
+      { xv: -7.0389, yv: 11.6025 },
+      { xv: 7.0539, yv: 11.6025 },
+      { xv: 7.0539, yv: -8.4825 },
+      { xv: -7.0389, yv: -8.4825 },
+    ];
+
     const cargas = createSpreeadSheetTable(cargasModel("#cargas"));
     const propiedades = createSpreeadSheetTable(propiedadesModel("#propiedades"));
-    const poligono = createSpreeadSheetTable(poligonoModel("#poligono"));
+    const poligonoExterior = createSpreeadSheetTable(poligonoModel("#poligonoExterior", "Poligono Exterior", data1));
+    const poligonoInterior1 = createSpreeadSheetTable(
+      poligonoModel("#poligonoInterior1", "Poligono Interior 1", [
+        // Polygon 1
+        { xv: -5.0, yv: 6.0 },
+        { xv: -2.0, yv: 5.5 },
+        { xv: 0.5, yv: 6.5 },
+        { xv: -1.0, yv: 4.0 },
+      ])
+    );
+    const poligonoInterior2 = createSpreeadSheetTable(
+      poligonoModel("#poligonoInterior2", "Poligono Interior 2", [
+        // Polygon 2
+        { xv: -3.0, yv: 2.0 },
+        { xv: -1.5, yv: 1.0 },
+        { xv: 1.5, yv: 2.5 },
+        { xv: 0.5, yv: 4.0 },
+      ])
+    );
+    const poligonoInterior3 = createSpreeadSheetTable(
+      poligonoModel("#poligonoInterior3", "Poligono Interior 3", [
+        // Polygon 3
+        { xv: -4.0, yv: -3.0 },
+        { xv: -2.5, yv: -4.5 },
+        { xv: 1.0, yv: -3.5 },
+        { xv: -1.0, yv: -1.5 },
+      ])
+    );
+    const poligonoInterior4 = createSpreeadSheetTable(poligonoModel("#poligonoInterior4", "Poligono Interior 4", []));
+    const poligonoInterior5 = createSpreeadSheetTable(poligonoModel("#poligonoInterior5", "Poligono Interior 5", []));
 
     const octaveVector = (table, name) => {
-      return (
-        "[" +
-        table
-          .getData()
-          .map((row) => {
-            return row[name];
-          })
-          .join(",") +
-        "]"
-      );
+      const data = table.getData();
+      if (data.length === 0) {
+        return "1:0";
+      } else {
+        return (
+          "[" +
+          table
+            .getData()
+            .map((row) => {
+              return row[name];
+            })
+            .join(",") +
+          "]"
+        );
+      }
     };
 
     document.getElementById("zapatasForm").addEventListener("submit", (event) => {
@@ -482,9 +495,22 @@
         formData.append(row.nombres + "m", row.muerta);
         formData.append(row.nombres + "v", row.viva);
       });
-
-      formData.append("xv", octaveVector(poligono, "xv"));
-      formData.append("yv", octaveVector(poligono, "yv"));
+      formData.append(
+        "poligonos",
+        `struct('poligonoExterior', [${octaveVector(poligonoExterior, "xv")}; ${octaveVector(poligonoExterior, "yv")}], 'poligonoInterior1', [${octaveVector(
+          poligonoInterior1,
+          "xv"
+        )}; ${octaveVector(poligonoInterior1, "yv")}], 'poligonoInterior2', [${octaveVector(poligonoInterior2, "xv")}; ${octaveVector(
+          poligonoInterior2,
+          "yv"
+        )}], 'poligonoInterior3', [${octaveVector(poligonoInterior3, "xv")}; ${octaveVector(poligonoInterior3, "yv")}], 'poligonoInterior4', [${octaveVector(
+          poligonoInterior4,
+          "xv"
+        )}; ${octaveVector(poligonoInterior4, "yv")}], 'poligonoInterior5', [${octaveVector(poligonoInterior5, "xv")}; ${octaveVector(
+          poligonoInterior5,
+          "yv"
+        )}])`
+      );
 
       const swalTailwind = Swal.mixin({
         customClass: {
@@ -565,7 +591,7 @@
 
           Array.from(Array(11), (_, index) => index + 1).forEach((index) => {
             Plotly.purge(`zapata${index}`);
-          })
+          });
         });
     });
   });

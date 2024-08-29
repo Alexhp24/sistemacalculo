@@ -54,8 +54,27 @@
                                                 colspan="4" scope="col">Poligono</th>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
-                                            <td class="py-2 px-4" colspan="4">
-                                                <div id="poligono"></div>
+                                            <td class="py-2 px-4">
+                                                <div id="poligonoExterior"></div>
+                                            </td>
+                                            <td class="py-2 px-4">
+                                                <div id="poligonoInterior1"></div>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="py-2 px-4">
+                                                <div id="poligonoInterior2"></div>
+                                            </td>
+                                            <td class="py-2 px-4">
+                                                <div id="poligonoInterior3"></div>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="py-2 px-4">
+                                                <div id="poligonoInterior4"></div>
+                                            </td>
+                                            <td class="py-2 px-4">
+                                                <div id="poligonoInterior5"></div>
                                             </td>
                                         </tr>
                                         <!-- Agregar más filas según sea necesario -->
