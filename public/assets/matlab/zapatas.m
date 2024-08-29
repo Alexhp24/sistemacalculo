@@ -1,6 +1,4 @@
-function zapatas(A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, xv, yv)
-  xv = [-7.0389	7.0539	7.0539	-7.0389 -7.0389	-5.5291	-5.5597	-3.3975	-3.3975	-5.5589	-5.5491	5.5539	5.5539	2.5561	2.5561	5.5539	5.5539	-5.5291 -7.0389 -7.0389 -5.5291	-5.5291	-3.3975	-3.392	-0.5897	-0.5897	1.5553	1.5571	2.5557	2.5557	5.5539	5.5539	-5.5291 -7.0389];%%%puntos del poligono
-  yv = [11.6025	11.6025	-8.4825	-8.4825 11.6025	10.1025	6.0669	6.0669	2.6826	2.6826	-0.2575	-0.2575	2.6826	2.6826	6.0666	6.0666	10.1025	10.1025	11.6025 -8.4825 -1.7575	-4.5928	-4.5928	-6.9824	-6.9824	-6.2075	-6.2075	-6.971	-6.971	-4.5928	-4.5928	-1.7575	-1.7575 -8.4825];%puntos del poligono
+function zapatas(A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, poligonos)
   %%%%%%PROCESO
   Co = [Pm+Pv         , MXm+MXv    , MYm+MYv;
         Pm+.7*PS      , MXm+0.7*MXS, MYm;
@@ -17,13 +15,13 @@ function zapatas(A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, xv, 
   %IDENTIFICAR LOS PUNTOS QUE CAEN DENTRO DEL POLIGONO PARA ESO se coloca el
   %minimo valor de un vertice y el maximo valor de un vertice y se genera un
   %rango cuadrado
-  x = [-30:.05:30]'; %tiene que ser del mismo rango
+  x = [-30:.05:30]; %tiene que ser del mismo rango
   y = x;
 
   [X,Y] = meshgrid(x,y); %CREAR INTERPOLACIONES
-  xq = X';
-  yq = Y';
-  in = inpolygon(xq,yq,xv,yv);
+  xq = X;
+  yq = Y;
+  in = inpolygon(xq,yq,poligonos.poligonoExterior(1,:),poligonos.poligonoExterior(2,:)) & !inpolygon(xq,yq,poligonos.poligonoInterior1(1,:),poligonos.poligonoInterior1(2,:)) & !inpolygon(xq,yq,poligonos.poligonoInterior2(1,:),poligonos.poligonoInterior2(2,:)) & !inpolygon(xq,yq,poligonos.poligonoInterior3(1,:),poligonos.poligonoInterior3(2,:)) & !inpolygon(xq,yq,poligonos.poligonoInterior4(1,:),poligonos.poligonoInterior4(2,:)) & !inpolygon(xq,yq,poligonos.poligonoInterior5(1,:),poligonos.poligonoInterior5(2,:));
   XL= xq(in);
   YL= yq(in);
   ZL= zeros(length(XL),5);
@@ -41,10 +39,6 @@ function zapatas(A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, xv, 
     vmax    = max(k);
     vmins   = [vmins vmin];
     vmaxs   = [vmaxs vmax];
-    %scatter3(XL,YL,ZL(:,i),[],ZL(:,i),'.')
-    % c.Label.String = 'Presion Admisible (Tn/m)';
-    %view(0,90)
-    %title({['Comb ' num2str(pin)];['\sigma_m_i_n = ' num2str(vmin),'Tn/m'];['\sigma_m_a_x = ' num2str(vmax),'Tn/m']})
   end
 
   for i =7:11
@@ -58,11 +52,6 @@ function zapatas(A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, xv, 
     vmax  = max(k);
     vmins = [vmins vmin];
     vmaxs = [vmaxs vmax];
-    %scatter3(XL,YL,ZL(:,i),[],ZL(:,i),'.')
-    %c = colorbar;
-    %c.Label.String = 'Presion Admisible (Tn/m)';
-    %view(0,90)
-    %title({['Comb ' num2str(pin)];['\sigma_m_i_n = ' num2str(vmin),'Tn/m'];['\sigma_m_a_x = ' num2str(vmax),'Tn/m']})
   end
   ZLT = ZL';
   save("-mat7-binary", "-", "XL", "YL", "ZLT", "vmins", "vmaxs");
