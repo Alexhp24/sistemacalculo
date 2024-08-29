@@ -38,6 +38,7 @@ Route::view('/admPredim', 'predim.admpredim');
 //==========================RUTA PARA LAS HOJAS DE CALCULO====================//
 Route::view('/admDvigas', 'hcalculo.admdesingvigas');
 Route::view('/admvigasG', 'hcalculo.admvigageneral');
+Route::view('/admExcel', 'hcalculo.admExcel');
 //===================RUTA DE LOSAS==========//
 Route::view('/admlosasaligerada', 'hcalculo.admlosasaligeradas');
 Route::post('/desingLosa', [DesingLosaController::class, 'store'])->name('desingLosa');
