@@ -486,6 +486,20 @@
       formData.append("xv", octaveVector(poligono, "xv"));
       formData.append("yv", octaveVector(poligono, "yv"));
 
+      const swalTailwind = Swal.mixin({
+        customClass: {
+          confirmButton: "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded",
+        },
+        buttonsStyling: false,
+      });
+      const waitingPopup = swalTailwind.fire({
+        title: "Calculando!",
+        html: "Por favor espere!<br>",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       console.log(Object.fromEntries(formData));
       fetch("/zapatas", {
         method: "POST",
@@ -501,6 +515,7 @@
           }
         })
         .then((matData) => {
+          waitingPopup.close();
           const zapatas = mat4js.read(matData);
           console.log(zapatas);
           zapatas.data.ZLT.forEach((zl, index) => {
@@ -529,9 +544,9 @@
               height: 500,
               width: 400,
               showlegend: false,
-              title: `<b>Comb ${index + 1}<br>σ<sub>min</sub> = ${zapatas.data.vmins[index].toFixed(2)}<br>σ<sub>max</sub> = ${zapatas.data.vmaxs[index].toFixed(
-                2
-              )}</b>`,
+              title: `<b>Comb ${index + 1}<br>σ<sub>min</sub> = ${zapatas.data.vmins[index].toFixed(2)}<br>σ<sub>max</sub> = ${zapatas.data.vmaxs[
+                index
+              ].toFixed(2)}</b>`,
             };
             // Plot the chart using Plotly
             Plotly.react(`zapata${index + 1}`, [trace], layout, { responsive: false });
@@ -539,6 +554,18 @@
         })
         .catch((error) => {
           console.log(error);
+          waitingPopup.hideLoading();
+          swalTailwind.fire({
+            icon: "error",
+            html: `
+              ${error}
+            `,
+            showConfirmButton: true,
+          });
+
+          Array.from(Array(11), (_, index) => index + 1).forEach((index) => {
+            Plotly.purge(`zapata${index}`);
+          })
         });
     });
   });

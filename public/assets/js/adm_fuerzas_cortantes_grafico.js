@@ -556,6 +556,20 @@
       formData.append("WD", octaveVector(propiedades, "wdi"));
       formData.append("WV", octaveVector(propiedades, "wvi"));
 
+      const swalTailwind = Swal.mixin({
+        customClass: {
+          confirmButton: "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded",
+        },
+        buttonsStyling: false,
+      });
+      const waitingPopup = swalTailwind.fire({
+        title: "Calculando!",
+        html: "Por favor espere!<br>",
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
       console.log(Object.fromEntries(formData));
       fetch("/fuerzasCortantes", {
         method: "POST",
@@ -571,9 +585,9 @@
           }
         })
         .then((matData) => {
+          waitingPopup.close();
           const aligerados = mat4js.read(matData);
           console.log(aligerados);
-
           // Loop through each vector in the SHEAR array
           const tracesFC = aligerados.data.SHEART.map((sheari) => ({
             x: aligerados.data.L4,
@@ -705,13 +719,8 @@
           }, 500);
         })
         .catch((error) => {
-          const swalTailwind = Swal.mixin({
-            customClass: {
-              confirmButton: "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded",
-            },
-            buttonsStyling: false
-          });
           console.log(error);
+          waitingPopup.hideLoading();
           swalTailwind.fire({
             icon: "error",
             html: `
@@ -719,6 +728,16 @@
             `,
             showConfirmButton: true,
           });
+
+          document.getElementById("viguetas").innerHTML = "";
+          document.getElementById("cargaMuerta").innerHTML = "";
+          document.getElementById("cargaViva").innerHTML = "";
+          document.getElementById("asd").innerHTML = "";
+          document.getElementById("vu").innerHTML = "";
+          Tabulator.findTable(T1Model.id)[0]?.clearData();
+          Tabulator.findTable(T2Model.id)[0]?.clearData();
+          Plotly.purge("momentosFlectores");
+          Plotly.purge("fuerzasCortantes");
         });
     });
   });
