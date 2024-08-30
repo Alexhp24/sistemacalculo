@@ -33,10 +33,10 @@
                                         <th class="py-2 px-4">-</th>
                                         <th class="py-2 px-4">-</th>
                                         <th class="py-2 px-4">
-                                            <select name="selectabc" id="selectabc" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" >
+                                            <select name="selectabc" id="selectabc" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md">
                                                 <option value="A" selected>A</option>
                                                 <option value="B">B</option>
-                                                <option value="C" >C</option>
+                                                <option value="C">C</option>
                                             </select>
                                             <!-- <input type="text" name="fc" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="fc" placeholder="2" min="0" value="2" required> -->
                                         </th>
@@ -144,7 +144,7 @@
 
                                 <thead class="bg-gray-200 dark:bg-gray-800">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">2.- Combinacion de Cargas </th>
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">3.- Combinacion de Cargas </th>
                                     </tr>
                                     <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
                                         <th class="text-lg py-2 px-4" scope="col">Nombre</th>
@@ -158,7 +158,7 @@
                                 <!-- 3.- Analisi estructural -->
                                 <thead class="bg-gray-200 dark:bg-gray-800">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">3.- Analisi estructural</th>
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">4.- Analisi estructural</th>
                                     </tr>
                                     <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
                                         <th class="text-lg py-2 px-4" scope="col">Nombre</th>
@@ -171,20 +171,30 @@
                                 <!-- 5.- Diseño en madera -->
                                 <thead class="bg-gray-200 dark:bg-gray-700">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">4.- Diseño en madera</th>
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.- Diseño en madera</th>
                                     </tr>
-                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
+                                    <!-- <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
                                         <th class="text-xl" scope="col">Nombre</th>
                                         <th class="text-xl" scope="col">Simbolo</th>
                                         <th class="text-xl" scope="col">Formula</th>
                                         <th class="text-xl" scope="col">Resultado</th>
-                                    </tr>
+                                    </tr> -->
                                 </thead>
                                 <tbody id="desingFlexion" class="py-2"></tbody>
+                                <!-- imagen -->
 
                                 <thead class="bg-gray-200 dark:bg-gray-700">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">4.1- Vereficacion del modulo de seccion</th>
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.1- Vereficacion del modulo de seccion</th>
+                                    </tr>
+                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">    
+                                    </tr>
+                                </thead>
+                                <tbody id="imagen01" class="py-2"></tbody>
+                                <!-- 4.1 -->
+                                <thead class="bg-gray-200 dark:bg-gray-700">
+                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4"></th>
                                     </tr>
                                     <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
                                         <th class="text-xl" scope="col">Nombre</th>
@@ -197,7 +207,7 @@
 
                                 <thead class="bg-gray-200 dark:bg-gray-700">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">4.2- Vereficacion de inercias</th>
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.2- Vereficacion de inercias</th>
                                     </tr>
                                     <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
                                         <th class="text-xl" scope="col">Nombre</th>
@@ -210,7 +220,7 @@
 
                                 <thead class="bg-gray-200 dark:bg-gray-700">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">4.3- Vereficacion de esfuerzo cortante</th>
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.3- Vereficacion del esfuerzo cortante</th>
                                     </tr>
                                     <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
                                         <th class="text-xl" scope="col">Nombre</th>
@@ -223,7 +233,7 @@
 
                                 <thead class="bg-gray-200 dark:bg-gray-700">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">4.4- Vereficacion de la estabilidad lateral</th>
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.4- Vereficacion de la estabilidad lateral</th>
                                     </tr>
                                     <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
                                         <th class="text-xl" scope="col">Nombre</th>
@@ -235,7 +245,7 @@
                                 <tbody id="modulo44" class="py-2"></tbody>
                                 <thead class="bg-gray-200 dark:bg-gray-700">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">4.4- Vereficacion de la estabilidad lateral</th>
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.5- Calculo de la longitud de apoyo</th>
                                     </tr>
                                     <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
                                         <th class="text-xl" scope="col">Nombre</th>
@@ -246,19 +256,20 @@
                                 </thead>
                                 <tbody id="modulo45" class="py-2"></tbody>
 
-
-
+                                <thead class="bg-gray-200 dark:bg-gray-700">              
+                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">    
+                                    </tr>
+                                </thead>
+                                <tbody id="imagen02" class="py-2"></tbody>
 
 
 
                                 <!-- Diseño del calculo del area del refuerzo  -->
                                 <thead class="bg-gray-200 dark:bg-gray-700"></thead>
                                 <tbody id="calcared" class="py-2"></tbody>
-
                                 <!-- Diseño por aceros para calcular el area por capas flexion-->
                                 <thead class="bg-gray-200 dark:bg-gray-700"></thead>
                                 <tbody id="acerosfinales" class="py-2"></tbody>
-
                                 <!-- Diseño por corte -->
                                 <!-- <thead class="bg-gray-200 dark:bg-gray-700">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
@@ -272,7 +283,6 @@
                                     </tr>
                                 </thead>
                                 <tbody id="diseñoCortes" class="py-2"></tbody> -->
-
                                 <!-- Diseño por aceros para calcular el area por capas corte -->
                                 <thead class="bg-gray-200 dark:bg-gray-700"></thead>
                                 <tbody id="aceroscortes" class="py-2"></tbody>
@@ -287,6 +297,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.0.1/es5/tex-mml-chtml.js"></script>
     <!-- <script src="{{ asset('assets/js/adm_desing_vigas.js') }}"></script> -->
     <script src="assets/js/adm_Excel_general.js"></script>
