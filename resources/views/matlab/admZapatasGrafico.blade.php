@@ -105,50 +105,59 @@
                                     </th>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4">
+                                    <td class="py-2 px-4" colspan="4">
                                         <div id="zapata1"></div>
                                     </td>
-                                    <td class="py-2 px-4">
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4">
                                         <div id="zapata2"></div>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4">
+                                    <td class="py-2 px-4" colspan="4">
                                         <div id="zapata3"></div>
                                     </td>
-                                    <td class="py-2 px-4">
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4">
                                         <div id="zapata4"></div>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4">
+                                    <td class="py-2 px-4" colspan="4">
                                         <div id="zapata5"></div>
                                     </td>
-                                    <td class="py-2 px-4">
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4">
                                         <div id="zapata6"></div>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4">
+                                    <td class="py-2 px-4" colspan="4">
                                         <div id="zapata7"></div>
                                     </td>
-                                    <td class="py-2 px-4">
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4">
                                         <div id="zapata8"></div>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4">
+                                    <td class="py-2 px-4" colspan="4">
                                         <div id="zapata9"></div>
                                     </td>
-                                    <td class="py-2 px-4">
+                                </tr>
+                                <tr class="bg-gray-100 dark:bg-gray-600">
+                                    <td class="py-2 px-4" colspan="4">
                                         <div id="zapata10"></div>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4">
+                                    <td class="py-2 px-4" colspan="4">
                                         <div id="zapata11"></div>
                                     </td>
-                                    <td class="py-2 px-4"></td>
                                 </tr>
                             </table>
                         </div>

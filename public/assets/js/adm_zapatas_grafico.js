@@ -568,7 +568,7 @@
             };
             const layout = {
               height: 500,
-              width: 400,
+              /* width: 400, */
               showlegend: false,
               title: `<b>Comb ${index + 1}<br>σ<sub>min</sub> = ${Math.min(...zl).toFixed(2)}<br>σ<sub>max</sub> = ${Math.max(...zl).toFixed(2)}</b>`,
             };
