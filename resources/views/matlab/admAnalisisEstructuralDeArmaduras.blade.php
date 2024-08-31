@@ -30,53 +30,21 @@
                             <form id="zapatasForm">
                                 @csrf
                                 <table class="table-auto w-full text-gray-800 dark:text-white px-6">
+                                    <thead class="bg-white dark:bg-gray-800">
+                                        <tr class="text-center">
+                                            <th class="py-2 px-4">Nombre</th>
+                                            <th class="py-2 px-4">Simb.</th>
+                                            <th class="py-2 px-4">Entrada</th>
+                                            <th class="py-2 px-4">Unidad <br> Medida</th>
+                                        </tr>
+                                    </thead>
                                     <tbody class="text-center">
-                                        <tr>
-                                            <th class="text-xl py-2 px-4 text-left border-b border-gray-600"
-                                                colspan="4" scope="col">Cargas</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <td class="py-2 px-4" colspan="4">
-                                                <div id="cargas"></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-xl py-2 px-4 text-left border-b border-gray-600"
-                                                colspan="4" scope="col">Propiedades</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <td class="py-2 px-4" colspan="4">
-                                                <div id="propiedades"></div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-xl py-2 px-4 text-left border-b border-gray-600"
-                                                colspan="4" scope="col">Poligono</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <td class="py-2 px-4">
-                                                <div id="poligonoExterior"></div>
-                                            </td>
-                                            <td class="py-2 px-4">
-                                                <div id="poligonoInterior1"></div>
-                                            </td>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <td class="py-2 px-4">
-                                                <div id="poligonoInterior2"></div>
-                                            </td>
-                                            <td class="py-2 px-4">
-                                                <div id="poligonoInterior3"></div>
-                                            </td>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <td class="py-2 px-4">
-                                                <div id="poligonoInterior4"></div>
-                                            </td>
-                                            <td class="py-2 px-4">
-                                                <div id="poligonoInterior5"></div>
-                                            </td>
-                                        </tr>
+                                        <td class="py-2 px-4">Resistencia a la compresion del concreto</td>
+                                        <td class="py-2 px-4">fc</td>
+                                        <td class="py-2 px-4"><input type="number" name="fc"
+                                                class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                id="fc" min="0" value="210" required></td>
+                                        <td class="py-2 px-4">Tn/m</td>
                                         <!-- Agregar más filas según sea necesario -->
                                         <tr>
                                             <th class="py-2 px-4">
@@ -105,59 +73,50 @@
                                     </th>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4">
                                         <div id="zapata1"></div>
                                     </td>
-                                </tr>
-                                <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4">
                                         <div id="zapata2"></div>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4">
                                         <div id="zapata3"></div>
                                     </td>
-                                </tr>
-                                <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4">
                                         <div id="zapata4"></div>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4">
                                         <div id="zapata5"></div>
                                     </td>
-                                </tr>
-                                <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4">
                                         <div id="zapata6"></div>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4">
                                         <div id="zapata7"></div>
                                     </td>
-                                </tr>
-                                <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4">
                                         <div id="zapata8"></div>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4">
                                         <div id="zapata9"></div>
                                     </td>
-                                </tr>
-                                <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4">
                                         <div id="zapata10"></div>
                                     </td>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="4">
+                                    <td class="py-2 px-4">
                                         <div id="zapata11"></div>
                                     </td>
+                                    <td class="py-2 px-4"></td>
                                 </tr>
                             </table>
                         </div>
