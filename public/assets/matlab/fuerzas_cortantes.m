@@ -15,7 +15,7 @@ function fuerzas_cortantes(fc, fy, b, h, lt, wd, wv, anchoTributario, frm, frv)
 
     %%%%%%INERCIA%%%%%%%%%%%
     for ui = 1 : 1: length(b)
-        It(1,ui)  = b(1,ui)*h(1,ui)^3/12;   %Vector de inercias
+        It(1,ui)  = b(1,ui)*h(1,ui)^3/12; % Vector de inercias
     end
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %CALCULO DE LA MATRIZ DE RIGIDEZ
@@ -48,9 +48,9 @@ function fuerzas_cortantes(fc, fy, b, h, lt, wd, wv, anchoTributario, frm, frv)
     cm4 = 1 :1:cm1;
     cm5 = 0;                    % Contador
     for i2 = cm4
-        cm6 = nchoosek (cm4, i2)';     % Generador de combinaciones
-        i2 = i2;                       % Numero de filas
-        s2 = size(cm6,2);              % Numero de columnas
+        cm6 = nchoosek (cm4, i2)'; % Generador de combinaciones
+        i2 = i2;                   % Numero de filas
+        s2 = size(cm6,2);          % Numero de columnas
         for r2 = 1: 1: s2          % Variar todas las columnas
             cm5 = cm5+1;
             for z2 = 1 : 1: i2     % Variar todas las filas
