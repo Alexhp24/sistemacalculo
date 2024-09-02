@@ -598,10 +598,11 @@ document.addEventListener("DOMContentLoaded", () => {
     redraw();
   };
 
-  window.onmousedown = function (evt) {
-    var x = evt.x - 5;
+  canvas.onmousedown = function (evt) {
+    const {x, y} = getMousePos(canvas, evt);
+    /* var x = evt.x - 5;
     var y = evt.y - 5;
-
+ */
     if (0 > x || canvas.width < x || 0 > y || canvas.height < y) {
       return;
     }
@@ -691,9 +692,10 @@ document.addEventListener("DOMContentLoaded", () => {
     redraw();
   };
 
-  window.onmousemove = function (evt) {
-    var x = evt.x - 5;
-    var y = evt.y - 5;
+  canvas.onmousemove = function (evt) {
+    const {x, y} = getMousePos(canvas, evt);
+/*     var x = evt.x - 5;
+    var y = evt.y - 5; */
 
     if (0 > x || canvas.width < x || 0 > y || canvas.height < y) {
       return;
