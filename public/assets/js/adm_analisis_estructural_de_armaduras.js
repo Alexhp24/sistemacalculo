@@ -600,9 +600,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   canvas.onmousedown = function (evt) {
     const {x, y} = getMousePos(canvas, evt);
-    /* var x = evt.x - 5;
-    var y = evt.y - 5;
- */
     if (0 > x || canvas.width < x || 0 > y || canvas.height < y) {
       return;
     }
@@ -694,8 +691,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   canvas.onmousemove = function (evt) {
     const {x, y} = getMousePos(canvas, evt);
-/*     var x = evt.x - 5;
-    var y = evt.y - 5; */
 
     if (0 > x || canvas.width < x || 0 > y || canvas.height < y) {
       return;
