@@ -37,5 +37,7 @@ function zapatas(A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, poli
   YL= yq(in);
   ZL  = cat(2, ecuacionDeFlexion(Co, A, XL, YL, Ixx, Iyy, Df, 1, 6), ecuacionDeFlexion(Co, A, XL, YL, Ixx, Iyy, 1.8, 7, 11));
   ZLT = ZL';
-  save("-mat7-binary", "-", "XL", "YL", "ZLT");
+  mins = min(ZLT, [], 2);
+  maxs = max(ZLT, [], 2);
+  save("-mat7-binary", "-", "XL", "YL", "ZLT", "mins", "maxs");
 endfunction
