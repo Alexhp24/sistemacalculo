@@ -21,8 +21,24 @@ function zapatas(A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, poli
   %IDENTIFICAR LOS PUNTOS QUE CAEN DENTRO DEL POLIGONO PARA ESO se coloca el
   %minimo valor de un vertice y el maximo valor de un vertice y se genera un
   %rango cuadrado
-  x = [-30:.05:30]; %tiene que ser del mismo rango
-  y = x;
+  xvalues = [poligonos.poligonoExterior(1,:);
+             poligonos.poligonoInterior1(1,:);
+             poligonos.poligonoInterior2(1,:);
+             poligonos.poligonoInterior3(1,:);
+             poligonos.poligonoInterior4(1,:);
+             poligonos.poligonoInterior5(1,:)];
+  yvalues = [poligonos.poligonoExterior(2,:);
+             poligonos.poligonoInterior1(2,:);
+             poligonos.poligonoInterior2(2,:);
+             poligonos.poligonoInterior3(2,:);
+             poligonos.poligonoInterior4(2,:);
+             poligonos.poligonoInterior5(2,:)];
+  minx = min(min(xvalues));
+  maxx = max(max(xvalues));
+  miny = min(min(yvalues));
+  maxy = max(max(yvalues));
+  x = [minx:.05:maxx]; %tiene que ser del mismo rango
+  y = [miny:.05:maxy];
 
   [X,Y] = meshgrid(x,y); %CREAR INTERPOLACIONES
   xq = X;

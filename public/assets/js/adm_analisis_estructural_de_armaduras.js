@@ -1,3 +1,9 @@
+class Line {
+  constructor(parameters) {
+    
+  }
+}
+
 function getMousePos(canvas, evt) {
   const rect = canvas.getBoundingClientRect();
   const style = getComputedStyle(canvas);
@@ -83,9 +89,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Functions
   function windowResize() {
-    canvas.width = window.innerWidth - 359;
-    canvas.height = window.innerHeight - 12;
-    div.setAttribute("style", "height:" + canvas.height + "px");
+    // Set actual size in memory (scaled to account for extra pixel density).
+    const scale = window.devicePixelRatio; // Change to 1 on retina screens to see blurry canvas.
+    canvas.width = parseFloat(getComputedStyle(canvas).width) * scale;
+    canvas.height = parseFloat(getComputedStyle(canvas).height) * scale;
     grid.set(parseInt(form.zoom.value));
     redraw();
   }
@@ -208,9 +215,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.font = "12px Helvetica";
 
     // Show version
-    ctx.fillStyle = "gray";
+    /* ctx.fillStyle = "gray";
     ctx.fillText("PolygonDraw v" + VERSION, x_pos, y_pos);
-    y_pos += y_step;
+    y_pos += y_step; */
 
     // Show snap mode
     ctx.fillStyle = snap_enabled ? "white" : "red";
@@ -253,6 +260,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // DataObjs
   var Shape = function (parseUrl) {
+    this.last_point = null;
     this.reset(parseUrl);
   };
   Shape.prototype = {
@@ -305,10 +313,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     addPointToEnd: function (position) {
       var last_point = this.getLastPoint();
-      if (this.points.length > 0 && position.x === last_point.x && position.y === last_point.y) {
+      /*  if (this.points.length > 0 && position.x === last_point.x && position.y === last_point.y) {
         // No noting if the add location is the same as the last point
         return;
-      }
+      } */
 
       this.addPointAfterIndex(this.points.length - 1, position);
     },
@@ -319,15 +327,23 @@ document.addEventListener("DOMContentLoaded", () => {
     },
 
     getLastPoint: function () {
-      if (this.points.length === 0) {
+      if (this.last_point) {
+        return {
+          x: this.last_point.x,
+          y: this.last_point.y,
+        };
+      } else {
+        return this.last_point;
+      }
+      /*       if (this.points.length === 0) {
         return null;
       }
 
-      const last_point = this.points[this.points.length - 1];
+      this.last_point = this.points[this.points.length - 1];
       return {
-        x: last_point.x,
-        y: last_point.y,
-      };
+        x: this.last_point.x,
+        y: this.last_point.y,
+      }; */
     },
 
     deletePoint: function (index) {
@@ -599,7 +615,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   canvas.onmousedown = function (evt) {
-    const {x, y} = getMousePos(canvas, evt);
+    const { x, y } = getMousePos(canvas, evt);
     if (0 > x || canvas.width < x || 0 > y || canvas.height < y) {
       return;
     }
@@ -608,6 +624,7 @@ document.addEventListener("DOMContentLoaded", () => {
     var index, i, len;
     switch (currentTool) {
       case Tools.LINE:
+        shape.last_point = click;
         shape.addPointToEnd(click);
         history.commit(shape.points);
         break;
@@ -690,7 +707,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   canvas.onmousemove = function (evt) {
-    const {x, y} = getMousePos(canvas, evt);
+    const { x, y } = getMousePos(canvas, evt);
 
     if (0 > x || canvas.width < x || 0 > y || canvas.height < y) {
       return;
@@ -699,8 +716,9 @@ document.addEventListener("DOMContentLoaded", () => {
     mousePos = grid.translate(x, y);
     redraw();
 
-    if (currentTool === Tools.LINE && shape.points.length > 0) {
-      var c = grid.toPoint(shape.getLastPoint());
+    const last_point = shape.getLastPoint();
+    if (currentTool === Tools.LINE && last_point) {
+      var c = grid.toPoint(last_point);
 
       ctx.setLineDash([]);
       ctx.strokeStyle = "gray";
@@ -775,6 +793,7 @@ document.addEventListener("DOMContentLoaded", () => {
     switch (evt.keyCode) {
       case 77: // "M"
       case 27: // <escape>
+        shape.last_point = null;
         switchTool(Tools.MOVE);
         break;
       case 76: // "L"

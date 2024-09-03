@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Zapatas Grafico') }}
+            {{ __('Analisis Estructural de Armaduras') }}
         </h2>
     </x-slot>
     <style>
@@ -14,11 +14,6 @@
             box-sizing: content-box;
         }
     </style>
-    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
-    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
-    <script src="https://unpkg.com/virtual-webgl@1.0.6/src/virtual-webgl.js"></script>
-    <script src="https://cdn.plot.ly/plotly-2.34.0.min.js" charset="utf-8"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
     <div class="py-12">
         <div class="container mx-auto w-full">
@@ -192,13 +187,12 @@
                                 <tr class="bg-gray-100 dark:bg-gray-600">
                                     <td id="plot" class="py-2 px-4">
                                         <!-- GUI -->
-                                        <canvas></canvas>
                                         <div>
-                                            <form>
+                                            <form class="hidden">
                                                 <textarea name="coords" readonly></textarea>
                                                 <input type="range" name="zoom" min="5" max="40">
                                             </form>
-                                            <ul style="top:10px;left:10px">
+                                            <ul class="flex gap-4">
                                                 <li id="arrows"><i class="fa fa-arrows" title="M: Move"></i>
                                                 <li id="pencil"><i class="fa fa-pencil" title="L: Line"></i>
                                                 <li id="plus"><i class="fa fa-plus" title="A: Add"></i>
@@ -211,19 +205,17 @@
                                                         title="S: Toggle Grid Snap"></i>
                                                 </li>
                                             </ul>
-
-                                            <ul style="top:45px;left:10px;">
+                                            <ul class="flex gap-4">
                                                 <li id="undo"><i class="fa fa-undo" title="U: Undo"></i>
                                                 <li id="redo"><i class="fa fa-repeat" title="R: Redo"></i>
                                                 <li id="refresh"><i class="fa fa-trash-o" title="Delete All"></i>
                                                 </li>
                                             </ul>
-
-                                            <!-- <ol style="bottom:89px;left:10px;">
-        <li><i class="fa fa-file fa-rotate-180"></i></li><li><i class="fa fa-trash-o"></i></li>
-    </ol> -->
-
-                                            <ul style="top:80px;left:10px;">
+                                            {{-- <ol class="flex gap-4">
+                                                <li><i class="fa fa-file fa-rotate-180"></i></li>
+                                                <li><i class="fa fa-trash-o"></i></li>
+                                            </ol> --}}
+                                            <ul class="flex hidden">
                                                 <li id="color:1" style="background-color:#2020FF"><i
                                                         class="fa fa-paint-brush" title="Color: BLUE"></i>
                                                 <li id="color:2" style="background-color:#FFFFFF"><i
@@ -241,8 +233,7 @@
                                                 <li id="color:8" style="background-color:#008080"><i
                                                         class="fa fa-paint-brush" title="Color: CYAN_DK"></i>
                                             </ul>
-
-                                            <ul style="top:115px;left:10px;">
+                                            <ul class="flex hidden">
                                                 <li id="color:9" style="background-color:#E55300"><i
                                                         class="fa fa-paint-brush" title="Color: ORANGE"></i>
                                                 <li id="color:10" style="background-color:#8B4513"><i
@@ -260,17 +251,16 @@
                                                 <li id="color:16" style="background-color:#ADD8E6"><i
                                                         class="fa fa-paint-brush" title="Color: LIGHTBLUE"></i>
                                             </ul>
-
-                                            <ul style="bottom:40px;right:11px">
+                                            <ul class="flex gap-4">
                                                 <li id="copy"><i class="fa fa-copy"
                                                         title="Open polygon in new editor instance as URL"></i>
                                                 <li id="clipboard"><i class="fa fa-clipboard"
                                                         title="Select array text"></i>
                                             </ul>
                                         </div>
+                                        <canvas class="w-full h-[640px]"></canvas>
                                     </td>
                                 </tr>
-
                             </table>
                         </div>
                     </div>
@@ -278,8 +268,6 @@
             </div>
         </div>
     </div>
-
     <script src="{{ asset('assets/js/mat4js.index.min.js') }}"></script>
     <script src="{{ asset('assets/js/adm_analisis_estructural_de_armaduras.js') }}" type="module"></script>
-
 </x-app-layout>

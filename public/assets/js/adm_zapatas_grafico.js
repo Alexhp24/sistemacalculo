@@ -570,7 +570,9 @@
               height: 500,
               /* width: 400, */
               showlegend: false,
-              title: `<b>Comb ${index + 1}<br>σ<sub>min</sub> = ${zapatas.data.mins[index].toFixed(2)}<br>σ<sub>max</sub> = ${zapatas.data.maxs[index].toFixed(2)}</b>`,
+              title: `<b>Comb ${index + 1}<br>σ<sub>min</sub> = ${zapatas.data.mins[index].toFixed(2)}<br>σ<sub>max</sub> = ${zapatas.data.maxs[index].toFixed(
+                2
+              )}</b>`,
             };
             // Plot the chart using Plotly
             Plotly.react(`zapata${index + 1}`, [trace], layout, { responsive: false });
@@ -591,6 +593,24 @@
             Plotly.purge(`zapata${index}`);
           });
         });
+    });
+    document.getElementById("generarPDF").addEventListener("click", async (event) => {
+      // Inicializar el documento PDF
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.addPage();
+      await doc.html(document.getElementById("resultados"), {
+        callback: function (doc) {
+          return doc;
+        },
+        /* autoPaging: "text", */
+        html2canvas: {
+          scale: 0.2,
+        },
+        width: 1500,
+        windowWidth: 1500,
+      });
+      doc.save("informe.pdf");
     });
   });
 })();
