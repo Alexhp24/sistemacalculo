@@ -21,7 +21,7 @@ function zapatas(A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, poli
   %IDENTIFICAR LOS PUNTOS QUE CAEN DENTRO DEL POLIGONO PARA ESO se coloca el
   %minimo valor de un vertice y el maximo valor de un vertice y se genera un
   %rango cuadrado
-  x = [-30:.05:30]; %tiene que ser del mismo rango
+  x = [-100:.05:100]; %tiene que ser del mismo rango
   y = x;
 
   [X,Y] = meshgrid(x,y); %CREAR INTERPOLACIONES
