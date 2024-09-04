@@ -324,6 +324,9 @@
   };
 
   document.addEventListener("DOMContentLoaded", () => {
+    const pdfButton = document.getElementById("generarPDF");
+    pdfButton.disabled = true;
+    pdfButton.className = "bg-gray-500 text-white font-bold py-2 px-4 border-b-4 border-gray-700 rounded";
     const cargasModel = (id) => {
       return {
         data: [
@@ -546,6 +549,8 @@
             // Plot the chart using Plotly
             Plotly.react(`zapata${index + 1}`, [trace], layout, { responsive: false });
           });
+          pdfButton.disabled = false;
+          pdfButton.className = "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded";
         })
         .catch((error) => {
           console.log(error);
@@ -561,6 +566,8 @@
           Array.from(Array(11), (_, index) => index + 1).forEach((index) => {
             Plotly.purge(`zapata${index}`);
           });
+          pdfButton.disabled = true;
+          pdfButton.className = "bg-gray-500 text-white font-bold py-2 px-4 border-b-4 border-gray-700 rounded";
         });
     });
     document.getElementById("generarPDF").addEventListener("click", async () => {
@@ -568,31 +575,32 @@
       const propiedadesData = propiedades.getData();
       const docDefinition = {
         content: [
-          "Resultados",
           {
             style: "tableExample",
             table: {
-              headerRows: 1,
-              widths: ["*", "*", "*"],
+              headerRows: 2,
+              widths: ["*", "*", "*", "*"],
               body: [
+                [{ text: "Datos Generales", colSpan: 4, style: "tableHeader", alignment: "center" }, {}, {}, {}],
                 [
-                  { text: "Nombre", style: "tableHeader" },
-                  { text: "Simbolo", style: "tableHeader" },
-                  { text: "Resultado", style: "tableHeader" },
+                  { text: "Nombre", style: "tableHeader", alignment: "center" },
+                  { text: "Simbolo", style: "tableHeader", alignment: "center" },
+                  { text: "Valor", style: "tableHeader", alignment: "center", colSpan: 2 },
+                  {},
                 ],
-                ["Sismica", "P", cargasData[0].sismica + " Tn/m"],
-                ["Sismica", "MX", cargasData[1].sismica + " Tn/m"],
-                ["Sismica", "MY", cargasData[2].sismica + " Tn/m"],
-                ["Muerta", "P", cargasData[0].muerta + " Tn/m"],
-                ["Muerta", "MX", cargasData[1].muerta + " Tn/m"],
-                ["Muerta", "MY", cargasData[2].muerta + " Tn/m"],
-                ["Viva", "P", cargasData[0].viva + " Tn/m"],
-                ["Viva", "MX", cargasData[1].viva + " Tn/m"],
-                ["Viva", "MY", cargasData[2].viva + " Tn/m"],
-                ["-", "A", propiedadesData[0].entradas + " Tn/m"],
-                ["-", "Ixx", propiedadesData[1].entradas + " Tn/m"],
-                ["-", "Iyy", propiedadesData[2].entradas + " Tn/m"],
-                ["-", "Df", propiedadesData[3].entradas + " Tn/m"],
+                ["Sismica", { text: "P", alignment: "center" }, { text: cargasData[0].sismica, alignment: "right" }, { text: "Tn" }],
+                ["Sismica", { text: "MX", alignment: "center" }, { text: cargasData[1].sismica, alignment: "right" }, { text: "Tn-m" }],
+                ["Sismica", { text: "MY", alignment: "center" }, { text: cargasData[2].sismica, alignment: "right" }, { text: "Tn-m" }],
+                ["Muerta", { text: "P", alignment: "center" }, { text: cargasData[0].muerta, alignment: "right" }, { text: "Tn" }],
+                ["Muerta", { text: "MX", alignment: "center" }, { text: cargasData[1].muerta, alignment: "right" }, { text: "Tn-m" }],
+                ["Muerta", { text: "MY", alignment: "center" }, { text: cargasData[2].muerta, alignment: "right" }, { text: "Tn-m" }],
+                ["Viva", { text: "P", alignment: "center" }, { text: cargasData[0].viva, alignment: "right" }, { text: "Tn" }],
+                ["Viva", { text: "MX", alignment: "center" }, { text: cargasData[1].viva, alignment: "right" }, { text: "Tn-m" }],
+                ["Viva", { text: "MY", alignment: "center" }, { text: cargasData[2].viva, alignment: "right" }, { text: "Tn-m" }],
+                ["-", { text: "A", alignment: "center" }, { text: propiedadesData[0].entradas, alignment: "right" }, { text: "Tn" }],
+                ["-", { text: "Ixx", alignment: "center" }, { text: propiedadesData[1].entradas, alignment: "right" }, { text: "m⁴" }],
+                ["-", { text: "Iyy", alignment: "center" }, { text: propiedadesData[2].entradas, alignment: "right" }, { text: "m⁴" }],
+                ["-", { text: "Df", alignment: "center" }, { text: propiedadesData[3].entradas, alignment: "right" }, { text: "m" }],
               ],
             },
             layout: "lightHorizontalLines",
@@ -601,7 +609,7 @@
         ],
         styles: {
           header: {
-            fontSize: 18,
+            fontSize: 16,
             bold: true,
             margin: [0, 0, 0, 10],
           },
@@ -627,7 +635,7 @@
           width: 500,
         });
       }
-      pdfMake.createPdf(docDefinition).download("myPDF.pdf");
+      pdfMake.createPdf(docDefinition).download("cimentacion.pdf");
     });
   });
 })();
