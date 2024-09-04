@@ -302,6 +302,9 @@
   }
 
   document.addEventListener("DOMContentLoaded", () => {
+    const pdfButton = document.getElementById("generarPDF");
+    pdfButton.disabled = true;
+    pdfButton.className = "bg-gray-500 text-white font-bold py-2 px-4 border-b-4 border-gray-700 rounded";
     const propiedadesModel = (id) => {
       return {
         id: id,
@@ -717,6 +720,8 @@
               return html + vuComponent(row.lti, percentX, vuValues[index * 2].Vu, x1, vuValues[index * 2 + 1].Vu, x2, index === data.length - 1);
             }, "");
           }, 500);
+          pdfButton.disabled = false;
+          pdfButton.className = "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded";
         })
         .catch((error) => {
           console.log(error);
@@ -738,56 +743,110 @@
           Tabulator.findTable(T2Model.id)[0]?.clearData();
           Plotly.purge("momentosFlectores");
           Plotly.purge("fuerzasCortantes");
+          pdfButton.disabled = true;
+          pdfButton.className = "bg-gray-500 text-white font-bold py-2 px-4 border-b-4 border-gray-700 rounded";
         });
     });
     document.getElementById("generarPDF").addEventListener("click", async () => {
       const form = document.getElementById("fuerzasCortantesForm");
       const viguetasElement = document.querySelector("#viguetas");
-      viguetasElement.classList.add("text-slate-900");
-      const viguetas = await html2canvas(viguetasElement);
       const cargaMuertaElement = document.querySelector("#cargaMuerta");
-      cargaMuertaElement.classList.add("text-slate-900");
-      const cargaMuerta = await html2canvas(cargaMuertaElement);
       const cargaVivaElement = document.querySelector("#cargaViva");
-      cargaVivaElement.classList.add("text-slate-900");
-      const cargaViva = await html2canvas(cargaVivaElement);
       const asdElement = document.querySelector("#asd");
-      asdElement.classList.add("text-slate-900");
-      const asd = await html2canvas(asdElement);
       const vuElement = document.querySelector("#vu");
-      vuElement.classList.add("text-slate-900");
-      const vu = await html2canvas(vuElement);
+      const viguetas = await html2canvas(viguetasElement, {
+        onclone: (doc) => {
+          const viguetasElement = doc.querySelector("#viguetas");
+          Array.from(viguetasElement.querySelectorAll("div > div + div")).forEach((node) => {
+            node.classList.add("mt-2");
+          });
+          viguetasElement.style.color = "black";
+        },
+      });
+      const cargaMuerta = await html2canvas(cargaMuertaElement, {
+        onclone: (doc) => {
+          const cargaMuertaElement = doc.querySelector("#cargaMuerta");
+          Array.from(cargaMuertaElement.querySelectorAll("div > p + div")).forEach((node) => {
+            node.classList.add("mt-2");
+          });
+          cargaMuertaElement.style.color = "black";
+        },
+      });
+      const cargaViva = await html2canvas(cargaVivaElement, {
+        onclone: (doc) => {
+          const cargaVivaElement = doc.querySelector("#cargaViva");
+          Array.from(cargaVivaElement.querySelectorAll("div > p + div")).forEach((node) => {
+            node.classList.add("mt-2");
+          });
+          cargaVivaElement.style.color = "black";
+        },
+      });
+      const asd = await html2canvas(asdElement, {
+        onclone: (doc) => {
+          const asdElement = doc.querySelector("#asd");
+          Array.from(asdElement.querySelectorAll("div > div > div")).forEach((node) => {
+            node.style.paddingBottom = "8px";
+          });
+          asdElement.style.color = "black";
+        },
+      });
+      const vu = await html2canvas(vuElement, {
+        onclone: (doc) => {
+          const vuElement = doc.querySelector("#vu");
+          Array.from(vuElement.querySelectorAll("div > div > div")).forEach((node) => {
+            node.style.paddingBottom = "8px";
+          });
+          vuElement.style.color = "black";
+        },
+      });
       const T1Data = Tabulator.findTable("#T1")[0].getData();
       const T1Rows = [];
       for (const row of T1Data) {
-        const r = [row.Mu.toFixed(2) + " Tn-m", row.Asd.toFixed(2) + " cm²", row.Asmin.toFixed(2) + " cm²", row.diametro];
+        const r = [
+          { text: row.Mu.toFixed(2) + " Tn-m", alignment: "center" },
+          { text: row.Asd.toFixed(2) + " cm²", alignment: "center" },
+          { text: row.Asmin.toFixed(2) + " cm²", alignment: "center" },
+          { text: row.diametro, alignment: "center" },
+        ];
         T1Rows.push(r);
       }
       const T2Data = Tabulator.findTable("#T2")[0].getData();
       const T2Rows = [];
       for (const row of T2Data) {
-        const r = [row.Vu.toFixed(2) + " Tn", row.Vc.toFixed(2) + " Tn", row.Ratio.toFixed(2) + " %", row.x.toFixed(2) + " m", row.b.toFixed(2) + " cm"];
+        const r = [
+          { text: row.Vu.toFixed(2) + " Tn", alignment: "center" },
+          { text: row.Vc.toFixed(2) + " Tn", alignment: "center" },
+          { text: row.Ratio.toFixed(2) + " %", alignment: "center" },
+          { text: row.x.toFixed(2) + " m", alignment: "center" },
+          { text: row.b.toFixed(2) + " cm", alignment: "center" },
+        ];
         T2Rows.push(r);
       }
       const docDefinition = {
         content: [
-          "Resultados",
           {
             style: "tableExample",
             table: {
-              headerRows: 1,
-              widths: ["*", "*", "*"],
+              headerRows: 2,
+              widths: ["*", "*", "*", "*"],
               body: [
+                [{ text: "Datos Generales", style: "tableHeader", colSpan: 4, alignment: "center" }, {}, {}, {}],
                 [
-                  { text: "Nombre", style: "tableHeader" },
-                  { text: "Simbolo", style: "tableHeader" },
-                  { text: "Resultado", style: "tableHeader" },
+                  { text: "Nombre", style: "tableHeader", alignment: "center" },
+                  { text: "Simbolo", style: "tableHeader", alignment: "center" },
+                  { text: "Valor", style: "tableHeader", colSpan: 2, alignment: "center" },
+                  {},
                 ],
-                ["Resistencia a la compresion del concreto", "Fc", form.fc.value],
-                ["Esfuerzo de fluencia del acero", "Fy", form.Fy.value],
-                ["Factor", "RM", form.frm.value],
-                ["Factor", "RV", form.frv.value],
-                ["Ancho Tributario", "-", form.anchoTributario.value],
+                [
+                  "Resistencia a la compresion del concreto",
+                  { text: "Fc", alignment: "center" },
+                  { text: form.fc.value, alignment: "right" },
+                  { text: "Tn/m" },
+                ],
+                ["Esfuerzo de fluencia del acero", { text: "Fy", alignment: "center" }, { text: form.Fy.value, alignment: "right" }, { text: "Tn/m" }],
+                ["Factor", { text: "RM", alignment: "center" }, { text: form.frm.value, alignment: "right" }, {}],
+                ["Factor", { text: "RV", alignment: "center" }, { text: form.frv.value, alignment: "right" }, {}],
+                ["Ancho Tributario", { text: "-", alignment: "center" }, { text: form.anchoTributario.value, alignment: "right" }, {}],
               ],
             },
             layout: "lightHorizontalLines",
@@ -807,7 +866,7 @@
             image: cargaViva.toDataURL("image/png"),
             width: 500,
           },
-          { text: "4.- Analisis Estructural", style: "header" },
+          { text: "4.- Analisis Estructural", style: "header", pageBreak: "before" },
           {
             image: await Plotly.toImage("fuerzasCortantes"),
             width: 500,
@@ -816,7 +875,7 @@
             image: await Plotly.toImage("momentosFlectores"),
             width: 500,
           },
-          { text: "5.- Diseño a Flexion", style: "header" },
+          { text: "5.- Diseño a Flexion", style: "header", pageBreak: "before" },
           {
             style: "tableExample",
             table: {
@@ -825,10 +884,10 @@
               body: [
                 [{ text: "Diseño a Flexion", style: "tableHeader", colSpan: 4, alignment: "center" }, {}, {}, {}],
                 [
-                  { text: "Mu Tn-m", style: "tableHeader" },
-                  { text: "Asd cm²", style: "tableHeader" },
-                  { text: "Asmin cm²", style: "tableHeader" },
-                  { text: "Diametro", style: "tableHeader" },
+                  { text: "Mu Tn-m", style: "tableHeader", alignment: "center" },
+                  { text: "Asd cm²", style: "tableHeader", alignment: "center" },
+                  { text: "Asmin cm²", style: "tableHeader", alignment: "center" },
+                  { text: "Diametro", style: "tableHeader", alignment: "center" },
                 ],
                 ...T1Rows,
               ],
@@ -841,10 +900,6 @@
           },
           { text: "6.- Diseño a Cortante", style: "header" },
           {
-            image: vu.toDataURL("image/png"),
-            width: 500,
-          },
-          {
             style: "tableExample",
             table: {
               headerRows: 2,
@@ -852,21 +907,25 @@
               body: [
                 [{ text: "Diseño a Cortante", style: "tableHeader", colSpan: 5, alignment: "center" }, {}, {}, {}, {}],
                 [
-                  { text: "Vu Tn", style: "tableHeader" },
-                  { text: "Vc Tn", style: "tableHeader" },
-                  { text: "Ratio Vu/Vc%", style: "tableHeader" },
-                  { text: "Longitud de ensanche", style: "tableHeader" },
-                  { text: "Ancho de ensanche", style: "tableHeader" },
+                  { text: "Vu Tn", style: "tableHeader", alignment: "center" },
+                  { text: "Vc Tn", style: "tableHeader", alignment: "center" },
+                  { text: "Ratio Vu/Vc%", style: "tableHeader", alignment: "center" },
+                  { text: "Longitud de ensanche", style: "tableHeader", alignment: "center" },
+                  { text: "Ancho de ensanche", style: "tableHeader", alignment: "center" },
                 ],
                 ...T2Rows,
               ],
             },
             layout: "lightHorizontalLines",
           },
+          {
+            image: vu.toDataURL("image/png"),
+            width: 500,
+          },
         ],
         styles: {
           header: {
-            fontSize: 18,
+            fontSize: 16,
             bold: true,
             margin: [0, 0, 0, 10],
           },
@@ -885,14 +944,7 @@
           },
         },
       };
-      /* for (const id of Array.from(Array(11), (_, index) => index + 1)) {
-        const b64_img = await Plotly.toImage(`zapata${id}`);
-        docDefinition.content.push({
-          image: b64_img,
-          width: 500,
-        });
-      } */
-      pdfMake.createPdf(docDefinition).download("myPDF.pdf");
+      pdfMake.createPdf(docDefinition).download("aligerados.pdf");
     });
   });
 })();
