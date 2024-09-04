@@ -19,10 +19,8 @@
     <script src="https://unpkg.com/virtual-webgl@1.0.6/src/virtual-webgl.js"></script>
     <script src="https://cdn.plot.ly/plotly-2.34.0.min.js" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
-        integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/pdfmake.min.js" integrity="sha512-axXaF5grZBaYl7qiM6OMHgsgVXdSLxqq0w7F4CQxuFyrcPmn0JfnqsOtYHUun80g6mRRdvJDrTCyL8LQqBOt/Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/vfs_fonts.js" integrity="sha512-nNkHPz+lD0Wf0eFGO0ZDxr+lWiFalFutgVeGkPdVgrG4eXDYUnhfEj9Zmg1QkrJFLC0tGs8ZExyU/1mjs4j93w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <div class="py-12">
         <div class="container mx-auto w-full">
             <div class="flex flex-wrap">
@@ -84,14 +82,12 @@
                                         <!-- Agregar más filas según sea necesario -->
                                         <tr>
                                             <th class="py-2 px-4">
-                                                <div class="input-group mb-2 text-left">
+                                                <div class="input-group mb-2 text-left inline-block">
                                                     <button id="calcular"
                                                         class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
                                                         type="submit">DISEÑAR</button>
                                                 </div>
-                                            </th>
-                                            <th class="py-2 px-4">
-                                                <div class="input-group mb-2 text-left">
+                                                <div class="input-group mb-2 text-left inline-block">
                                                     <button id="generarPDF"
                                                         class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
                                                         type="button">PDF</button>

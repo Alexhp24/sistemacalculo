@@ -477,7 +477,7 @@
       event.preventDefault();
 
       const viguetaComponent = (percent, width, b, t, isLast) => {
-        return `<div class="text-center text-sm" style="width: calc(${percent}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        return `<div class="text-center text-sm inline-block w-[${percent}%]">
         <div>
           <p>Vigueta</p>
           <p>${b.toFixed(2)} m x ${t.toFixed(2)} m</p>
@@ -486,7 +486,7 @@
       </div>`;
       };
       const carga = (name, percentX, percentY, width, cm, isLast) => {
-        return `<div class="text-center text-sm" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        return `<div class="text-center text-sm inline-block w-[${percentX}%]">
           <p style="transform: translateY(calc(128px - 128px * ${percentY} / 100))">${name}=${cm.toFixed(2)} tn/m</p>
           <div class="mb-2 h-[128px] relative flex items-center justify-center">
             <div class="absolute bottom-0 border-4 w-full border-indigo-500 h-[${percentY}%]">
@@ -496,7 +496,7 @@
         </div>`;
       };
       const asdComponent = (percentX, asd1, d1, asd2, d2, asd3, d3, isLast) => {
-        return `<div class="text-center text-xs" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        return `<div class="text-center text-xs inline-block w-[${percentX}%]">
           <div class="flex justify-between">
             <div class="border-l-4 px-2">${parseFloat(asd1).toFixed(2)} cm²<br>${d1}</div>
             <div class="${!isLast ? "" : "border-r-4"} px-2">${parseFloat(asd3).toFixed(2)} cm²<br>${d3}</div>
@@ -505,7 +505,7 @@
         </div>`;
       };
       const vuComponent = (width, percentX, vu1, x1, vu2, x2, isLast) => {
-        return `<div class="text-center text-xs" style="width: calc(${percentX}% - ${!isLast ? "4px" : "8px"}); display: inline-block">
+        return `<div class="text-center text-xs inline-block w-[${percentX}%]">
           <div class="flex justify-between">
             <div class="border-l-4 px-2">${parseFloat(vu1).toFixed(2)} Tn<br>${x1.toFixed(2)} m</div>
             <div class="${!isLast ? "" : "border-r-4"} px-2">${parseFloat(vu2).toFixed(2)} Tn<br>${x2.toFixed(2)} m</div>
@@ -739,6 +739,160 @@
           Plotly.purge("momentosFlectores");
           Plotly.purge("fuerzasCortantes");
         });
+    });
+    document.getElementById("generarPDF").addEventListener("click", async () => {
+      const form = document.getElementById("fuerzasCortantesForm");
+      const viguetasElement = document.querySelector("#viguetas");
+      viguetasElement.classList.add("text-slate-900");
+      const viguetas = await html2canvas(viguetasElement);
+      const cargaMuertaElement = document.querySelector("#cargaMuerta");
+      cargaMuertaElement.classList.add("text-slate-900");
+      const cargaMuerta = await html2canvas(cargaMuertaElement);
+      const cargaVivaElement = document.querySelector("#cargaViva");
+      cargaVivaElement.classList.add("text-slate-900");
+      const cargaViva = await html2canvas(cargaVivaElement);
+      const asdElement = document.querySelector("#asd");
+      asdElement.classList.add("text-slate-900");
+      const asd = await html2canvas(asdElement);
+      const vuElement = document.querySelector("#vu");
+      vuElement.classList.add("text-slate-900");
+      const vu = await html2canvas(vuElement);
+      const T1Data = Tabulator.findTable("#T1")[0].getData();
+      const T1Rows = [];
+      for (const row of T1Data) {
+        const r = [row.Mu.toFixed(2) + " Tn-m", row.Asd.toFixed(2) + " cm²", row.Asmin.toFixed(2) + " cm²", row.diametro];
+        T1Rows.push(r);
+      }
+      const T2Data = Tabulator.findTable("#T2")[0].getData();
+      const T2Rows = [];
+      for (const row of T2Data) {
+        const r = [row.Vu.toFixed(2) + " Tn", row.Vc.toFixed(2) + " Tn", row.Ratio.toFixed(2) + " %", row.x.toFixed(2) + " m", row.b.toFixed(2) + " cm"];
+        T2Rows.push(r);
+      }
+      const docDefinition = {
+        content: [
+          "Resultados",
+          {
+            style: "tableExample",
+            table: {
+              headerRows: 1,
+              widths: ["*", "*", "*"],
+              body: [
+                [
+                  { text: "Nombre", style: "tableHeader" },
+                  { text: "Simbolo", style: "tableHeader" },
+                  { text: "Resultado", style: "tableHeader" },
+                ],
+                ["Resistencia a la compresion del concreto", "Fc", form.fc.value],
+                ["Esfuerzo de fluencia del acero", "Fy", form.Fy.value],
+                ["Factor", "RM", form.frm.value],
+                ["Factor", "RV", form.frv.value],
+                ["Ancho Tributario", "-", form.anchoTributario.value],
+              ],
+            },
+            layout: "lightHorizontalLines",
+          },
+          { text: "1.- Geometria", style: "header" },
+          {
+            image: viguetas.toDataURL("image/png"),
+            width: 500,
+          },
+          { text: "2.- Cargas Muertas", style: "header" },
+          {
+            image: cargaMuerta.toDataURL("image/png"),
+            width: 500,
+          },
+          { text: "3.- Cargas Vivas", style: "header" },
+          {
+            image: cargaViva.toDataURL("image/png"),
+            width: 500,
+          },
+          { text: "4.- Analisis Estructural", style: "header" },
+          {
+            image: await Plotly.toImage("fuerzasCortantes"),
+            width: 500,
+          },
+          {
+            image: await Plotly.toImage("momentosFlectores"),
+            width: 500,
+          },
+          { text: "5.- Diseño a Flexion", style: "header" },
+          {
+            style: "tableExample",
+            table: {
+              headerRows: 2,
+              widths: ["*", "*", "*", "*"],
+              body: [
+                [{ text: "Diseño a Flexion", style: "tableHeader", colSpan: 4, alignment: "center" }, {}, {}, {}],
+                [
+                  { text: "Mu Tn-m", style: "tableHeader" },
+                  { text: "Asd cm²", style: "tableHeader" },
+                  { text: "Asmin cm²", style: "tableHeader" },
+                  { text: "Diametro", style: "tableHeader" },
+                ],
+                ...T1Rows,
+              ],
+            },
+            layout: "lightHorizontalLines",
+          },
+          {
+            image: asd.toDataURL("image/png"),
+            width: 500,
+          },
+          { text: "6.- Diseño a Cortante", style: "header" },
+          {
+            image: vu.toDataURL("image/png"),
+            width: 500,
+          },
+          {
+            style: "tableExample",
+            table: {
+              headerRows: 2,
+              widths: ["*", "*", "*", "*", "*"],
+              body: [
+                [{ text: "Diseño a Cortante", style: "tableHeader", colSpan: 5, alignment: "center" }, {}, {}, {}, {}],
+                [
+                  { text: "Vu Tn", style: "tableHeader" },
+                  { text: "Vc Tn", style: "tableHeader" },
+                  { text: "Ratio Vu/Vc%", style: "tableHeader" },
+                  { text: "Longitud de ensanche", style: "tableHeader" },
+                  { text: "Ancho de ensanche", style: "tableHeader" },
+                ],
+                ...T2Rows,
+              ],
+            },
+            layout: "lightHorizontalLines",
+          },
+        ],
+        styles: {
+          header: {
+            fontSize: 18,
+            bold: true,
+            margin: [0, 0, 0, 10],
+          },
+          subheader: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 10, 0, 5],
+          },
+          tableExample: {
+            margin: [0, 5, 0, 15],
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 13,
+            color: "black",
+          },
+        },
+      };
+      /* for (const id of Array.from(Array(11), (_, index) => index + 1)) {
+        const b64_img = await Plotly.toImage(`zapata${id}`);
+        docDefinition.content.push({
+          image: b64_img,
+          width: 500,
+        });
+      } */
+      pdfMake.createPdf(docDefinition).download("myPDF.pdf");
     });
   });
 })();
