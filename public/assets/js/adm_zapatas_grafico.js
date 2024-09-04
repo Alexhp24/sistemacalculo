@@ -395,7 +395,7 @@
       };
     };
 
-    const poligonoModel = (id, title, data) => {
+    const poligonoModel = (id, title, data = []) => {
       return {
         data: data,
         id: id,
@@ -424,45 +424,14 @@
       };
     };
 
-    const data1 = [
-      { xv: -7.0389, yv: 11.6025 },
-      { xv: 7.0539, yv: 11.6025 },
-      { xv: 7.0539, yv: -8.4825 },
-      { xv: -7.0389, yv: -8.4825 },
-    ];
-
     const cargas = createSpreeadSheetTable(cargasModel("#cargas"));
     const propiedades = createSpreeadSheetTable(propiedadesModel("#propiedades"));
-    const poligonoExterior = createSpreeadSheetTable(poligonoModel("#poligonoExterior", "Poligono Exterior", data1));
-    const poligonoInterior1 = createSpreeadSheetTable(
-      poligonoModel("#poligonoInterior1", "Poligono Interior 1", [
-        // Polygon 1
-        { xv: -5.0, yv: 6.0 },
-        { xv: -2.0, yv: 5.5 },
-        { xv: 0.5, yv: 6.5 },
-        { xv: -1.0, yv: 4.0 },
-      ])
-    );
-    const poligonoInterior2 = createSpreeadSheetTable(
-      poligonoModel("#poligonoInterior2", "Poligono Interior 2", [
-        // Polygon 2
-        { xv: -3.0, yv: 2.0 },
-        { xv: -1.5, yv: 1.0 },
-        { xv: 1.5, yv: 2.5 },
-        { xv: 0.5, yv: 4.0 },
-      ])
-    );
-    const poligonoInterior3 = createSpreeadSheetTable(
-      poligonoModel("#poligonoInterior3", "Poligono Interior 3", [
-        // Polygon 3
-        { xv: -4.0, yv: -3.0 },
-        { xv: -2.5, yv: -4.5 },
-        { xv: 1.0, yv: -3.5 },
-        { xv: -1.0, yv: -1.5 },
-      ])
-    );
-    const poligonoInterior4 = createSpreeadSheetTable(poligonoModel("#poligonoInterior4", "Poligono Interior 4", []));
-    const poligonoInterior5 = createSpreeadSheetTable(poligonoModel("#poligonoInterior5", "Poligono Interior 5", []));
+    const poligonoExterior = createSpreeadSheetTable(poligonoModel("#poligonoExterior", "Poligono Exterior"));
+    const poligonoInterior1 = createSpreeadSheetTable(poligonoModel("#poligonoInterior1", "Poligono Interior 1"));
+    const poligonoInterior2 = createSpreeadSheetTable(poligonoModel("#poligonoInterior2", "Poligono Interior 2"));
+    const poligonoInterior3 = createSpreeadSheetTable(poligonoModel("#poligonoInterior3", "Poligono Interior 3"));
+    const poligonoInterior4 = createSpreeadSheetTable(poligonoModel("#poligonoInterior4", "Poligono Interior 4"));
+    const poligonoInterior5 = createSpreeadSheetTable(poligonoModel("#poligonoInterior5", "Poligono Interior 5"));
 
     const octaveVector = (table, name) => {
       const data = table.getData();
@@ -594,23 +563,71 @@
           });
         });
     });
-    document.getElementById("generarPDF").addEventListener("click", async (event) => {
-      // Inicializar el documento PDF
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.addPage();
-      await doc.html(document.getElementById("resultados"), {
-        callback: function (doc) {
-          return doc;
+    document.getElementById("generarPDF").addEventListener("click", async () => {
+      const cargasData = cargas.getData();
+      const propiedadesData = propiedades.getData();
+      const docDefinition = {
+        content: [
+          "Resultados",
+          {
+            style: "tableExample",
+            table: {
+              headerRows: 1,
+              widths: ["*", "*", "*"],
+              body: [
+                [
+                  { text: "Nombre", style: "tableHeader" },
+                  { text: "Simbolo", style: "tableHeader" },
+                  { text: "Resultado", style: "tableHeader" },
+                ],
+                ["Sismica", "P", cargasData[0].sismica + " Tn/m"],
+                ["Sismica", "MX", cargasData[1].sismica + " Tn/m"],
+                ["Sismica", "MY", cargasData[2].sismica + " Tn/m"],
+                ["Muerta", "P", cargasData[0].muerta + " Tn/m"],
+                ["Muerta", "MX", cargasData[1].muerta + " Tn/m"],
+                ["Muerta", "MY", cargasData[2].muerta + " Tn/m"],
+                ["Viva", "P", cargasData[0].viva + " Tn/m"],
+                ["Viva", "MX", cargasData[1].viva + " Tn/m"],
+                ["Viva", "MY", cargasData[2].viva + " Tn/m"],
+                ["-", "A", propiedadesData[0].entradas + " Tn/m"],
+                ["-", "Ixx", propiedadesData[1].entradas + " Tn/m"],
+                ["-", "Iyy", propiedadesData[2].entradas + " Tn/m"],
+                ["-", "Df", propiedadesData[3].entradas + " Tn/m"],
+              ],
+            },
+            layout: "lightHorizontalLines",
+          },
+          { text: "1.- Analisis Estructural", style: "header" },
+        ],
+        styles: {
+          header: {
+            fontSize: 18,
+            bold: true,
+            margin: [0, 0, 0, 10],
+          },
+          subheader: {
+            fontSize: 16,
+            bold: true,
+            margin: [0, 10, 0, 5],
+          },
+          tableExample: {
+            margin: [0, 5, 0, 15],
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 13,
+            color: "black",
+          },
         },
-        /* autoPaging: "text", */
-        html2canvas: {
-          scale: 0.2,
-        },
-        width: 1500,
-        windowWidth: 1500,
-      });
-      doc.save("informe.pdf");
+      };
+      for (const id of Array.from(Array(11), (_, index) => index + 1)) {
+        const b64_img = await Plotly.toImage(`zapata${id}`);
+        docDefinition.content.push({
+          image: b64_img,
+          width: 500,
+        });
+      }
+      pdfMake.createPdf(docDefinition).download("myPDF.pdf");
     });
   });
 })();

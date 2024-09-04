@@ -8,6 +8,15 @@
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-2.34.0.min.js" charset="utf-8"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/pdfmake.min.js"
+        integrity="sha512-axXaF5grZBaYl7qiM6OMHgsgVXdSLxqq0w7F4CQxuFyrcPmn0JfnqsOtYHUun80g6mRRdvJDrTCyL8LQqBOt/Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.12/vfs_fonts.js"
+        integrity="sha512-nNkHPz+lD0Wf0eFGO0ZDxr+lWiFalFutgVeGkPdVgrG4eXDYUnhfEj9Zmg1QkrJFLC0tGs8ZExyU/1mjs4j93w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+        integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <div class="py-12">
         <div class="container mx-auto w-full">
             <div class="flex flex-wrap">
@@ -33,7 +42,8 @@
                                             <td class="py-2 px-4">fc</td>
                                             <td class="py-2 px-4"><input type="number" name="fc"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="fc" min="0" value="210" step="any" required></td>
+                                                    id="fc" min="0" value="210" step="any"
+                                                    required></td>
                                             <td class="py-2 px-4">Tn/m</td>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
@@ -41,7 +51,8 @@
                                             <td class="py-2 px-4">Fy</td>
                                             <td class="py-2 px-4"><input type="number" name="Fy"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="Fy" min="0" value="4200" step="any" required></td>
+                                                    id="Fy" min="0" value="4200" step="any"
+                                                    required></td>
                                             <td class="py-2 px-4">Tn/m</td>
                                         </tr>
                                         {{-- <tr class="bg-white dark:bg-gray-800">
@@ -57,7 +68,8 @@
                                             <td class="py-2 px-4"></td>
                                             <td class="py-2 px-4"><input type="number" name="frm"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="frm" min="0" value="1.4" step="any" required></td>
+                                                    id="frm" min="0" value="1.4" step="any"
+                                                    required></td>
                                             <td class="py-2 px-4"></td>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
@@ -65,7 +77,8 @@
                                             <td class="py-2 px-4"></td>
                                             <td class="py-2 px-4"><input type="number" name="frv"
                                                     class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="frv" min="0" value="1.7" step="any" required></td>
+                                                    id="frv" min="0" value="1.7" step="any"
+                                                    required></td>
                                             <td class="py-2 px-4"></td>
                                         </tr>
                                         <tr class="bg-white dark:bg-gray-800">
@@ -88,10 +101,15 @@
                                         <!-- Agregar más filas según sea necesario -->
                                         <tr>
                                             <th class="py-2 px-4">
-                                                <div class="input-group mb-2">
+                                                <div class="input-group mb-2 text-left inline-block">
                                                     <button id="calcular"
                                                         class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
                                                         type="submit">DISEÑAR</button>
+                                                </div>
+                                                <div class="input-group mb-2 text-left inline-block">
+                                                    <button id="generarPDF"
+                                                        class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                                        type="button">PDF</button>
                                                 </div>
                                             </th>
                                         </tr>
