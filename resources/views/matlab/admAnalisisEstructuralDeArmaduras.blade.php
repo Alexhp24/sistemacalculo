@@ -180,87 +180,98 @@
                         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Resultados</h3>
                         <div class="overflow-x-auto" id="resultados">
                             <table class="min-w-full text-gray-800 dark:text-white">
-                                <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                    <th class="text-xl py-2 px-4 text-left" colspan="4">1.- Analisis Estructural
-                                    </th>
-                                </tr>
-                                <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td id="plot" class="py-2 px-4">
-                                        <!-- GUI -->
-                                        <div>
-                                            <form class="hidden">
-                                                <textarea name="coords" readonly></textarea>
-                                                <input type="range" name="zoom" min="5" max="40">
-                                            </form>
-                                            <ul class="flex gap-4">
-                                                <li id="arrows"><i class="fa fa-arrows" title="M: Move"></i>
-                                                <li id="pencil"><i class="fa fa-pencil" title="L: Line"></i>
-                                                <li id="plus"><i class="fa fa-plus" title="A: Add"></i>
-                                                <li id="scissors"><i class="fa fa-scissors" title="C: Cut"></i>
-                                                <li id="crosshairs"><i class="fa fa-crosshairs"
-                                                        title="O: Change Origin"></i>
-                                                <li id="eye-slash"><i class="fa fa-eye-slash"
-                                                        title="V: Toggle Visibility"></i>
-                                                <li id="anchor"><i class="fa fa-anchor"
-                                                        title="S: Toggle Grid Snap"></i>
-                                                </li>
-                                            </ul>
-                                            <ul class="flex gap-4">
-                                                <li id="undo"><i class="fa fa-undo" title="U: Undo"></i>
-                                                <li id="redo"><i class="fa fa-repeat" title="R: Redo"></i>
-                                                <li id="refresh"><i class="fa fa-trash-o" title="Delete All"></i>
-                                                </li>
-                                            </ul>
-                                            {{-- <ol class="flex gap-4">
-                                                <li><i class="fa fa-file fa-rotate-180"></i></li>
-                                                <li><i class="fa fa-trash-o"></i></li>
-                                            </ol> --}}
-                                            <ul class="flex hidden">
-                                                <li id="color:1" style="background-color:#2020FF"><i
-                                                        class="fa fa-paint-brush" title="Color: BLUE"></i>
-                                                <li id="color:2" style="background-color:#FFFFFF"><i
-                                                        class="fa fa-paint-brush" title="Color: WHITE"></i>
-                                                <li id="color:3" style="background-color:#00FF00"><i
-                                                        class="fa fa-paint-brush" title="Color: GREEN"></i>
-                                                <li id="color:4" style="background-color:#FFFF00"><i
-                                                        class="fa fa-paint-brush" title="Color: YELLOW"></i>
-                                                <li id="color:5" style="background-color:#FF0000"><i
-                                                        class="fa fa-paint-brush" title="Color: RED"></i>
-                                                <li id="color:6" style="background-color:#00FFFF"><i
-                                                        class="fa fa-paint-brush" title="Color: CYAN"></i>
-                                                <li id="color:7" style="background-color:#FF00FF"><i
-                                                        class="fa fa-paint-brush" title="Color: MAGENTA"></i>
-                                                <li id="color:8" style="background-color:#008080"><i
-                                                        class="fa fa-paint-brush" title="Color: CYAN_DK"></i>
-                                            </ul>
-                                            <ul class="flex hidden">
-                                                <li id="color:9" style="background-color:#E55300"><i
-                                                        class="fa fa-paint-brush" title="Color: ORANGE"></i>
-                                                <li id="color:10" style="background-color:#8B4513"><i
-                                                        class="fa fa-paint-brush" title="Color: BROWN"></i>
-                                                <li id="color:11" style="background-color:#808000"><i
-                                                        class="fa fa-paint-brush" title="Color: YELLOW_DK"></i>
-                                                <li id="color:12" style="background-color:#808080"><i
-                                                        class="fa fa-paint-brush" title="Color: GRAY"></i>
-                                                <li id="color:13" style="background-color:#404040"><i
-                                                        class="fa fa-paint-brush" title="Color: GRAY_DK"></i>
-                                                <li id="color:14" style="background-color:#87CEFA"><i
-                                                        class="fa fa-paint-brush" title="Color: LIGHTSKYBLUE"></i>
-                                                <li id="color:15" style="background-color:#1E90FF"><i
-                                                        class="fa fa-paint-brush" title="Color: DODGERBLUE"></i>
-                                                <li id="color:16" style="background-color:#ADD8E6"><i
-                                                        class="fa fa-paint-brush" title="Color: LIGHTBLUE"></i>
-                                            </ul>
-                                            <ul class="flex gap-4">
-                                                <li id="copy"><i class="fa fa-copy"
-                                                        title="Open polygon in new editor instance as URL"></i>
-                                                <li id="clipboard"><i class="fa fa-clipboard"
-                                                        title="Select array text"></i>
-                                            </ul>
-                                        </div>
-                                        <canvas class="w-full h-[640px]"></canvas>
-                                    </td>
-                                </tr>
+                                <thead>
+                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">1.- Analisis
+                                            Estructural
+                                        </th>
+                                    </tr>
+                                    <tr class="bg-gray-100 dark:bg-gray-600">
+                                        <td id="plot" class="py-2 px-4" colspan="4">
+                                            <!-- GUI -->
+                                            <div>
+                                                <form>
+                                                    <textarea class="hidden" name="coords" readonly></textarea>
+                                                    <input type="range" name="zoom" min="5"
+                                                        max="40">
+                                                </form>
+                                                <ul class="flex gap-4">
+                                                    <li id="arrows"><i class="fa fa-arrows" title="M: Move"></i>
+                                                    <li id="pencil"><i class="fa fa-pencil" title="L: Line"></i>
+                                                    <li id="plus" class="hidden"><i class="fa fa-plus"
+                                                            title="A: Add"></i>
+                                                    <li id="scissors"><i class="fa fa-scissors" title="C: Cut"></i>
+                                                    <li id="crosshairs" class="hidden"><i class="fa fa-crosshairs"
+                                                            title="O: Change Origin"></i>
+                                                    <li id="eye-slash" class="hidden"><i class="fa fa-eye-slash"
+                                                            title="V: Toggle Visibility"></i>
+                                                    <li id="anchor"><i class="fa fa-anchor"
+                                                            title="S: Toggle Grid Snap"></i>
+                                                    </li>
+                                                </ul>
+                                                <ul class="flex gap-4 hidden">
+                                                    <li id="undo"><i class="fa fa-undo" title="U: Undo"></i>
+                                                    <li id="redo"><i class="fa fa-repeat" title="R: Redo"></i>
+                                                    <li id="refresh"><i class="fa fa-trash-o"
+                                                            title="Delete All"></i>
+                                                    </li>
+                                                </ul>
+                                                {{-- <ol class="flex gap-4">
+                                                    <li><i class="fa fa-file fa-rotate-180"></i></li>
+                                                    <li><i class="fa fa-trash-o"></i></li>
+                                                </ol> --}}
+                                                <ul class="flex hidden">
+                                                    <li id="color:1" style="background-color:#2020FF"><i
+                                                            class="fa fa-paint-brush" title="Color: BLUE"></i>
+                                                    <li id="color:2" style="background-color:#FFFFFF"><i
+                                                            class="fa fa-paint-brush" title="Color: WHITE"></i>
+                                                    <li id="color:3" style="background-color:#00FF00"><i
+                                                            class="fa fa-paint-brush" title="Color: GREEN"></i>
+                                                    <li id="color:4" style="background-color:#FFFF00"><i
+                                                            class="fa fa-paint-brush" title="Color: YELLOW"></i>
+                                                    <li id="color:5" style="background-color:#FF0000"><i
+                                                            class="fa fa-paint-brush" title="Color: RED"></i>
+                                                    <li id="color:6" style="background-color:#00FFFF"><i
+                                                            class="fa fa-paint-brush" title="Color: CYAN"></i>
+                                                    <li id="color:7" style="background-color:#FF00FF"><i
+                                                            class="fa fa-paint-brush" title="Color: MAGENTA"></i>
+                                                    <li id="color:8" style="background-color:#008080"><i
+                                                            class="fa fa-paint-brush" title="Color: CYAN_DK"></i>
+                                                </ul>
+                                                <ul class="flex hidden">
+                                                    <li id="color:9" style="background-color:#E55300"><i
+                                                            class="fa fa-paint-brush" title="Color: ORANGE"></i>
+                                                    <li id="color:10" style="background-color:#8B4513"><i
+                                                            class="fa fa-paint-brush" title="Color: BROWN"></i>
+                                                    <li id="color:11" style="background-color:#808000"><i
+                                                            class="fa fa-paint-brush" title="Color: YELLOW_DK"></i>
+                                                    <li id="color:12" style="background-color:#808080"><i
+                                                            class="fa fa-paint-brush" title="Color: GRAY"></i>
+                                                    <li id="color:13" style="background-color:#404040"><i
+                                                            class="fa fa-paint-brush" title="Color: GRAY_DK"></i>
+                                                    <li id="color:14" style="background-color:#87CEFA"><i
+                                                            class="fa fa-paint-brush" title="Color: LIGHTSKYBLUE"></i>
+                                                    <li id="color:15" style="background-color:#1E90FF"><i
+                                                            class="fa fa-paint-brush" title="Color: DODGERBLUE"></i>
+                                                    <li id="color:16" style="background-color:#ADD8E6"><i
+                                                            class="fa fa-paint-brush" title="Color: LIGHTBLUE"></i>
+                                                </ul>
+                                                <ul class="flex hidden gap-4">
+                                                    <li id="copy"><i class="fa fa-copy"
+                                                            title="Open polygon in new editor instance as URL"></i>
+                                                    <li id="clipboard"><i class="fa fa-clipboard"
+                                                            title="Select array text"></i>
+                                                </ul>
+                                            </div>
+                                            <div class="w-full h-[640px] relative" id="editor"><canvas
+                                                    class="w-full h-full"></canvas>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </thead>
+                                <tbody id="polygons">
+
+                                </tbody>
                             </table>
                         </div>
                     </div>
