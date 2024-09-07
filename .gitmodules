@@ -1,0 +1,3 @@
+[submodule "public/assets/js/tabulator_base"]
+	path = public/assets/js/tabulator_base
+	url = ../../Hyperiumtech-hco/tabulator_base
