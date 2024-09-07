@@ -35,6 +35,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 //==========================RUTA PARA LAS PRUEBAS PREDIM=======================//
 Route::view('/admPredim', 'predim.admpredim');
+//==========================RUTA PARA LAS PRUEBAS CAD=======================//
+Route::view('/cad', 'matlab.cad');
 //==========================RUTA PARA LAS HOJAS DE CALCULO====================//
 Route::view('/admDvigas', 'hcalculo.admdesingvigas');
 Route::view('/admvigasG', 'hcalculo.admvigageneral');

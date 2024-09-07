@@ -2,6 +2,8 @@ import { Grid } from "./cad/grid.js";
 import { History } from "./cad/history.js";
 import { Shape } from "./cad/shape.js";
 import { pointDistance, distanceToSegment, formatCoordinate } from "./cad/utils.js";
+import { makeCreateDeleteColumn } from "./tabulator_base/table.js";
+import { createSpreeadSheetTable } from "./tabulator_base/table_factory.js";
 
 function getMousePos(canvas, evt) {
   const rect = canvas.getBoundingClientRect();
@@ -24,6 +26,96 @@ function getMousePos(canvas, evt) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  const datosGeneralesModel = (id) => {
+    return {
+      id: id,
+      config: {
+        layout: "fitDataTable",
+        height: 200,
+        columns: [
+          makeCreateDeleteColumn(id),
+          {
+            title: "Columna",
+            field: "columna",
+            editor: "number",
+          },
+          {
+            title: "X",
+            field: "x",
+            editor: "number",
+          },
+          {
+            title: "Y",
+            field: "y",
+            editor: "number",
+          },
+          {
+            title: "PD",
+            columns: [
+              {
+                title: "",
+                field: "pd1",
+                editor: "number",
+              },
+              {
+                title: "",
+                field: "pd2",
+                editor: "number",
+              },
+              {
+                title: "",
+                field: "pd3",
+                editor: "number",
+              },
+            ],
+          },
+          {
+            title: "PL",
+            columns: [
+              {
+                title: "",
+                field: "pl1",
+                editor: "number",
+              },
+              {
+                title: "",
+                field: "pl2",
+                editor: "number",
+              },
+              {
+                title: "",
+                field: "pl3",
+                editor: "number",
+              },
+            ],
+          },
+          {
+            title: "SISMO",
+            columns: [
+              {
+                title: "",
+                field: "sismo1",
+                editor: "number",
+              },
+              {
+                title: "",
+                field: "sismo2",
+                editor: "number",
+              },
+              {
+                title: "",
+                field: "sismo3",
+                editor: "number",
+              },
+            ],
+          },
+        ],
+      },
+    };
+  };
+
+  const datosGenerales = createSpreeadSheetTable(datosGeneralesModel("#datosGenerales"));
+
   // Init GUI Components
   var canvas = document.querySelector("#plot canvas");
   var form = document.querySelector("#plot form");
@@ -37,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
   input.style.top = 0;
   input.style.left = 0;
   input.style.transform = "translate(-50%,-50%)";
-  
+
   // Global vars
   var Tools = {
     MOVE: 0,
@@ -474,7 +566,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const mid = grid.toPoint({ x: (last_point.x + mousePos.x) * 0.5, y: (last_point.y + mousePos.y) * 0.5 });
         input.style.top = mid.y + "px";
         input.style.left = mid.x + "px";
-/*         const mp = grid.toPoint(mousePos);
+        /*         const mp = grid.toPoint(mousePos);
         input.style.top = mp.y + "px";
         input.style.left = mp.x + "px"; */
         input.value = pointDistance(last_point, mousePos).toFixed(2);
@@ -498,18 +590,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Button
   document.getElementById("pencil").onclick = function () {
     switchTool(Tools.LINE);
-    canvas.style.cursor = 'crosshair';
+    canvas.style.cursor = "crosshair";
   };
   document.getElementById("arrows").onclick = function () {
     switchTool(Tools.MOVE);
-    canvas.style.cursor = 'move';
+    canvas.style.cursor = "move";
   };
   document.getElementById("plus").onclick = function () {
     switchTool(Tools.ADD);
   };
   document.getElementById("scissors").onclick = function () {
     switchTool(Tools.CUT);
-    canvas.style.cursor = 'crosshair';
+    canvas.style.cursor = "crosshair";
   };
   document.getElementById("crosshairs").onclick = function () {
     switchTool(Tools.ORIGIN);
@@ -557,13 +649,13 @@ document.addEventListener("DOMContentLoaded", () => {
     switch (evt.keyCode) {
       case 77: // "M"
       case 27: // <escape>
-      if (shape.points.length >= 2) {
-        shapes.push(shape);
-      }
+        if (shape.points.length >= 2) {
+          shapes.push(shape);
+        }
         editor.removeChild(input);
         shape = new Shape(true);
         switchTool(Tools.MOVE);
-        canvas.style.cursor = 'move';
+        canvas.style.cursor = "move";
         break;
       case 76: // "L"
         switchTool(Tools.LINE);

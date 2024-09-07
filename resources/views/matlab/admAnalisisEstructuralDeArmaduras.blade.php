@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Analisis Estructural de Armaduras') }}
+            {{ __('Zapatas Grafico 2') }}
         </h2>
     </x-slot>
     <style>
@@ -15,6 +15,8 @@
         }
     </style>
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
     <div class="py-12">
         <div class="container mx-auto w-full">
             <div class="flex flex-wrap">
@@ -26,148 +28,11 @@
                             <form id="zapatasForm">
                                 @csrf
                                 <table class="table-auto w-full text-gray-800 dark:text-white px-6">
-                                    <thead class="bg-white dark:bg-gray-800">
-                                        <tr class="text-center">
-                                            <th class="py-2 px-4">Nombre</th>
-                                            <th class="py-2 px-4">Simb.</th>
-                                            <th class="py-2 px-4">Entrada</th>
-                                            <th class="py-2 px-4">Unidad <br> Medida</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class="text-center">
-                                        <tr>
-                                            <td class="py-2 px-4">Modulo Elástico</td>
-                                            <td class="py-2 px-4">E</td>
-                                            <td class="py-2 px-4"><input type="number" name="modElastico"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="modElastico" min="0" value="210" required></td>
-                                            <td class="py-2 px-4">Kpa</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="py-2 px-4">Área de la sección</td>
-                                            <td class="py-2 px-4">A</td>
-                                            <td class="py-2 px-4"><input type="number" name="aSeccion"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="aSeccion" min="0" value="210" required></td>
-                                            <td class="py-2 px-4">m<sup>2</sup></td>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-xl py-2 px-4 text-left border-b border-gray-600"
-                                                colspan="4" scope="col">Nodos</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">ID</th>
-                                            <th class="py-2 px-4"></th>
-                                            <th class="py-2 px-4">
-                                                <input type="number" name="nodoID"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="nodoID" min="0" required>
-                                            </th>
-                                            <th class="py-2 px-4"></th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">Posición</th>
-                                            <th class="py-2 px-4">x</th>
-                                            <th class="py-2 px-4">
-                                                <input type="number" name="posX"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="posX" placeholder="0" min="0" required>
-                                            </th>
-                                            <th class="py-2 px-4">m</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">Posición</th>
-                                            <th class="py-2 px-4">y</th>
-                                            <th class="py-2 px-4">
-                                                <input type="number" name="posY"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="posY" placeholder="0" min="0" required>
-                                            </th>
-                                            <th class="py-2 px-4">m</th>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-xl py-2 px-4 text-left border-b border-gray-600"
-                                                colspan="4" scope="col">Barras</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">ID</th>
-                                            <th class="py-2 px-4"></th>
-                                            <th class="py-2 px-4">
-                                                <input type="number" name="barraID"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="barraID" min="0" required>
-                                            </th>
-                                            <th class="py-2 px-4"></th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">Nodo</th>
-                                            <th class="py-2 px-4">A</th>
-                                            <th class="py-2 px-4">
-                                                <input type="number" name="nodoAID"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="nodoAID" min="0"" required>
-                                            </th>
-                                            <th class="py-2 px-4">ID</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">Nodo</th>
-                                            <th class="py-2 px-4">B</th>
-                                            <th class="py-2 px-4">
-                                                <input type="number" name="nodoBID"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="nodoBID" min="0"" required>
-                                            </th>
-                                            <th class="py-2 px-4">ID</th>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-xl py-2 px-4 text-left border-b border-gray-600"
-                                                colspan="4" scope="col">Soportes</th>
-                                        </tr>
-                                        <tr>
-                                            <th class="text-xl py-2 px-4 text-left border-b border-gray-600"
-                                                colspan="4" scope="col">Fuerzas</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">ID</th>
-                                            <th class="py-2 px-4"></th>
-                                            <th class="py-2 px-4">
-                                                <input type="number" name="nodoID"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="nodoID" min="0" required>
-                                            </th>
-                                            <th class="py-2 px-4"></th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">Magnitud</th>
-                                            <th class="py-2 px-4">X</th>
-                                            <th class="py-2 px-4">
-                                                <input type="number" name="magnitudX"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="magnitudX" min="0" required>
-                                            </th>
-                                            <th class="py-2 px-4">kN</th>
-                                        </tr>
-                                        <tr class="bg-white dark:bg-gray-800">
-                                            <th class="py-2 px-4">Magnitud</th>
-                                            <th class="py-2 px-4">Y</th>
-                                            <th class="py-2 px-4">
-                                                <input type="number" name="magnitudY"
-                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                    id="magnitudY" min="0" required>
-                                            </th>
-                                            <th class="py-2 px-4">kN</th>
-                                        </tr>
-                                        <!-- Agregar más filas según sea necesario -->
-                                        <tr>
-                                            <th class="py-2 px-4">
-                                                <div class="input-group mb-2 text-left">
-                                                    <button id="calcular"
-                                                        class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-                                                        type="submit">DISEÑAR</button>
-                                                </div>
-                                            </th>
-                                        </tr>
-                                    </tbody>
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        <td class="py-2 px-4" colspan="4">
+                                            <div id="datosGenerales"></div>
+                                        </td>
+                                    </tr>
                                 </table>
                             </form>
                         </div>
