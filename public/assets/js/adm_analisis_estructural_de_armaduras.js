@@ -4,6 +4,7 @@ import { Shape, Marker } from "./cad/shapes.js";
 import { pointDistance, distanceToSegment, formatCoordinate } from "./cad/utils.js";
 import { makeCreateDeleteColumn } from "./tabulator_base/table.js";
 import { createSpreeadSheetTable } from "./tabulator_base/table_factory.js";
+import { matlabColorScale } from "./matlab/color_scale.js";
 
 function getMousePos(canvas, evt) {
   const rect = canvas.getBoundingClientRect();
@@ -972,7 +973,9 @@ document.addEventListener("DOMContentLoaded", () => {
               marker: {
                 size: 2, // Size of the markers
                 color: zl, // Color of the markers, based on Z data
-                colorscale: "Viridis", // Color scale
+                //colorscale: "Viridis", // Color scale
+                //colorscale: "Jet", // Color scale
+                colorscale: matlabColorScale, // Color scale
                 showscale: true, // Show the color scale
                 colorbar: {
                   title: {
@@ -981,13 +984,19 @@ document.addEventListener("DOMContentLoaded", () => {
                   },
                 },
               },
+              hovertemplate: "<b>x</b>: %{x}<br>" + "<b>y</b>: %{y}<br>" + "<b>z</b>: %{marker.color:.4f}" + "<extra></extra>",
               type: "scattergl", // 3D scatter plot type
               /* type: "pointcloudgl", // 3D scatter plot type */
             };
           });
           const layout = {
-            /* height: 500, */
-            /* width: 400, */
+            xaxis: {
+              scaleanchor: "y",
+              scaleratio: 1,
+            },
+            yaxis: {
+              constrain: "domain",
+            },
             showlegend: false,
             title: `<b>Comb ${index + 1}<br>σ<sub>min</sub> = ${zapatas2.data.mins[index].toFixed(4)}<br>σ<sub>max</sub> = ${zapatas2.data.maxs[index].toFixed(
               4
