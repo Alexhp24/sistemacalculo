@@ -17,6 +17,8 @@
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
     <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
+    <script src="https://unpkg.com/virtual-webgl@1.0.6/src/virtual-webgl.js"></script>
+    <script src="https://cdn.plot.ly/plotly-2.34.0.min.js" charset="utf-8"></script>
     <div class="py-12">
         <div class="container mx-auto w-full">
             <div class="flex flex-wrap">
@@ -25,13 +27,27 @@
                     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
                         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Datos Generales</h3>
                         <div class="overflow-auto">
-                            <form id="zapatasForm">
+                            <form id="zapatas2Form">
                                 @csrf
                                 <table class="table-auto w-full text-gray-800 dark:text-white px-6">
                                     <tr class="bg-white dark:bg-gray-800">
                                         <td class="py-2 px-4" colspan="4">
                                             <div id="datosGenerales"></div>
                                         </td>
+                                    </tr>
+                                    <tr>
+                                        <th class="py-2 px-4 text-left" colspan="4">
+                                            <div class="input-group mb-2 text-left inline-block">
+                                                <button id="calcular"
+                                                    class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                                    type="submit">DISEÑAR</button>
+                                            </div>
+                                            <div class="input-group mb-2 text-left inline-block">
+                                                <button id="generarPDF"
+                                                    class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                                    type="button">PDF</button>
+                                            </div>
+                                        </th>
                                     </tr>
                                 </table>
                             </form>
@@ -43,6 +59,12 @@
                 <div class="w-full md:w-2/3 px-4 mt-4 md:mt-0">
                     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
                         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Resultados</h3>
+                        <form id="calcularZapatas2">
+                            @csrf
+                            <button
+                                class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                type="submit">CALCULAR</button>
+                        </form>
                         <div class="overflow-x-auto" id="resultados">
                             <table class="min-w-full text-gray-800 dark:text-white">
                                 <thead>
@@ -57,8 +79,7 @@
                                             <div>
                                                 <form>
                                                     <textarea class="hidden" name="coords" readonly></textarea>
-                                                    <input type="range" name="zoom" min="5"
-                                                        max="40">
+                                                    <input type="range" name="zoom" min="5" max="40">
                                                 </form>
                                                 <ul class="flex gap-4">
                                                     <li id="arrows"><i class="fa fa-arrows" title="M: Move"></i>
@@ -77,8 +98,7 @@
                                                 <ul class="flex gap-4 hidden">
                                                     <li id="undo"><i class="fa fa-undo" title="U: Undo"></i>
                                                     <li id="redo"><i class="fa fa-repeat" title="R: Redo"></i>
-                                                    <li id="refresh"><i class="fa fa-trash-o"
-                                                            title="Delete All"></i>
+                                                    <li id="refresh"><i class="fa fa-trash-o" title="Delete All"></i>
                                                     </li>
                                                 </ul>
                                                 {{-- <ol class="flex gap-4">
@@ -135,7 +155,38 @@
                                     </tr>
                                 </thead>
                                 <tbody id="polygons">
-
+                                </tbody>
+                                <tbody>
+                                    <tr class="bg-gray-100 dark:bg-gray-600">
+                                        <td class="py-2 px-4" colspan="4">
+                                            <div id="zapata1"></div>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-gray-100 dark:bg-gray-600">
+                                        <td class="py-2 px-4" colspan="4">
+                                            <div id="zapata2"></div>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-gray-100 dark:bg-gray-600">
+                                        <td class="py-2 px-4" colspan="4">
+                                            <div id="zapata3"></div>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-gray-100 dark:bg-gray-600">
+                                        <td class="py-2 px-4" colspan="4">
+                                            <div id="zapata4"></div>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-gray-100 dark:bg-gray-600">
+                                        <td class="py-2 px-4" colspan="4">
+                                            <div id="zapata5"></div>
+                                        </td>
+                                    </tr>
+                                    <tr class="bg-gray-100 dark:bg-gray-600">
+                                        <td class="py-2 px-4" colspan="4">
+                                            <div id="zapata6"></div>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

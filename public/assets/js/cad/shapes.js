@@ -200,3 +200,25 @@ export class Shape {
 
   drawSelected() {}
 }
+
+export class Marker {
+  constructor(point, label) {
+    this.point = point;
+    this.label = label;
+  }
+
+  draw(grid, ctx) {
+    const p = grid.toPoint(this.point);
+    ctx.moveTo(p.x, p.y);
+    ctx.fillStyle = "white";
+    ctx.strokeStyle = "white";
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, HANDLE_RELATIVE_RADIUS * grid.size, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.stroke();
+    ctx.font = "8pt arial";
+    ctx.textBaseline = "textBaseline";
+    ctx.fillText(`  ${this.label}`, p.x, p.y);
+    ctx.restore();
+  }
+}

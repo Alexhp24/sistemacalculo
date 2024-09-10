@@ -1,10 +1,4 @@
 function zapatas(A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, poligonos)
-  function [k] = ecuacionDeFlexion(Co, A, XL, YL, Ixx, Iyy, multiplier, first, last)
-    P  = Co(first:last,1)'+1.8*A*multiplier;
-    M2 = Co(first:last,2)';
-    M3 = Co(first:last,3)';
-    k  = P./A + (XL./Iyy)*M2 + (YL./Ixx)*M3;
-  end
   %%%%%%PROCESO
   Co = [Pm+Pv         , MXm+MXv    , MYm+MYv;
         Pm+.7*PS      , MXm+0.7*MXS, MYm;
@@ -51,7 +45,7 @@ function zapatas(A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, poli
        & !inpolygon(xq,yq,poligonos.poligonoInterior5(1,:),poligonos.poligonoInterior5(2,:));
   XL= xq(in);
   YL= yq(in);
-  ZL  = cat(2, ecuacionDeFlexion(Co, A, XL, YL, Ixx, Iyy, Df, 1, 6), ecuacionDeFlexion(Co, A, XL, YL, Ixx, Iyy, 1.8, 7, 11));
+  ZL  = cat(2, ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, Df, 1, 6), ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, 1.8, 7, 11));
   ZLT = ZL';
   mins = min(ZLT, [], 2);
   maxs = max(ZLT, [], 2);

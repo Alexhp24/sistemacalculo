@@ -130,4 +130,18 @@ class OctavePlotController extends Controller
 
         self::returnOctaveResult($function);
     }
+
+    public function graficarZapatas2(Request $request)
+    {
+        $function = sprintf(
+            "zapatas2(%s, %s, %s, %s, %s);",
+            $request->input("poligonos"),
+            $request->input("column"),
+            $request->input("PD"),
+            $request->input("PL"),
+            $request->input("SISMO"),
+        );
+
+        self::returnOctaveResult($function);
+    }
 }

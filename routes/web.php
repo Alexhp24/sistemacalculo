@@ -69,6 +69,7 @@ Route::post('/malbaCont', [MuroAlbanieriaController::class, 'muroAlbanieria'])->
 Route::view('/admplacasL', 'hcalculo.admdesingPlacasL');
 //=========================OCTAVE============================================//
 Route::view('/admAnalisisEstructuralDeArmaduras', 'matlab.admAnalisisEstructuralDeArmaduras');
+Route::post('/zapatas2', [OctavePlotController::class, 'graficarZapatas2'])->name('zapatas2');
 Route::view('/admFuerzasCortantesGrafico', 'matlab.admFuerzasCortantesGrafico');
 Route::post('/fuerzasCortantes', [OctavePlotController::class, 'graficarFC'])->name('fuerzasCortantes');
 Route::view('/admZapatasGrafico', 'matlab.admZapatasGrafico');
