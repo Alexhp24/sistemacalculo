@@ -359,8 +359,18 @@
             } else if (asd <= 2.71) {
               return '1 Ø 5/8" + 1 Ø 3/8"';
             } else if (asd <= 3.27) {
-              return '5/8" + 1/2"';
-            }
+              return '1 Ø 5/8" + 1/2"';
+            } else if (asd <= 4) {
+              return '2 Ø 5/8"';
+            }  else if (asd <= 4.71) {
+              return '2 Ø 5/8" + 1 Ø 3/8"';
+            }  else if (asd <= 5.27) {
+              return '2 Ø 5/8" + 1 Ø 1/2"';
+            }  else if (asd <= 6) {
+              return '3 Ø 5/8"';
+            }  else if (asd <= 6.54) {
+              return '2 Ø 5/8" + 2 Ø 1/2"';
+            }  
             return "";
           },
         },

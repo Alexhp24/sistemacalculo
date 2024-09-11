@@ -320,12 +320,12 @@ RQ4 = 2:1:2*length(b)+1;
 CORT = Cor([RQ4 ],1) ; 
 
 for yu = 1 : 1 : length(b)
-    d  = (ht(1,yu) - 0.025)*100;                                           % Peralte del vano
+    d  = (ht(1,yu))*100;                                           % Peralte del vano
     bb = b(1,yu)*100;   
-    CORT(2*yu-1,2) = 1.1*0.85*0.53*fc^0.5*bb*d/1000;
+    CORT(2*yu-1,2) = 1.1*0.53*fc^0.5*bb*d/1000;
     CORT(2*yu-1,3) = 100*CORT(2*yu-1,1)/CORT(2*yu-1,2);
     
-    CORT(2*yu,2) = 1.1*0.85*0.53*fc^0.5*bb*d/1000;
+    CORT(2*yu,2) = 1.1*0.53*fc^0.5*bb*d/1000;
     CORT(2*yu,3) = 100*CORT(2*yu,1)/CORT(2*yu,2);
 end
 CORT;
