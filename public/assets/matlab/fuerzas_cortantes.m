@@ -1,5 +1,4 @@
 function fuerzas_cortantes(fc, fy, b, h, lt, wd, wv, anchoTributario, frm, frv)
-    %%clear all, clc
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %PROPIEDADES DE LA SECCION Y CARGAS
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

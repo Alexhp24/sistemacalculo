@@ -11,4 +11,4 @@
         }
     }
 </style>
-<img class="mx-auto rounded-full h-36 w-36 logo" src="{{ url('/assets/img/logo_rizabalAsociados.png') }}" alt="logo rizabal & asociados" style="width: 50px; height: 50px;">
+<img class="mx-auto h-36 w-36 logo" src="{{ url('/assets/img/logo_rizabalAsociados.png') }}" alt="logo rizabal & asociados" style="width: 50px; height: 50px;">

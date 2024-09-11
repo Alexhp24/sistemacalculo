@@ -33,7 +33,7 @@
                         }
                     }
                 </style>
-                <img class="mx-auto rounded-full h-20 w-20 py-2 logo" src="{{ url('/assets/img/logo_rizabalAsociados.png') }}" alt="author avatar">
+                <img class="mx-auto h-20 w-20 py-2 logo" src="{{ url('/assets/img/logo_rizabalAsociados.png') }}" alt="author avatar">
             </a>
             <div class="hidden md:flex space-x-4">
                 <a href="#" class="text-gray-950 dark:text-gray-100 hover:text-gray-700 dark:hover:text-white py-2">Inicio</a>
@@ -88,7 +88,7 @@
             <div class="grid grid-cols-2 gap-4">
                 <!-- First row, first column (Logo) -->
                 <div class="flex flex-col items-center justify-center bg-white p-6 rounded shadow">
-                    <img class="rounded-full h-20 w-20" src="{{ url('/assets/img/logo_rizabalAsociados.png') }}" alt="Rizabal Asociados Logo">
+                    <img class="h-20 w-20" src="{{ url('/assets/img/logo_rizabalAsociados.png') }}" alt="Rizabal Asociados Logo">
                     <p class="mt-4 text-gray-700 text-center">
                         Rizabal Asociados es una empresa dedicada al diseño de estructuras de ingeniería civil mediante planos, ofreciendo soluciones innovadoras y de alta calidad.
                     </p>

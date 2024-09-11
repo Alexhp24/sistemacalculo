@@ -108,6 +108,26 @@ class OctavePlotController extends Controller
         self::returnOctaveResult($function);
     }
 
+    public function graficarAligerados(Request $request)
+    {
+        $function = sprintf(
+            "aligerados(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
+            $request->input('fc'),
+            $request->input('Fy'),
+            /* $request->input('E'), */
+            $request->input('b'),
+            $request->input('h'),
+            $request->input('Lt'),
+            $request->input('WD'),
+            $request->input('WV'),
+            $request->input('anchoTributario'),
+            $request->input('frm'),
+            $request->input('frv')
+        );
+
+        self::returnOctaveResult($function);
+    }
+
     public function graficarZapatas(Request $request)
     {
         $function = sprintf(
@@ -126,6 +146,20 @@ class OctavePlotController extends Controller
             $request->input("MXv"),
             $request->input("MYv"),
             $request->input("poligonos"),
+        );
+
+        self::returnOctaveResult($function);
+    }
+
+    public function graficarZapatas2(Request $request)
+    {
+        $function = sprintf(
+            "zapatas2(%s, %s, %s, %s, %s);",
+            $request->input("poligonos"),
+            $request->input("column"),
+            $request->input("PD"),
+            $request->input("PL"),
+            $request->input("SISMO"),
         );
 
         self::returnOctaveResult($function);

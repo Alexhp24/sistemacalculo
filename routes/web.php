@@ -35,6 +35,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 //==========================RUTA PARA LAS PRUEBAS PREDIM=======================//
 Route::view('/admPredim', 'predim.admpredim');
+//==========================RUTA PARA LAS PRUEBAS CAD=======================//
+Route::view('/cad', 'matlab.cad');
 //==========================RUTA PARA LAS HOJAS DE CALCULO====================//
 Route::view('/admDvigas', 'hcalculo.admdesingvigas');
 Route::view('/admvigasG', 'hcalculo.admvigageneral');
@@ -67,8 +69,11 @@ Route::post('/malbaCont', [MuroAlbanieriaController::class, 'muroAlbanieria'])->
 Route::view('/admplacasL', 'hcalculo.admdesingPlacasL');
 //=========================OCTAVE============================================//
 Route::view('/admAnalisisEstructuralDeArmaduras', 'matlab.admAnalisisEstructuralDeArmaduras');
+Route::post('/zapatas2', [OctavePlotController::class, 'graficarZapatas2'])->name('zapatas2');
 Route::view('/admFuerzasCortantesGrafico', 'matlab.admFuerzasCortantesGrafico');
 Route::post('/fuerzasCortantes', [OctavePlotController::class, 'graficarFC'])->name('fuerzasCortantes');
+Route::view('/admAligeradosGrafico', 'matlab.admAligeradosGrafico');
+Route::post('/aligerados', [OctavePlotController::class, 'graficarAligerados'])->name('aligerados');
 Route::view('/admZapatasGrafico', 'matlab.admZapatasGrafico');
 Route::post('/zapatas', [OctavePlotController::class, 'graficarZapatas'])->name('zapatas');
 //======================RUTAS PARA LAS IMAGENES===============================//
