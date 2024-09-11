@@ -72,6 +72,8 @@ Route::view('/admAnalisisEstructuralDeArmaduras', 'matlab.admAnalisisEstructural
 Route::post('/zapatas2', [OctavePlotController::class, 'graficarZapatas2'])->name('zapatas2');
 Route::view('/admFuerzasCortantesGrafico', 'matlab.admFuerzasCortantesGrafico');
 Route::post('/fuerzasCortantes', [OctavePlotController::class, 'graficarFC'])->name('fuerzasCortantes');
+Route::view('/admAligeradosGrafico', 'matlab.admAligeradosGrafico');
+Route::post('/aligerados', [OctavePlotController::class, 'graficarAligerados'])->name('aligerados');
 Route::view('/admZapatasGrafico', 'matlab.admZapatasGrafico');
 Route::post('/zapatas', [OctavePlotController::class, 'graficarZapatas'])->name('zapatas');
 //======================RUTAS PARA LAS IMAGENES===============================//

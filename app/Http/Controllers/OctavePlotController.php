@@ -108,6 +108,26 @@ class OctavePlotController extends Controller
         self::returnOctaveResult($function);
     }
 
+    public function graficarAligerados(Request $request)
+    {
+        $function = sprintf(
+            "aligerados(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s);",
+            $request->input('fc'),
+            $request->input('Fy'),
+            /* $request->input('E'), */
+            $request->input('b'),
+            $request->input('h'),
+            $request->input('Lt'),
+            $request->input('WD'),
+            $request->input('WV'),
+            $request->input('anchoTributario'),
+            $request->input('frm'),
+            $request->input('frv')
+        );
+
+        self::returnOctaveResult($function);
+    }
+
     public function graficarZapatas(Request $request)
     {
         $function = sprintf(
