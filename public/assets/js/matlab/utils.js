@@ -1,5 +1,5 @@
-export function fetchMatlabScript(url, formData) {
-  return fetch("/zapatas2", {
+export async function fetchMatlabScript(url, formData) {
+  return fetch(url, {
     method: "POST",
     body: formData,
   })
@@ -22,7 +22,6 @@ export function fetchMatlabScript(url, formData) {
       `,
         showConfirmButton: true,
       });
-
       Array.from(Array(11), (_, index) => index + 1).forEach((index) => {
         Plotly.purge(`zapata${index}`);
       });

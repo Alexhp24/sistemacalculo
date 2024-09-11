@@ -5,6 +5,7 @@ var HANDLE_RELATIVE_RADIUS = 0.17; // Vertex handle radius relative to grid spac
 export class Shape {
   constructor(parseUrl) {
     this.reset(parseUrl);
+    this.calcularPropiedades();
   }
 
   reset(_) {
@@ -129,7 +130,7 @@ export class Shape {
     ctx.restore();
   }
 
-  propiedades() {
+  calcularPropiedades() {
     let P0 = 0;
     let A0 = 0;
     let IX0 = 0;
@@ -155,31 +156,33 @@ export class Shape {
       IX0 = (x1 * y2 - x2 * y1) * (y2 ** 2 + y2 * y1 + y1 ** 2) + IX0;
       IXY0 = (x1 * y2 - x2 * y1) * (2 * x2 * y2 + x2 * y1 + x1 * y2 + 2 * x1 * y1) + IXY0;
     }
-    const x1 = this.points[this.points.length - 1].x;
-    const x2 = this.points[0].x;
-    const y1 = this.points[this.points.length - 1].y;
-    const y2 = this.points[0].y;
+    if (this.points.length !== 0) {
+      const x1 = this.points[this.points.length - 1].x;
+      const x2 = this.points[0].x;
+      const y1 = this.points[this.points.length - 1].y;
+      const y2 = this.points[0].y;
 
-    XC = (x1 * y2 - x2 * y1) * (x2 + x1) + XC;
-    YC = (x1 * y2 - x2 * y1) * (y2 + y1) + YC;
-    A0 = x1 * y2 - x2 * y1 + A0;
-    P0 = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5 + P0;
-    MX0 = (x1 - x2) * (y2 ** 2 + y2 * y1 + y1 ** 2) + MX0;
-    MY0 = (y1 - y2) * (x2 ** 2 + x2 * x1 + x1 ** 2) + MY0;
-    IY0 = (x1 * y2 - x2 * y1) * (x2 ** 2 + x2 * x1 + x1 ** 2) + IY0;
-    IX0 = (x1 * y2 - x2 * y1) * (y2 ** 2 + y2 * y1 + y1 ** 2) + IX0;
-    IXY0 = (x1 * y2 - x2 * y1) * (2 * x2 * y2 + x2 * y1 + x1 * y2 + 2 * x1 * y1) + IXY0;
+      XC = (x1 * y2 - x2 * y1) * (x2 + x1) + XC;
+      YC = (x1 * y2 - x2 * y1) * (y2 + y1) + YC;
+      A0 = x1 * y2 - x2 * y1 + A0;
+      P0 = ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5 + P0;
+      MX0 = (x1 - x2) * (y2 ** 2 + y2 * y1 + y1 ** 2) + MX0;
+      MY0 = (y1 - y2) * (x2 ** 2 + x2 * x1 + x1 ** 2) + MY0;
+      IY0 = (x1 * y2 - x2 * y1) * (x2 ** 2 + x2 * x1 + x1 ** 2) + IY0;
+      IX0 = (x1 * y2 - x2 * y1) * (y2 ** 2 + y2 * y1 + y1 ** 2) + IX0;
+      IXY0 = (x1 * y2 - x2 * y1) * (2 * x2 * y2 + x2 * y1 + x1 * y2 + 2 * x1 * y1) + IXY0;
+    }
 
     const P = Math.abs(P0);
     const A = Math.abs(A0 / 2);
     const IX = Math.abs(IX0 / 12);
     const IY = Math.abs(IY0 / 12);
-    XC = Math.abs(XC / (6 * A));
-    YC = Math.abs(YC / (6 * A));
+    XC = XC / (6 * A);
+    YC = YC / (6 * A);
     const MX = Math.abs(MX0 / 6);
     const MY = Math.abs(MY0 / 6);
     const IXY = Math.abs(IXY0 / 24);
-    return {
+    this._propiedades = {
       P: P,
       A: A,
       IX: IX,
@@ -192,9 +195,13 @@ export class Shape {
     };
   }
 
+  propiedades() {
+    return this._propiedades;
+  }
+
   drawUnfinished() {}
 
-  drawTranslated() {
+  drawTranslated(translation) {
     // draws a copy translated to a diference of vectors
   }
 

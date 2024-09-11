@@ -411,6 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "#ADD8E6", // 16 LIGHTBLUE
   ];
   var current_selected_color = COLORS[1];
+
   // Functions
   function windowResize() {
     // Set actual size in memory (scaled to account for extra pixel density).
@@ -563,6 +564,7 @@ document.addEventListener("DOMContentLoaded", () => {
     switch (currentTool) {
       case Tools.MOVE:
         modeText = "Move";
+        /* selectedHandleIndex.drawTranslated(position); */
         break;
       case Tools.LINE:
         modeText = "Line";
@@ -723,12 +725,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   canvas.onmousedown = function (evt) {
     const { x, y } = getMousePos(canvas, evt);
-    if (0 > x || canvas.width < x || 0 > y || canvas.height < y) {
-      return;
-    }
 
     var click = grid.translate(x, y, snap_enabled);
-    var index, i, len;
     switch (currentTool) {
       case Tools.LINE:
         const isDone = shape.addPointToEnd(click);
@@ -747,7 +745,7 @@ document.addEventListener("DOMContentLoaded", () => {
           handleIsSelected = false;
           history.commit(shape.points);
         } else {
-          index = closestPoint(click);
+          let index = closestPoint(click);
           if (index) {
             handleIsSelected = true;
             selectedHandleIndex = index;
@@ -759,7 +757,7 @@ document.addEventListener("DOMContentLoaded", () => {
         break;
       case Tools.CUT:
         const deleteShape = closestLine(click);
-        index = shapes.indexOf(deleteShape);
+        const index = shapes.indexOf(deleteShape);
         if (index !== -1) {
           shapes.splice(index, 1);
         }
@@ -770,13 +768,9 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   canvas.onmousemove = function (evt) {
     const { x, y } = getMousePos(canvas, evt);
-    if (0 > x || canvas.width < x || 0 > y || canvas.height < y) {
-      return;
-    }
     const prevMouse = mousePos;
     mousePos = grid.translate(x, y, snap_enabled);
     redraw();
-
     if (currentTool === Tools.LINE && shape) {
       const last_point = shape.getLastPoint();
       if (last_point) {
@@ -795,8 +789,13 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } else if (currentTool === Tools.MOVE && handleIsSelected) {
       if (selectedHandleIndex instanceof Shape) {
-        const dX = mousePos.x - prevMouse.x;
+        /* const dX = mousePos.x - prevMouse.x;
         const dY = mousePos.y - prevMouse.y;
+        selectedHandleIndex.calcularPropiedades(); */
+        selectedHandleIndex.calcularPropiedades();
+        const { XC: xc, YC: yc } = selectedHandleIndex.propiedades();
+        const dX = mousePos.x - xc;
+        const dY = mousePos.y - yc;
         selectedHandleIndex.points.forEach((point) => {
           point.x += dX;
           point.y += dY;
@@ -870,6 +869,7 @@ document.addEventListener("DOMContentLoaded", () => {
       case 77: // "M"
       case 27: // <escape>
         if (shape.points.length >= 2) {
+          shape.calcularPropiedades();
           shapes.push(shape);
         }
         editor.removeChild(input);
@@ -941,7 +941,7 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .join(",")})`
     );
-    const polygons = shapes.length;
+    const columns = datosGenerales.getData();
     console.log(Object.fromEntries(formData));
     fetch("/zapatas2", {
       method: "POST",
@@ -959,34 +959,41 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((matData) => {
         const zapatas2 = mat4js.read(matData);
         console.log(zapatas2);
-        zapatas2.data.ZZT.forEach((zl, index) => {
-          const traces = Array.from(Array(polygons), (_, index) => {
-            return index;
-          }).map((index) => {
-            const part = zl.length / shapes.length;
-            const kData = zl.slice(index * part, (index + 1) * part); // Z-axis data
+        Array.from(Array(6), (_, index) => index).forEach((_, index) => {
+          const traces = Object.values(zapatas2.data.resultados).map(({ XX, YY, ZZ, max, min }, poligonoN) => {
             return {
-              x: zapatas2.data.XX.slice(index * part, (index + 1) * part), // X-axis data
-              y: zapatas2.data.YY.slice(index * part, (index + 1) * part), // Y-axis data
-              z: kData,
+              x: XX, // X-axis data
+              y: YY, // Y-axis data
+              z: ZZ[index],
               mode: "markers", // Scatter plot mode
               marker: {
                 size: 2, // Size of the markers
-                color: zl, // Color of the markers, based on Z data
+                color: ZZ[index], // Color of the markers, based on Z data
                 //colorscale: "Viridis", // Color scale
                 //colorscale: "Jet", // Color scale
-                colorscale: matlabColorScale, // Color scale
-                showscale: true, // Show the color scale
-                colorbar: {
-                  title: {
-                    text: "Presion Admisible (Tn/m)",
-                    side: "right",
-                  },
-                },
+                /* showscale: true, // Show the color scale */
+                coloraxis: "coloraxis",
               },
+              name: `<b>Poligono ${poligonoN + 1}<br>σ<sub>min</sub> = ${min[index].toFixed(3)}<br>σ<sub>max</sub> = ${max[index].toFixed(3)}</b><br>`,
               hovertemplate: "<b>x</b>: %{x}<br>" + "<b>y</b>: %{y}<br>" + "<b>z</b>: %{marker.color:.4f}" + "<extra></extra>",
               type: "scattergl", // 3D scatter plot type
               /* type: "pointcloudgl", // 3D scatter plot type */
+            };
+          });
+          const markers = columns.map((row) => {
+            return {
+              x: [row.x],
+              y: [row.y],
+              text: [`${row.column}`],
+              mode: "markers+text",
+              type: "scattergl",
+              textposition: "top right",
+              textfont: {
+                family: "Arial",
+                size: 10,
+                color: "lightgrey",
+              },
+              showlegend: false,
             };
           });
           const layout = {
@@ -997,13 +1004,35 @@ document.addEventListener("DOMContentLoaded", () => {
             yaxis: {
               constrain: "domain",
             },
-            showlegend: false,
-            title: `<b>Comb ${index + 1}<br>σ<sub>min</sub> = ${zapatas2.data.mins[index].toFixed(4)}<br>σ<sub>max</sub> = ${zapatas2.data.maxs[index].toFixed(
-              4
-            )}</b>`,
+            coloraxis: {
+              colorscale: matlabColorScale, // Color scale
+              colorbar: {
+                title: {
+                  text: "Presion Admisible (Tn/m)",
+                  side: "right",
+                },
+              },
+            },
+            showlegend: true,
+            legend: { x: 0, y: 0.5 },
+            annotations: Object.values(zapatas2.data.resultados).map(({ XC: [xc], YC: [yc] }, index) => {
+              return {
+                x: xc,
+                y: yc,
+                xref: "x",
+                yref: "y",
+                text: `P${index + 1}`,
+                font: {
+                  color: "lightgrey",
+                  size: 10,
+                },
+                align: "left",
+                showarrow: false,
+              };
+            }),
           };
           // Plot the chart using Plotly
-          Plotly.react(`zapata${index + 1}`, traces, layout, { responsive: false });
+          Plotly.react(`zapata${index + 1}`, [...traces, ...markers], layout, { responsive: false });
         });
       });
   });

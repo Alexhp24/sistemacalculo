@@ -1,10 +1,9 @@
 function zapatas2(poligonos, column, PD, PL, SISMO)
-  XX = [];
-  YY = [];
   ZZ = [];
+  resultados = struct();
   poligonoN = fieldnames(poligonos);
-  for i = 1:length(poligonoN);
-    poligonoNombre = poligonoN{i};
+  for poliN = 1:length(poligonoN);
+    poligonoNombre = poligonoN{poliN};
     vertices = poligonos.(poligonoNombre);
     %%%%% Codigo para capturar a los puntos dentro el poligono dibujado
     in=inpolygon(column(:,2),column(:,3),vertices(:,1),vertices(:,2)); % Captura de puntos
@@ -31,7 +30,7 @@ function zapatas2(poligonos, column, PD, PL, SISMO)
     %% Codigo para mover el centro del plano al centro de gravedad
     hj = ones(length(vertices),1); % vector de unos de la cantidad de coordenadas
     p2 = [hj*XC hj*YC];            % matriz repetida de centros de gravedad para mover el plano cartesiano
-    PUNTOS3=vertices-p2;           % COORDENADAS DEL POLIGONO MOVIDO AL CG
+    PUNTOS3=vertices-p2;           % COORDENADAS DEL POLIGONO MOVIDO AL ORIGEN
     %%CODIGO PARA SACAR TODAS LAS PROP GEO CON CENTRO EL CG
     P0  =0;
     A0  =0;
@@ -114,22 +113,24 @@ function zapatas2(poligonos, column, PD, PL, SISMO)
     %IDENTIFICAR LOS PUNTOS QUE CAEN DENTRO DEL POLIGONO PARA ESO se coloca el
     %minimo valor de un vertice y el maximo valor de un vertice y se genera un
     %rango cuadrado
-    x = [-10:.05:10]'; %tiene que ser del mismo rango
-    y = x;
+    minx = min(xv);
+    maxx = max(xv);
+    miny = min(yv);
+    maxy = max(yv);
+    x = [minx:.05:maxx];
+    y = [miny:.05:maxy];
     [X,Y] = meshgrid(x,y); %CREAR INTERPOLACIONES
-    xq = X';
-    yq = Y';
+    xq = X;
+    yq = Y;
     in = inpolygon(xq,yq,xv,yv);
-    XL= xq(in);
-    YL= yq(in);
+    XL = xq(in);
+    YL = yq(in);
     %%%%%calculo de esfuerzos
     k = ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, Df, 1, 6);
-    XX = [XL+XC; XX];
-    YY = [YL+YC; YY];
-    ZZ = [k; ZZ];
+    poligonoi = ["poligono" num2str(poliN)];
+    minz = min(k);
+    maxz = max(k);
+    resultados.(poligonoi) = struct("XX", XL+XC, "YY", YL+YC, "ZZ", k', "min", minz, "max", maxz, "XC", XC, "YC", YC);
   endfor
-  ZZT = ZZ';
-  mins = min(ZZT, [], 2);
-  maxs = max(ZZT, [], 2);
-  save("-mat7-binary", "-", "XX", "YY", "ZZT", "mins", "maxs");
+  save("-mat7-binary", "-", "resultados");
 endfunction
