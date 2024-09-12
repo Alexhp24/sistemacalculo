@@ -359,14 +359,24 @@
             } else if (asd <= 2.71) {
               return '1 Ø 5/8" + 1 Ø 3/8"';
             } else if (asd <= 3.27) {
-              return '5/8" + 1/2"';
-            }
+              return '1 Ø 5/8" + 1/2"';
+            } else if (asd <= 4) {
+              return '2 Ø 5/8"';
+            }  else if (asd <= 4.71) {
+              return '2 Ø 5/8" + 1 Ø 3/8"';
+            }  else if (asd <= 5.27) {
+              return '2 Ø 5/8" + 1 Ø 1/2"';
+            }  else if (asd <= 6) {
+              return '3 Ø 5/8"';
+            }  else if (asd <= 6.54) {
+              return '2 Ø 5/8" + 2 Ø 1/2"';
+            }  
             return "";
           },
         },
       },
       config: {
-        layout: "fitColumns",
+        layout: "fitDataTable",
         columns: [
           {
             title: "Diseño a Flexión",
@@ -410,7 +420,7 @@
     const T2Model = {
       id: "#T2",
       config: {
-        layout: "fitColumns",
+        layout: "fitDataTable",
         columns: [
           {
             title: "Diseño a Cortante",
@@ -475,7 +485,8 @@
         "]"
       );
     };
-
+    let T1;
+    let T2;
     document.getElementById("fuerzasCortantesForm").addEventListener("submit", async (event) => {
       event.preventDefault();
 
@@ -655,8 +666,8 @@
             },
           };
           Plotly.newPlot("momentosFlectores", tracesMF, layout);
-          const T1 = createSpreeadSheetTable(T1Model);
-          const T2 = createSpreeadSheetTable(T2Model);
+          T1 = createSpreeadSheetTable(T1Model);
+          T2 = createSpreeadSheetTable(T2Model);
           setTimeout(() => {
             T1.addData(
               Object.keys(aligerados.data.T1).reduce((acc, key) => {
@@ -799,7 +810,7 @@
           vuElement.style.color = "black";
         },
       });
-      const T1Data = Tabulator.findTable("#T1")[0].getData();
+      const T1Data = T1.getData();
       const T1Rows = [];
       for (const row of T1Data) {
         const r = [
@@ -810,7 +821,7 @@
         ];
         T1Rows.push(r);
       }
-      const T2Data = Tabulator.findTable("#T2")[0].getData();
+      const T2Data = T2.getData();
       const T2Rows = [];
       for (const row of T2Data) {
         const r = [

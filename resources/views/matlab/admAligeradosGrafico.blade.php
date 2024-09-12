@@ -174,7 +174,7 @@
                                     </th>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="2">
+                                    <td class="py-2 px-4 text-center" colspan="2">
                                         <div id="T1"></div>
                                     </td>
                                 </tr>
@@ -188,7 +188,7 @@
                                     </th>
                                 </tr>
                                 <tr class="bg-gray-100 dark:bg-gray-600">
-                                    <td class="py-2 px-4" colspan="2">
+                                    <td class="py-2 px-4 text-center" colspan="2">
                                         <div id="T2"></div>
                                     </td>
                                 </tr>
