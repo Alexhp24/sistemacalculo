@@ -1,4 +1,4 @@
-function fuerzas_cortantes(fc, fy, b, h, lt, wd, wv, anchoTributario, frm, frv)
+function aligerados(fc, fy, b, h, lt, wd, wv, anchoTributario, frm, frv)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %PROPIEDADES DE LA SECCION Y CARGAS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -231,6 +231,8 @@ MOMENT=[ResMOMENT1,ResMOMENT2];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Valores del eje 'xx' para el dibujo de fuerzas cortantes
 Li=0;
+L2=[];
+L3=[];
 for i = 1:h
     Li             = Li + Lt(1,i);
     L2(1+2*(i-1),1)= Li;
