@@ -712,7 +712,7 @@
                 dVu = -data[index + 1].Vu - data[index].Vu;
               }
               if (dVu !== 0) {
-                const L = propiedades.getData()[index % 2].lti;
+                const L = propiedades.getData()[Math.floor(index / 2)].lti;
                 x = ((row.Vc - row.Vu) * L) / dVu;
               } else {
                 x = 0;
@@ -721,7 +721,7 @@
             });
             T2.getData().forEach((row, index, data) => {
               const fc = parseFloat(document.getElementById("fc").value);
-              const b = (row.Vu * 1000) / (0.85 * 0.53 * Math.sqrt(fc) * parseFloat(propiedades.getData()[index % 2].hi) * 100);
+              const b = (row.Vu * 1000) / (0.85 * 0.53 * Math.sqrt(fc) * parseFloat(propiedades.getData()[Math.floor(index / 2)].hi) * 100);
               T2.getRow(index + 1).update({ b: b });
             });
             document.getElementById("vu").innerHTML = propiedades.getData().reduce((html, row, index, data) => {
