@@ -29,19 +29,12 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
-                                    <!-- <tr class="bg-white dark:bg-gray-800">
-                                        <th class="py-2 px-4">-</th>
-                                        <th class="py-2 px-4">-</th>
-                                        <th class="py-2 px-4">
-                                            <select name="selectabc" id="selectabc" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md">
-                                                <option value="A" selected>A</option>
-                                                <option value="B">B</option>
-                                                <option value="C">C</option>
-                                            </select>
-                                            <-- <input type="text" name="fc" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="fc" placeholder="2" min="0" value="2" required> --
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        <th class="py-2 px-4" colspan="4" style="font-size: 1.1rem; font-weight: normal; text-align: left;">
+                                            <em>A.- Propiedades Geométricas:</em>
                                         </th>
-                                        <th class="py-2 px-4">pulg</th>
-                                    </tr> -->
+                                    </tr>
+
                                     <tr class="bg-white dark:bg-gray-800">
                                         <th class="py-2 px-4">Longitud transversal</th>
                                         <th class="py-2 px-4">-</th>
@@ -63,6 +56,11 @@
                                         <th class="py-2 px-4">m</th>
                                     </tr>
                                     <tr class="bg-white dark:bg-gray-800">
+                                        <th class="py-2 px-4" colspan="4" style="font-size: 1.1rem; font-weight: normal; text-align: left;">
+                                            <em>B.- Cargas:</em>
+                                        </th>
+                                    </tr>
+                                    <tr class="bg-white dark:bg-gray-800">
                                         <th class="py-2 px-4">Peso propio</th>
                                         <th class="py-2 px-4"></th>
                                         <th class="py-2 px-4"><input type="text" name="pesopropio" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="pesopropio" value="19.8" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
@@ -82,19 +80,49 @@
                                         <th class="py-2 px-4"><input type="text" name="cargaviva" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="cargaviva" value="30" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">Kg/m<sup>2</sup></th>
                                     </tr>
-
                                     <tr class="bg-white dark:bg-gray-800">
                                         <th class="py-2 px-4">Carga de viento</th>
                                         <th class="py-2 px-4">-</th>
                                         <th class="py-2 px-4"><input type="text" name="cargaviento" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="cargaviento" value="30" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">Kg/H</th>
                                     </tr>
-                                    <!-- <tr class="bg-white dark:bg-gray-800">
-                                        <th class="py-2 px-4">SOBRE CARGA</th>
+                                    <!-- COEFICIENTE SISMICO -->
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        <th class="py-2 px-4" colspan="4" style="font-size: 1.1rem; font-weight: normal; text-align: left;">
+                                            <em>C.- Carga Sismica:</em>
+                                        </th>
+                                    </tr>
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        <th class="py-2 px-4"> Z</th>
                                         <th class="py-2 px-4">-</th>
-                                        <th class="py-2 px-4"><input type="text" name="sobrecarga" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="sobrecarga" value="60" placeholder="Numero de TRAMOS" min="60" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
-                                        <th class="py-2 px-4">Kg/m<sup>2</sup></th>
-                                    </tr> -->
+                                        <th class="py-2 px-4"><input type="text" name="Z" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="Z" value="0.35" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
+                                        <th class="py-2 px-4">-</th>
+                                    </tr>
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        <th class="py-2 px-4">U</th>
+                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4"><input type="text" name="U" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="U" value="1.3" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
+                                        <th class="py-2 px-4">-</th>
+                                    </tr>
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        <th class="py-2 px-4">S</th>
+                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4"><input type="text" name="S" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="S" value="1.2" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
+                                        <th class="py-2 px-4">-</th>
+                                    </tr>
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        <th class="py-2 px-4">C</th>
+                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4"><input type="text" name="C" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="C" value="2.5" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
+                                        <th class="py-2 px-4">-</th>
+                                    </tr>
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        <th class="py-2 px-4">H</th>
+                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4"><input type="text" name="R" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="R" value="8" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
+                                        <th class="py-2 px-4">-</th>
+                                    </tr>
+
                                     <tr>
                                         <th class="py-2 px-4">
                                             <div class="input-group mb-2">
@@ -118,7 +146,7 @@
                                 <!-- Requisitos de diseño vigas -->
                                 <thead class="bg-gray-200 dark:bg-gray-800">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">1.- Datos Geometricos</th>
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">1.- Propiedades Geometricos</th>
                                     </tr>
                                     <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
                                         <th class="text-lg py-2 px-4" scope="col">Nombre</th>
@@ -131,7 +159,7 @@
 
                                 <thead class="bg-gray-200 dark:bg-gray-800">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">2.- Calculos de cargas </th>
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">2.- Carga Muerta </th>
                                     </tr>
                                     <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
                                         <th class="text-lg py-2 px-4" scope="col">Nombre</th>
@@ -142,11 +170,22 @@
                                 </thead>
                                 <tbody id="calculocargas" class="bg-gray-100 dark:bg-gray-800  py-2"></tbody>
 
+                                <thead class="bg-gray-200 dark:bg-gray-800">
+                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">3.- Carga Viva</th>
+                                    </tr>
+                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
+                                        <th class="text-lg py-2 px-4" scope="col">Nombre</th>
+                                        <th class="text-lg py-2 px-4" scope="col">Símbolo</th>
+                                        <th class="text-lg py-2 px-4" scope="col">Fórmula</th>
+                                        <th class="text-lg py-2 px-4" scope="col">Resultado</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cargavivas" class="bg-gray-100 dark:bg-gray-800  py-2"></tbody>
                                 <!-- 2.- Combinacion de Cargas -->
-
                                 <thead class="bg-gray-200 dark:bg-gray-800">
                                     <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">3.- COEFICIENTE SISMICO </th>
+                                        <th class="text-xl py-2 px-4 text-left" colspan="4">4.- Carga Sismica</th>
                                     </tr>
                                     <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
                                         <th class="text-lg py-2 px-4" scope="col">Nombre</th>
@@ -155,145 +194,7 @@
                                         <th class="text-lg py-2 px-4" scope="col">Resultado</th>
                                     </tr>
                                 </thead>
-
                                 <tbody id="coeficientesismico" class="bg-gray-100 dark:bg-gray-800  py-2"></tbody>
-
-
-
-
-
-                                
-                                <!-- 3.- Analisi estructural -->
-                                <thead class="bg-gray-200 dark:bg-gray-800">
-                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">4.- Analisi estructural</th>
-                                    </tr>
-                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
-                                        <th class="text-lg py-2 px-4" scope="col">Nombre</th>
-                                        <th class="text-lg py-2 px-4" scope="col">Símbolo</th>
-                                        <th class="text-lg py-2 px-4" scope="col">Fórmula</th>
-                                        <th class="text-lg py-2 px-4" scope="col">Resultado</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="analisisestructural" class="bg-gray-100 dark:bg-gray-800  py-2"></tbody>
-                                <!-- 5.- Diseño en madera -->
-                                <thead class="bg-gray-200 dark:bg-gray-700">
-                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.- Diseño en madera</th>
-                                    </tr>
-                                    <!-- <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
-                                        <th class="text-xl" scope="col">Nombre</th>
-                                        <th class="text-xl" scope="col">Simbolo</th>
-                                        <th class="text-xl" scope="col">Formula</th>
-                                        <th class="text-xl" scope="col">Resultado</th>
-                                    </tr> -->
-                                </thead>
-                                <tbody id="desingFlexion" class="py-2"></tbody>
-                                <!-- imagen -->
-
-                                <thead class="bg-gray-200 dark:bg-gray-700">
-                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.1- Vereficacion del modulo de seccion</th>
-                                    </tr>
-                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">    
-                                    </tr>
-                                </thead>
-                                <tbody id="imagen01" class="py-2"></tbody>
-                                <!-- 4.1 -->
-                                <thead class="bg-gray-200 dark:bg-gray-700">
-                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4"></th>
-                                    </tr>
-                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
-                                        <th class="text-xl" scope="col">Nombre</th>
-                                        <th class="text-xl" scope="col">Simbolo</th>
-                                        <th class="text-xl" scope="col">Formula</th>
-                                        <th class="text-xl" scope="col">Resultado</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="modulo41" class="py-2"></tbody>
-
-                                <thead class="bg-gray-200 dark:bg-gray-700">
-                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.2- Vereficacion de inercias</th>
-                                    </tr>
-                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
-                                        <th class="text-xl" scope="col">Nombre</th>
-                                        <th class="text-xl" scope="col">Simbolo</th>
-                                        <th class="text-xl" scope="col">Formula</th>
-                                        <th class="text-xl" scope="col">Resultado</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="modulo42" class="py-2"></tbody>
-
-                                <thead class="bg-gray-200 dark:bg-gray-700">
-                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.3- Vereficacion del esfuerzo cortante</th>
-                                    </tr>
-                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
-                                        <th class="text-xl" scope="col">Nombre</th>
-                                        <th class="text-xl" scope="col">Simbolo</th>
-                                        <th class="text-xl" scope="col">Formula</th>
-                                        <th class="text-xl" scope="col">Resultado</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="modulo43" class="py-2"></tbody>
-
-                                <thead class="bg-gray-200 dark:bg-gray-700">
-                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.4- Vereficacion de la estabilidad lateral</th>
-                                    </tr>
-                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
-                                        <th class="text-xl" scope="col">Nombre</th>
-                                        <th class="text-xl" scope="col">Simbolo</th>
-                                        <th class="text-xl" scope="col">Formula</th>
-                                        <th class="text-xl" scope="col">Resultado</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="modulo44" class="py-2"></tbody>
-                                <thead class="bg-gray-200 dark:bg-gray-700">
-                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">5.5- Calculo de la longitud de apoyo</th>
-                                    </tr>
-                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
-                                        <th class="text-xl" scope="col">Nombre</th>
-                                        <th class="text-xl" scope="col">Simbolo</th>
-                                        <th class="text-xl" scope="col">Formula</th>
-                                        <th class="text-xl" scope="col">Resultado</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="modulo45" class="py-2"></tbody>
-
-                                <thead class="bg-gray-200 dark:bg-gray-700">              
-                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">    
-                                    </tr>
-                                </thead>
-                                <tbody id="imagen02" class="py-2"></tbody>
-
-
-
-                                <!-- Diseño del calculo del area del refuerzo  -->
-                                <thead class="bg-gray-200 dark:bg-gray-700"></thead>
-                                <tbody id="calcared" class="py-2"></tbody>
-                                <!-- Diseño por aceros para calcular el area por capas flexion-->
-                                <thead class="bg-gray-200 dark:bg-gray-700"></thead>
-                                <tbody id="acerosfinales" class="py-2"></tbody>
-                                <!-- Diseño por corte -->
-                                <!-- <thead class="bg-gray-200 dark:bg-gray-700">
-                                    <tr class="bg-white text-gray-900 dark:bg-gray-800 dark:text-white">
-                                        <th class="text-xl py-2 px-4 text-left" colspan="4">3.- Diseño por corte</th>
-                                    </tr>
-                                    <tr class="bg-gray-500 text-white dark:bg-gray-500 dark:text-white">
-                                        <th class="text-xl" scope="col">Nombre</th>
-                                        <th class="text-xl" scope="col">Simbolo</th>
-                                        <th class="text-xl" scope="col">Formula</th>
-                                        <th class="text-xl" scope="col">Resultado</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="diseñoCortes" class="py-2"></tbody> -->
-                                <!-- Diseño por aceros para calcular el area por capas corte -->
-                                <thead class="bg-gray-200 dark:bg-gray-700"></thead>
-                                <tbody id="aceroscortes" class="py-2"></tbody>
                             </table>
                         </div>
                     </div>
