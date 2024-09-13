@@ -1,7 +1,5 @@
 import { pointDistance } from "./utils.js";
 
-var HANDLE_RELATIVE_RADIUS = 0.17; // Vertex handle radius relative to grid spacing
-
 export class Shape {
   constructor(parseUrl) {
     this.reset(parseUrl);
@@ -81,7 +79,7 @@ export class Shape {
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (i = 0; i < this.points.length; i++) {
-        p = grid_.toPoint(this.points[i]);
+        p = grid_.worldToScreen(this.points[i]);
         if (i === 0) {
           ctx.moveTo(p.x, p.y);
           continue;
@@ -119,11 +117,11 @@ export class Shape {
       } else {
         color = "green";
       }
-      p = grid_.toPoint(this.points[i]);
+      p = grid_.worldToScreen(this.points[i]);
       ctx.fillStyle = color;
       ctx.strokeStyle = color;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, HANDLE_RELATIVE_RADIUS * grid_.size, 0, 2 * Math.PI);
+      ctx.arc(p.x, p.y, grid_.size, 0, 2 * Math.PI);
       ctx.fill();
       ctx.stroke();
     }
@@ -215,12 +213,12 @@ export class Marker {
   }
 
   draw(grid, ctx) {
-    const p = grid.toPoint(this.point);
+    const p = grid.worldToScreen(this.point);
     ctx.moveTo(p.x, p.y);
     ctx.fillStyle = "white";
     ctx.strokeStyle = "white";
     ctx.beginPath();
-    ctx.arc(p.x, p.y, HANDLE_RELATIVE_RADIUS * grid.size, 0, 2 * Math.PI);
+    ctx.arc(p.x, p.y, grid.size, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
     ctx.font = "8pt arial";

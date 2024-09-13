@@ -79,7 +79,7 @@
                                             <div>
                                                 <form>
                                                     <textarea class="hidden" name="coords" readonly></textarea>
-                                                    <input type="range" name="zoom" min="5" max="40">
+                                                    <input class="hidden" type="range" name="zoom" min="5" max="40">
                                                 </form>
                                                 <ul class="flex gap-4">
                                                     <li id="arrows"><i class="fa fa-arrows" title="M: Move"></i>

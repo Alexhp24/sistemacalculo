@@ -330,10 +330,11 @@ document.addEventListener("DOMContentLoaded", () => {
   const datosGenerales = createSpreeadSheetTable(datosGeneralesModel("#datosGenerales"));
 
   // Init GUI Components
-  var canvas = document.querySelector("#plot canvas");
-  var form = document.querySelector("#plot form");
-  var text = document.querySelector("#plot textarea");
-  var ctx = canvas.getContext("2d");
+  const canvas = document.querySelector("#plot canvas");
+
+  const form = document.querySelector("#plot form");
+  const text = document.querySelector("#plot textarea");
+  const ctx = canvas.getContext("2d");
   const editor = document.getElementById("editor");
   const input = document.createElement("input");
   input.type = "number";
@@ -345,7 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
   input.style.transform = "translate(-50%,-50%)";
 
   // Global vars
-  var Tools = {
+  const Tools = {
     MOVE: 0,
     LINE: 1,
     ADD: 2,
@@ -356,7 +357,7 @@ document.addEventListener("DOMContentLoaded", () => {
     SELECT: 7,
     NONE: 8,
   };
-  var Styles = {
+  const Styles = {
     ARRAY: 0,
     ONE_ARRAY: 1,
     NORMALIZED: 2,
@@ -366,6 +367,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let markers = [];
 
   var shape,
+    isDragging = false,
+    dragStart,
     grid,
     history,
     currentTool = Tools.LINE,
@@ -388,7 +391,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   });
-  var HANDLE_RELATIVE_RADIUS = 0.17; // Vertex handle radius relative to grid spacing
   var handleIsSelected = false;
   var selectedHandleIndex = 0;
   var COLORS = [
@@ -411,7 +413,6 @@ document.addEventListener("DOMContentLoaded", () => {
     "#ADD8E6", // 16 LIGHTBLUE
   ];
   var current_selected_color = COLORS[1];
-
   // Functions
   function windowResize() {
     // Set actual size in memory (scaled to account for extra pixel density).
@@ -421,7 +422,6 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.set(parseInt(form.zoom.value), canvas);
     redraw();
   }
-
   function closestPoint(searchPoint) {
     // Returns null if there are 0 points in the shape
     var shortestDistance = 0.65;
@@ -482,7 +482,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ctx.lineWidth = 2;
       ctx.beginPath();
       for (i = 0; i < s.points.length; i++) {
-        p = grid.toPoint(s.points[i]);
+        p = grid.worldToScreen(s.points[i]);
         if (i === 0) {
           ctx.moveTo(p.x, p.y);
           continue;
@@ -505,7 +505,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
       if (s.points.length > 2) {
-        const begin = grid.toPoint(s.points[0]);
+        const begin = grid.worldToScreen(s.points[0]);
         ctx.lineTo(begin.x, begin.y);
         ctx.stroke();
       }
@@ -523,11 +523,11 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         color = "green";
       }
-      p = grid.toPoint(s.points[i]);
+      p = grid.worldToScreen(s.points[i]);
       ctx.fillStyle = color;
       ctx.strokeStyle = color;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, HANDLE_RELATIVE_RADIUS * grid.size, 0, 2 * Math.PI);
+      ctx.arc(p.x, p.y, grid.size, 0, 2 * Math.PI);
       ctx.fill();
       ctx.stroke();
     }
@@ -570,8 +570,8 @@ document.addEventListener("DOMContentLoaded", () => {
         modeText = "Line";
         var last_point = shape.getLastPoint();
         if (last_point) {
-          var c = grid.toPoint(last_point);
-          const mouse = grid.toPoint(mousePos);
+          var c = grid.worldToScreen(last_point);
+          const mouse = grid.worldToScreen(mousePos);
           ctx.setLineDash([]);
           ctx.strokeStyle = "gray";
           ctx.beginPath();
@@ -723,10 +723,31 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.set(parseInt(this.value), canvas);
     redraw();
   };
+  canvas.addEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+      const { x, y } = getMousePos(canvas, e);
+      const prevMouse = grid.screenToWorld({ x: x, y: y });
+      if (e.deltaY < 0) {
+        grid.scaleX *= 1.1;
+        grid.scaleY *= 1.1;
+      } else {
+        grid.scaleX *= 0.9;
+        grid.scaleY *= 0.9;
+      }
+      const translatedMouse = grid.screenToWorld({ x: x, y: y });
+      grid.offestX += prevMouse.x - translatedMouse.x;
+      grid.offestY += prevMouse.y - translatedMouse.y;
+      redraw();
+    },
+    { passive: false }
+  );
   canvas.onmousedown = function (evt) {
+    evt.preventDefault();
     const { x, y } = getMousePos(canvas, evt);
 
-    var click = grid.translate(x, y, snap_enabled);
+    const click = grid.screenToWorld({ x: x, y: y }, snap_enabled);
     switch (currentTool) {
       case Tools.LINE:
         const isDone = shape.addPointToEnd(click);
@@ -741,6 +762,10 @@ document.addEventListener("DOMContentLoaded", () => {
         history.commit(shape.points);
         break;
       case Tools.MOVE:
+        if (evt.button == 1 || 1 == (evt.button & 2)) {
+          isDragging = true;
+        }
+        dragStart = { x: x, y: y };
         if (handleIsSelected) {
           handleIsSelected = false;
           history.commit(shape.points);
@@ -766,11 +791,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
     redraw();
   };
+  canvas.onmouseup = (evt) => {
+    if (evt.button == 1 || 1 == (evt.button & 2)) {
+      isDragging = false;
+    }
+  };
+  canvas.onmouseleave = () => {
+    isDragging = false;
+  };
   canvas.onmousemove = function (evt) {
     const { x, y } = getMousePos(canvas, evt);
     const prevMouse = mousePos;
-    mousePos = grid.translate(x, y, snap_enabled);
-    redraw();
+    mousePos = grid.screenToWorld({ x: x, y: y }, snap_enabled);
     if (currentTool === Tools.LINE && shape) {
       const last_point = shape.getLastPoint();
       if (last_point) {
@@ -780,31 +812,39 @@ document.addEventListener("DOMContentLoaded", () => {
         };
         const perpUnitVec = { x: -unitVec.y, y: unitVec.x };
         const midPoint = { x: (last_point.x + mousePos.x) * 0.5, y: (last_point.y + mousePos.y) * 0.5 };
-        const mid = grid.toPoint({ x: midPoint.x + perpUnitVec.x * 5, y: midPoint.y + perpUnitVec.y * 5 });
+        const mid = grid.worldToScreen({ x: midPoint.x + perpUnitVec.x * 5, y: midPoint.y + perpUnitVec.y * 5 });
         input.style.top = mid.y + "px";
         input.style.left = mid.x + "px";
         input.value = pointDistance(last_point, mousePos).toFixed(2);
         input.focus();
         input.select();
       }
-    } else if (currentTool === Tools.MOVE && handleIsSelected) {
-      if (selectedHandleIndex instanceof Shape) {
-        /* const dX = mousePos.x - prevMouse.x;
-        const dY = mousePos.y - prevMouse.y;
-        selectedHandleIndex.calcularPropiedades(); */
-        selectedHandleIndex.calcularPropiedades();
-        const { XC: xc, YC: yc } = selectedHandleIndex.propiedades();
-        const dX = mousePos.x - xc;
-        const dY = mousePos.y - yc;
-        selectedHandleIndex.points.forEach((point) => {
-          point.x += dX;
-          point.y += dY;
-        });
-      } else {
-        selectedHandleIndex.x = mousePos.x;
-        selectedHandleIndex.y = mousePos.y;
+    } else if (currentTool === Tools.MOVE) {
+      if (isDragging) {
+        grid.offestX -= (x - dragStart.x) / grid.scaleX;
+        grid.offestY -= (y - dragStart.y) / grid.scaleY;
+        dragStart = { x: x, y: y };
+      }
+      if (handleIsSelected) {
+        if (selectedHandleIndex instanceof Shape) {
+          /* const dX = mousePos.x - prevMouse.x;
+          const dY = mousePos.y - prevMouse.y;
+          selectedHandleIndex.calcularPropiedades(); */
+          selectedHandleIndex.calcularPropiedades();
+          const { XC: xc, YC: yc } = selectedHandleIndex.propiedades();
+          const dX = mousePos.x - xc;
+          const dY = mousePos.y - yc;
+          selectedHandleIndex.points.forEach((point) => {
+            point.x += dX;
+            point.y += dY;
+          });
+        } else {
+          selectedHandleIndex.x = mousePos.x;
+          selectedHandleIndex.y = mousePos.y;
+        }
       }
     }
+    redraw();
   };
   // Button
   document.getElementById("pencil").onclick = function () {
@@ -822,12 +862,6 @@ document.addEventListener("DOMContentLoaded", () => {
     switchTool(Tools.CUT);
     canvas.style.cursor = "crosshair";
   };
-  document.getElementById("crosshairs").onclick = function () {
-    switchTool(Tools.ORIGIN);
-  };
-  document.getElementById("eye-slash").onclick = function () {
-    switchTool(Tools.VISIBILITY);
-  };
   document.getElementById("anchor").onclick = function () {
     snap_enabled = !snap_enabled;
     redraw();
@@ -841,28 +875,6 @@ document.addEventListener("DOMContentLoaded", () => {
       };
     })(color_index);
   }
-  document.getElementById("clipboard").onclick = function () {
-    text.focus();
-    text.select();
-  };
-  document.getElementById("copy").onclick = function () {
-    var url = window.location.href.split("?")[0] + "?" + text.value;
-    window.open(url);
-  };
-  document.getElementById("refresh").onclick = function () {
-    if (confirm("Clear all polygon points and start over? This operation cannot be undone.")) {
-      switchTool(Tools.LINE);
-      shape = new Shape(false);
-      history.clear();
-      redraw();
-    }
-  };
-  document.getElementById("undo").onclick = function () {
-    undo();
-  };
-  document.getElementById("redo").onclick = function () {
-    redo();
-  };
   // Keyboard handler
   document.addEventListener("keydown", function (evt) {
     switch (evt.keyCode) {
@@ -911,6 +923,13 @@ document.addEventListener("DOMContentLoaded", () => {
     markers = data.map((row) => {
       return new Marker({ x: row.x, y: row.y }, row.column);
     });
+    const cminx = markers.reduce((min, point) => (min < point.point.x ? min : point.point.x));
+    const cmaxx = markers.reduce((max, point) => (max > point.point.x ? max : point.point.x));
+
+    const cminy = markers.reduce((min, point) => (min < point.point.y ? min : point.point.y));
+    const cmaxy = markers.reduce((max, point) => (max > point.point.y ? max : point.point.y));
+    grid.offestX = (cminx + cmaxx) * 0.5;
+    grid.offestY = (cminy + cmaxy) * 0.5;
     redraw();
   });
 

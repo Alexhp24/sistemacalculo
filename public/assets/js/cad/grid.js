@@ -2,93 +2,82 @@ export class Grid {
   constructor() {
     this.canvas = document.createElement("canvas");
     this.ctx = this.canvas.getContext("2d");
+    this.offestX = 0;
+    this.offestY = 0;
+    this.scaleX = 1.0;
+    this.scaleY = 1.0;
+    this.size = 3;
   }
 
   set(size, canvas) {
-    const ctx = canvas.getContext("2d")
-    this.size = size;
-
-    var wt = Math.ceil(canvas.width / size);
-    var ht = Math.ceil(canvas.height / size);
-    this.width = (wt + (wt % 2)) * size + 1;
-    this.height = (ht + (ht % 2)) * size + 1;
-
-    this.x = 0;
-    this.y = 0;
-
-    this.origo = {
-      x: Math.round(this.width / (this.size * 2)),
-      y: Math.round(this.height / (this.size * 2)),
-    };
-
-    this.canvas.width = this.width;
-    this.canvas.height = this.height;
-
+    this.width = this.canvas.width = canvas.width;
+    this.height = this.canvas.height = canvas.height;
+    this.ctx.save();
+    this.ctx.strokeStyle = "#282828";
+    this.ctx.fillStyle = "#000";
+    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx.fill();
+    this.ctx.restore();
+    const ctx = canvas.getContext("2d");
     this.createGrid();
     this.draw(ctx);
   }
 
   createGrid() {
-    var x = 0,
-      y = 0,
-      w = this.width - 1,
-      h = this.height - 1;
+    const ctx = this.ctx; // Assuming you're using a canvas context
+    const gridSpacing = 50; // Define grid spacing in world coordinates
 
-    this.ctx.save();
-    this.ctx.strokeStyle = "#282828";
-    this.ctx.fillStyle = "#000";
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    const screenWidth = this.canvas.width;
+    const screenHeight = this.canvas.height;
 
-    this.ctx.beginPath();
-    this.ctx.rect(x, y, w, h);
-    while (x < w) {
-      x += this.size;
-      this.ctx.moveTo(x, y);
-      this.ctx.lineTo(x, y + h);
+    // Convert screen bounds to world coordinates
+    const topLeftWorld = this.screenToWorld({ x: 0, y: 0 });
+    const bottomRightWorld = this.screenToWorld({ x: screenWidth, y: screenHeight });
+
+    // Vertical lines
+    const minX = Math.floor(topLeftWorld.x / gridSpacing) * gridSpacing;
+    const maxX = Math.ceil(bottomRightWorld.x / gridSpacing) * gridSpacing;
+    for (let x = minX; x <= maxX; x += gridSpacing) {
+      const screenPoint1 = this.worldToScreen({ x: x, y: topLeftWorld.y });
+      const screenPoint2 = this.worldToScreen({ x: x, y: bottomRightWorld.y });
+
+      ctx.beginPath();
+      ctx.moveTo(screenPoint1.x, screenPoint1.y);
+      ctx.lineTo(screenPoint2.x, screenPoint2.y);
+      ctx.strokeStyle = "#ccc"; // Grid line color
+      ctx.stroke();
     }
-    x = 0;
-    while (y < h) {
-      y += this.size;
-      this.ctx.moveTo(x, y);
-      this.ctx.lineTo(x + w, y);
+
+    // Horizontal lines
+    const minY = Math.floor(topLeftWorld.y / gridSpacing) * gridSpacing;
+    const maxY = Math.ceil(bottomRightWorld.y / gridSpacing) * gridSpacing;
+    for (let y = minY; y <= maxY; y += gridSpacing) {
+      const screenPoint1 = this.worldToScreen({ x: topLeftWorld.x, y: y });
+      const screenPoint2 = this.worldToScreen({ x: bottomRightWorld.x, y: y });
+
+      ctx.beginPath();
+      ctx.moveTo(screenPoint1.x, screenPoint1.y);
+      ctx.lineTo(screenPoint2.x, screenPoint2.y);
+      ctx.strokeStyle = "#ccc"; // Grid line color
+      ctx.stroke();
     }
-    this.ctx.stroke();
-
-    this.ctx.beginPath();
-    this.ctx.fillStyle = "#383838";
-    this.ctx.arc(this.origo.x * this.size, this.origo.y * this.size, 5, 0, 2 * Math.PI);
-    this.ctx.fill();
-
-    this.ctx.restore();
   }
 
   draw(ctx) {
-    ctx.drawImage(this.canvas, this.x, this.y);
+    ctx.drawImage(this.canvas, 0, 0);
   }
 
-  translate(x, y, snap_enabled) {
-    if (snap_enabled) {
-      // Snap to grid
-      x = Math.round((x - this.x) / this.size);
-      y = Math.round((y - this.y) / this.size);
-    } else {
-      // Free form
-      x = (x - this.x) / this.size;
-      y = (y - this.y) / this.size;
-    }
-
+  worldToScreen(p) {
     return {
-      x: x - this.origo.x,
-      y: this.origo.y - y,
+      x: (p.x - this.offestX) * this.scaleX,
+      y: (p.y - this.offestY) * this.scaleY,
     };
   }
 
-  toPoint(p) {
+  screenToWorld(p) {
     return {
-      x: (p.x + this.origo.x) * this.size + this.x,
-      y: (this.origo.y - p.y) * this.size + this.y,
-      visible: p.visible,
-      color: p.color,
+      x: p.x / this.scaleX + this.offestX,
+      y: p.y / this.scaleY + this.offestY,
     };
   }
 }
