@@ -29,15 +29,12 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-center">
-                                    <tr class="bg-white dark:bg-gray-800">
-                                        <th class="py-2 px-4" colspan="4" style="font-size: 1.1rem; font-weight: normal; text-align: left;">
-                                            <em>A.- Propiedades Geométricas:</em>
-                                        </th>
-                                    </tr>
-
+                                    <th class="py-2 px-4" colspan="4" style="font-size: 1.1rem; font-weight: normal; text-align: left;">
+                                        <strong>A.- Propiedades Geometricas:</strong>
+                                    </th>
                                     <tr class="bg-white dark:bg-gray-800">
                                         <th class="py-2 px-4">Longitud transversal</th>
-                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4">LB</th>
                                         <th class="py-2 px-4">
                                             <input type="text" name="longitudtransversal" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="longitudtransversal" placeholder="45.8" min="0" value="45.8" required>
                                         </th>
@@ -45,84 +42,78 @@
                                     </tr>
                                     <tr class="bg-white dark:bg-gray-800">
                                         <th class="py-2 px-4">Luz</th>
-                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4">L</th>
                                         <th class="py-2 px-4"><input type="text" name="luz" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="luz" placeholder="35" min="0" value="35" required></th>
                                         <th class="py-2 px-4">m</th>
                                     </tr>
                                     <tr class="bg-white dark:bg-gray-800">
                                         <th class="py-2 px-4">Flecha</th>
-                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4">F</th>
                                         <th class="py-2 px-4"><input type="text" name="flecha" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="flecha" value="7" placeholder="base" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">m</th>
                                     </tr>
-                                    <tr class="bg-white dark:bg-gray-800">
-                                        <th class="py-2 px-4" colspan="4" style="font-size: 1.1rem; font-weight: normal; text-align: left;">
-                                            <em>B.- Cargas:</em>
-                                        </th>
-                                    </tr>
+                                    <th class="py-2 px-4" colspan="4" style="font-size: 1.1rem; font-weight: normal; text-align: left;">
+                                        <strong>B.- Cargas:</strong>
+                                    </th>
                                     <tr class="bg-white dark:bg-gray-800">
                                         <th class="py-2 px-4">Peso propio</th>
-                                        <th class="py-2 px-4"></th>
+                                        <th class="py-2 px-4">P.P.</th>
                                         <th class="py-2 px-4"><input type="text" name="pesopropio" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="pesopropio" value="19.8" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">Kg/m<sup>2</sup></th>
                                     </tr>
                                     <tr class="bg-white dark:bg-gray-800">
                                         <th class="py-2 px-4">Luminarias</th>
-                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4">P.L</th>
                                         <th class="py-2 px-4"><input type="text" name="luminarias" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="luminarias" value="0" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">Kg/m<sup>2</sup></th>
                                     </tr>
-
-
                                     <tr class="bg-white dark:bg-gray-800">
                                         <th class="py-2 px-4">Carga viva</th>
-                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4">CV</th>
                                         <th class="py-2 px-4"><input type="text" name="cargaviva" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="cargaviva" value="30" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">Kg/m<sup>2</sup></th>
                                     </tr>
                                     <tr class="bg-white dark:bg-gray-800">
-                                        <th class="py-2 px-4">Carga de viento</th>
-                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4">Velocidad de viento</th>
+                                        <th class="py-2 px-4">C</th>
                                         <th class="py-2 px-4"><input type="text" name="cargaviento" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="cargaviento" value="30" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">Kg/H</th>
                                     </tr>
                                     <!-- COEFICIENTE SISMICO -->
+                                    <th class="py-2 px-4" colspan="4" style="font-size: 1.1rem; font-weight: normal; text-align: left;">
+                                        <strong>C.- Carga Sismica:</strong>
+                                    </th>
+
                                     <tr class="bg-white dark:bg-gray-800">
-                                        <th class="py-2 px-4" colspan="4" style="font-size: 1.1rem; font-weight: normal; text-align: left;">
-                                            <em>C.- Carga Sismica:</em>
-                                        </th>
-                                    </tr>
-                                    <tr class="bg-white dark:bg-gray-800">
-                                        <th class="py-2 px-4"> Z</th>
-                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4">Zona</th>
+                                        <th class="py-2 px-4">Z</th>
                                         <th class="py-2 px-4"><input type="text" name="Z" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="Z" value="0.35" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">-</th>
                                     </tr>
                                     <tr class="bg-white dark:bg-gray-800">
+                                        <th class="py-2 px-4">Categoria</th>
                                         <th class="py-2 px-4">U</th>
-                                        <th class="py-2 px-4">-</th>
                                         <th class="py-2 px-4"><input type="text" name="U" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="U" value="1.3" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">-</th>
                                     </tr>
                                     <tr class="bg-white dark:bg-gray-800">
+                                        <th class="py-2 px-4">Tipo de suelo</th>
                                         <th class="py-2 px-4">S</th>
-                                        <th class="py-2 px-4">-</th>
                                         <th class="py-2 px-4"><input type="text" name="S" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="S" value="1.2" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">-</th>
                                     </tr>
                                     <tr class="bg-white dark:bg-gray-800">
                                         <th class="py-2 px-4">C</th>
-                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4">C</th>
                                         <th class="py-2 px-4"><input type="text" name="C" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="C" value="2.5" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">-</th>
                                     </tr>
                                     <tr class="bg-white dark:bg-gray-800">
-                                        <th class="py-2 px-4">H</th>
-                                        <th class="py-2 px-4">-</th>
+                                        <th class="py-2 px-4">Coeficiente de ductilidad</th>
+                                        <th class="py-2 px-4">R</th>
                                         <th class="py-2 px-4"><input type="text" name="R" class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md" id="R" value="8" placeholder="Numero de TRAMOS" min="0" required oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></th>
                                         <th class="py-2 px-4">-</th>
                                     </tr>
-
                                     <tr>
                                         <th class="py-2 px-4">
                                             <div class="input-group mb-2">
@@ -199,11 +190,9 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script> -->
