@@ -13,6 +13,8 @@ export class Grid {
   set(size, canvas) {
     this.width = this.canvas.width = canvas.width;
     this.height = this.canvas.height = canvas.height;
+    this.offestX = -this.width / 2;
+    this.offestY = this.height / 2;
     this.ctx.save();
     this.ctx.strokeStyle = "#282828";
     this.ctx.fillStyle = "#000";
@@ -22,6 +24,7 @@ export class Grid {
     const ctx = canvas.getContext("2d");
     this.createGrid();
     this.draw(ctx);
+    this.ctx.restore();
   }
 
   createGrid() {
@@ -31,8 +34,8 @@ export class Grid {
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     const topLeft = this.screenToWorld({ x: 0, y: 0 });
     const bottomRigth = this.screenToWorld({ x: this.canvas.width, y: this.canvas.height });
-    let start = this.worldToScreen({ x: 0,y: topLeft.y });
-		let end   = this.worldToScreen({ x: 0,y: bottomRigth.y });
+    let start = this.worldToScreen({ x: 0, y: topLeft.y });
+    let end = this.worldToScreen({ x: 0, y: bottomRigth.y });
     this.ctx.strokeStyle = "white";
     ctx.setLineDash([5, 10]);
     ctx.beginPath();
@@ -40,8 +43,8 @@ export class Grid {
     ctx.lineTo(end.x, end.y);
     ctx.stroke();
 
-    start = this.worldToScreen({ x: topLeft.x,y: 0 });
-		end = this.worldToScreen({ x: bottomRigth.x,y: 0 });
+    start = this.worldToScreen({ x: topLeft.x, y: 0 });
+    end = this.worldToScreen({ x: bottomRigth.x, y: 0 });
     this.ctx.strokeStyle = "white";
     ctx.setLineDash([5, 10]);
     ctx.beginPath();

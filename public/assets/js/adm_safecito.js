@@ -1076,6 +1076,8 @@ document.addEventListener("DOMContentLoaded", () => {
             selectedPoint = null;
             selectedHandleIndex = null;
             handleIsSelected = false;
+            switchTool(-1);
+            canvas.style.cursor = "default";
           }
           history.commit(shape.points);
         } else {
@@ -1265,11 +1267,13 @@ document.addEventListener("DOMContentLoaded", () => {
     markers = data.map((row) => {
       return new Marker({ x: row.x, y: row.y }, row.column);
     });
-    const cminx = markers.reduce((min, point) => (min < point.point.x ? min : point.point.x));
-    const cmaxx = markers.reduce((max, point) => (max > point.point.x ? max : point.point.x));
+    const xx = markers.map(m => m.point.x);
+    const yy = markers.map(m => m.point.y);
+    const cminx = Math.min(...xx);
+    const cmaxx = Math.max(...xx);
 
-    const cminy = markers.reduce((min, point) => (min < point.point.y ? min : point.point.y));
-    const cmaxy = markers.reduce((max, point) => (max > point.point.y ? max : point.point.y));
+    const cminy = Math.min(...yy);
+    const cmaxy = Math.max(...yy);
 
     const dX = Math.abs(cminx - cmaxx);
     const scaleX = canvas.width / dX;
