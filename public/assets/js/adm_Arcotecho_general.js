@@ -26,50 +26,50 @@ $(document).ready(function () {
     document.getElementById("datosgeometricos").innerHTML = `
         <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Radio</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>R</td>
             <td class='py-2 px-4'>-</td>
             <td class='py-2 px-4 text-center'>${radio.toFixed(2)}m</td>
         </tr> 
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>angulo</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-8'>Angulo de arco</td>
+            <td class='py-2 px-4'>θ</td>
             <td class='py-2 px-4'>-</td>
             <td class='py-2 px-4 text-center'>${angulo.toFixed(2)}°</td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>RAD</td>
+            <td class='py-2 px-8'>Angulo de arco</td>
+            <td class='py-2 px-4'>θ</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${rad.toFixed(2)}</td>
+            <td class='py-2 px-4 text-center'>${rad.toFixed(2)} RAD</td>
         </tr>
           <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Longitud de arco</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>LS</td>
             <td class='py-2 px-4'>-</td>
             <td class='py-2 px-4 text-center'>${longArco.toFixed(2)}m</td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>CGz</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-8'>Centro de gravedad de area</td>
+            <td class='py-2 px-4'>CGz</td>
             <td class='py-2 px-4'>-</td>
             <td class='py-2 px-4 text-center'>${CGz.toFixed(2)}m</td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Area total</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>AT</td>
             <td class='py-2 px-4'>-</td>
             <td class='py-2 px-4 text-center'>${areaTotal.toFixed(2)}m<sup>2</sup></td>
         </tr>
         </tr>
           <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Radio de CG de media cuerda</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>CGz2</td>
             <td class='py-2 px-4'>-</td>
             <td class='py-2 px-4 text-center'>${radicoCG.toFixed(2)}m</td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>CG XX de media cuerda</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>CGz3</td>
             <td class='py-2 px-4'>-</td>
             <td class='py-2 px-4 text-center'>${cgmediaCuerda.toFixed(2)}m</td>
         </tr>  `;
@@ -82,77 +82,67 @@ $(document).ready(function () {
     const CVz = CV * 0.5;
     const CVx = (((cargaviva * longArco) / 2) * cgmediaCuerda - (CVz * luz) / 2) / flecha;
     const Axial2 = (CVz * CVz + CVx * CVx) ** 0.5;
-    const pesosismico222 = CMz + 0.25 * CVz;
-    const pesoSismico1 = pesosismico222 * 2;
+    
 
     document.getElementById("calculocargas").innerHTML = `
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>CM</td>
+            <td class='py-2 px-8'>Carga muerta por lado</td>
+            <td class='py-2 px-4'>CM</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${CM.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${CM.toFixed(2)}kg/m</td>
         </tr> 
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>CMz</td>
+            <td class='py-2 px-8'>Carga muerta vertical</td>
+            <td class='py-2 px-4'>CMz</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${CMz.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${CMz.toFixed(2)}kg/m</td>
         </tr> 
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>CMx</td>
+            <td class='py-2 px-8'>Carga muerta horizontal</td>
+            <td class='py-2 px-4'>CMx</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${CMx.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${CMx.toFixed(2)}kg/m</td>
         </tr> 
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>Axial</td>
+            <td class='py-2 px-8'>Axial de CM</td>
+            <td class='py-2 px-4'>AXIAL</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${Axial.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${Axial.toFixed(2)}kg/m</td>
         </tr>`;
 
     document.getElementById("cargavivas").innerHTML = `
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>CV</td>
+            <td class='py-2 px-8'>Carga viva por lado</td>
+            <td class='py-2 px-4'>CV</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${CV.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${CV.toFixed(2)}kg/m</td>
         </tr> 
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>CVz</td>
+            <td class='py-2 px-8'>Carga viva vertical</td>
+            <td class='py-2 px-4'>CVz</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${CVz.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${CVz.toFixed(2)}kg/m</td>
         </tr> 
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>CVx</td>
+            <td class='py-2 px-8'>Carga viva horizontal</td>
+            <td class='py-2 px-4'>CVx</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${CVx.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${CVx.toFixed(2)}kg/m</td>
         </tr> 
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>Axial</td>
+            <td class='py-2 px-8'>Carga viva Axial</td>
+            <td class='py-2 px-4'>AXIAL</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${Axial2.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${Axial2.toFixed(2)}kg/m</td>
         </tr>
-        <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>PESO SISMICO CM+.25CV</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${pesoSismico1.toFixed(2)}kG/m</td>
-        </tr> 
-          <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${pesosismico222.toFixed(2)}kG/m</td>
-        </tr> 
+
+        
         `;
 
     // ========================COEFICIENTE SISMICO=========================================
-    const NADA = Z * U * S * C/ R;
-
+    const pesosismico222 = CMz + 0.25 * CVz;
+    const pesoSismico1 = pesosismico222 * 2;
+    const NADA = (Z * U * S * C) / R;
     const CS = pesoSismico1 * NADA;
     const CSx = CS / 2;
     const CSz = (CSx * (flecha - CGz)) / (luz * 0.5);
@@ -160,34 +150,46 @@ $(document).ready(function () {
 
     document.getElementById("coeficientesismico").innerHTML = `
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>-</td>
+            <td class='py-2 px-8'> Peso sismico total </td>
+            <td class='py-2 px-4'>CM+.25CV</td>
+            <td class='py-2 px-4'></td>
+            <td class='py-2 px-4 text-center'>${pesoSismico1.toFixed(2)}kg/m</td>
+        </tr> 
+          <tr class="bg-gray-100 dark:bg-gray-600">
+            <td class='py-2 px-8'>Peso sismico por lado</td>
+            <td class='py-2 px-4'>CM+.25CV </td>
             <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4 text-center'>${pesosismico222.toFixed(2)}kg/m</td>
+        </tr> 
+        <tr class="bg-gray-100 dark:bg-gray-600">
+            <td class='py-2 px-8'>Coeficiente sismico</td>
+            <td class='py-2 px-4'>ZUCS/R</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${NADA.toFixed(3)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${NADA.toFixed(3)}kg/m</td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>CS</td>
+            <td class='py-2 px-8'>Carga Sismica por lado</td>
+            <td class='py-2 px-4'>CS</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${CS.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${CS.toFixed(2)}kg/m</td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>CSx</td>
+            <td class='py-2 px-8'>Carga sismica Vertical</td>
+            <td class='py-2 px-4'>CSx</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${CSx.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${CSx.toFixed(2)}kg/m</td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>CSz</td>
+            <td class='py-2 px-8'>Carga sismica horizontal</td>
+            <td class='py-2 px-4'>CSz</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${CSz.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${CSz.toFixed(2)}kg/m</td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
-            <td class='py-2 px-8'>Axial</td>
+            <td class='py-2 px-8'>Carga sismica Axial</td>
+            <td class='py-2 px-4'>AXIAL</td>
             <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4'>-</td>
-            <td class='py-2 px-4 text-center'>${Axial3.toFixed(2)}kG/m</td>
+            <td class='py-2 px-4 text-center'>${Axial3.toFixed(2)}kg/m</td>
         </tr>
        `;
   });
