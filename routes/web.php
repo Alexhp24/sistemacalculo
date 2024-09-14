@@ -35,8 +35,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 //==========================RUTA PARA LAS PRUEBAS PREDIM=======================//
 Route::view('/admPredim', 'predim.admpredim');
-//==========================RUTA PARA LAS PRUEBAS CAD=======================//
-Route::view('/cad', 'matlab.cad');
 //==========================RUTA PARA LAS HOJAS DE CALCULO====================//
 Route::view('/admDvigas', 'hcalculo.admdesingvigas');
 Route::view('/admvigasG', 'hcalculo.admvigageneral');
@@ -68,6 +66,8 @@ Route::view('/admMalb', 'hcalculo.admMurosAlbanieria');
 Route::post('/malbaCont', [MuroAlbanieriaController::class, 'muroAlbanieria'])->name('malbaCont');
 //=====================RUTAS PARA PLACAS ===================================//
 Route::view('/admplacasL', 'hcalculo.admdesingPlacasL');
+//=====================RUTAS PARA SAFECITO ===================================//
+Route::view('/admSafecito', 'matlab.admSafecito');
 //=========================OCTAVE============================================//
 Route::view('/admAnalisisEstructuralDeArmaduras', 'matlab.admAnalisisEstructuralDeArmaduras');
 Route::post('/zapatas2', [OctavePlotController::class, 'graficarZapatas2'])->name('zapatas2');

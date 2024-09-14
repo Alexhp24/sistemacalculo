@@ -1,18 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Zapatas Grafico 2') }}
+            {{ __('Safecito') }}
         </h2>
     </x-slot>
     <style>
         .tabulator-cell:not(.tabulator-editable):not(.tabulator-calcs>.tabulator-cell) {
             background-color: #f2f2f2 !important;
-        }
-
-        #zapatas,
-        #zapatas * {
-            box-sizing: content-box;
-            color: 
         }
     </style>
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
@@ -41,7 +35,7 @@
                                             <div class="input-group mb-2 text-left inline-block">
                                                 <button id="calcular"
                                                     class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-                                                    type="submit">DISEÑAR</button>
+                                                    type="submit">CARGAR</button>
                                             </div>
                                             <div class="input-group mb-2 text-left inline-block">
                                                 <button id="generarPDF"
@@ -60,12 +54,7 @@
                 <div class="w-full md:w-2/3 px-4 mt-4 md:mt-0">
                     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
                         <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-4">Resultados</h3>
-                        <form id="calcularZapatas2">
-                            @csrf
-                            <button
-                                class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-                                type="submit">CALCULAR</button>
-                        </form>
+
                         <div class="overflow-x-auto" id="resultados">
                             <table class="min-w-full text-gray-800 dark:text-white">
                                 <thead>
@@ -83,29 +72,44 @@
                                                     <input class="hidden" type="range" name="zoom" min="5"
                                                         max="40">
                                                 </form>
-                                                <ul class="flex gap-4">
-                                                    <li id="arrows"><i class="fa fa-arrows" title="M: Move"></i>
-                                                    <li id="pencil"><i class="fa fa-pencil" title="L: Line"></i>
+                                                <ul class="flex items-center gap-4 mb-2">
+                                                    <li id="arrows"><i class="fa fa-arrows" title="M: Mover"></i>
+                                                    <li id="pencil"><i class="fa fa-pencil" title="L: Linea"></i>
                                                     <li id="plus" class="hidden"><i class="fa fa-plus"
                                                             title="A: Add"></i>
-                                                    <li id="scissors"><i class="fa fa-scissors" title="C: Cut"></i>
-                                                    <li id="crosshairs" class="hidden"><i class="fa fa-crosshairs"
-                                                            title="O: Change Origin"></i>
+                                                    <li id="scissors"><i class="fa fa-eraser"
+                                                            title="C: Eliminar"></i>
+                                                    <li id="copy"><i class="fa fa-clone" title="D: Copiar"></i>
                                                     <li id="eye-slash" class="hidden"><i class="fa fa-eye-slash"
                                                             title="V: Toggle Visibility"></i>
                                                     <li id="anchor"><i class="fa fa-anchor"
                                                             title="S: Toggle Grid Snap"></i>
                                                     </li>
-                                                    <li><input type="number" name="snap"
-                                                            class="form-control w-3/4 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    <li class="hidden"><input type="number" name="snap"
+                                                            class="form-control w-20 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
                                                             id="snap" value="1" step="any" min="0"
+                                                            required></i>
+                                                    </li>
+                                                    <li id="crosshairs"><i class="fa fa-crosshairs"
+                                                            title="O: Editar Punto"></i>
+                                                    <li><label for="x">X: </label>
+                                                        <input type="number" name="x"
+                                                            class="form-control w-20 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                            id="x" placeholder="0" step="any"
+                                                            required></i>
+                                                    </li>
+                                                    <li><label for="y">Y: </label><input type="number"
+                                                            name="y"
+                                                            class="form-control w-20 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                            id="y" placeholder="0" step="any"
                                                             required></i>
                                                     </li>
                                                 </ul>
                                                 <ul class="flex gap-4 hidden">
                                                     <li id="undo"><i class="fa fa-undo" title="U: Undo"></i>
                                                     <li id="redo"><i class="fa fa-repeat" title="R: Redo"></i>
-                                                    <li id="refresh"><i class="fa fa-trash-o" title="Delete All"></i>
+                                                    <li id="refresh"><i class="fa fa-trash-o"
+                                                            title="Delete All"></i>
                                                     </li>
                                                 </ul>
                                                 {{-- <ol class="flex gap-4">
@@ -149,8 +153,7 @@
                                                             class="fa fa-paint-brush" title="Color: LIGHTBLUE"></i>
                                                 </ul>
                                                 <ul class="flex hidden gap-4">
-                                                    <li id="copy"><i class="fa fa-copy"
-                                                            title="Open polygon in new editor instance as URL"></i>
+
                                                     <li id="clipboard"><i class="fa fa-clipboard"
                                                             title="Select array text"></i>
                                                 </ul>
@@ -158,6 +161,12 @@
                                             <div class="w-full h-[640px] relative" id="editor"><canvas
                                                     class="w-full h-full"></canvas>
                                             </div>
+                                            <form id="calcularZapatas2">
+                                                @csrf
+                                                <button
+                                                    class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 mt-2 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                                    type="submit">CALCULAR</button>
+                                            </form>
                                         </td>
                                     </tr>
                                 </thead>
@@ -203,5 +212,5 @@
         </div>
     </div>
     <script src="{{ asset('assets/js/mat4js.index.min.js') }}"></script>
-    <script src="{{ asset('assets/js/adm_analisis_estructural_de_armaduras.js') }}" type="module"></script>
+    <script src="{{ asset('assets/js/adm_safecito.js') }}" type="module"></script>
 </x-app-layout>

@@ -1,7 +1,5 @@
 import { pointDistance } from "./utils.js";
 
-var HANDLE_RELATIVE_RADIUS = 0.17; // Vertex handle radius relative to grid spacing
-
 export class Shape {
   constructor(parseUrl) {
     this.reset(parseUrl);
@@ -12,13 +10,13 @@ export class Shape {
     this.points = [];
   }
 
-  addPointToEnd(position) {
+  addPointToEnd(position, grid) {
     const begin = this.points[0];
-    if (this.points.length != 0 && pointDistance(begin, position) <= 0.65) {
+    if (this.points.length != 0 && pointDistance(grid.worldToScreen(begin), position) <= 5) {
       // No noting if the add location is the same as the last point
       return true;
     }
-    this.addPointAfterIndex(this.points.length - 1, position);
+    this.addPointAfterIndex(this.points.length - 1, grid.screenToWorld(position));
     return false;
   }
 
@@ -72,38 +70,21 @@ export class Shape {
 
     // Draw lines
     if (this.points.length >= 2) {
-      if (this.points[0].color) {
-        line_color = COLORS[this.points[0].color];
-      } else {
-        line_color = "white";
-      }
+      line_color = "white";
       ctx.strokeStyle = line_color;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1;
       ctx.beginPath();
       for (i = 0; i < this.points.length; i++) {
-        p = grid_.toPoint(this.points[i]);
+        p = grid_.worldToScreen(this.points[i]);
         if (i === 0) {
           ctx.moveTo(p.x, p.y);
           continue;
         }
         ctx.lineTo(p.x, p.y);
         ctx.stroke();
-
-        if (p.color) {
-          line_color = COLORS[p.color];
-        }
-
-        if (p.visible) {
-          ctx.strokeStyle = line_color;
-          ctx.setLineDash([]);
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-        } else {
-          ctx.strokeStyle = "gray";
-          ctx.setLineDash([5, 10]);
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-        }
+        ctx.strokeStyle = line_color;
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
       }
       ctx.stroke();
     }
@@ -117,13 +98,13 @@ export class Shape {
       } else if (i == 0) {
         color = "cyan";
       } else {
-        color = "green";
+        color = "red";
       }
-      p = grid_.toPoint(this.points[i]);
+      p = grid_.worldToScreen(this.points[i]);
       ctx.fillStyle = color;
       ctx.strokeStyle = color;
       ctx.beginPath();
-      ctx.arc(p.x, p.y, HANDLE_RELATIVE_RADIUS * grid_.size, 0, 2 * Math.PI);
+      ctx.arc(p.x, p.y, grid_.size, 0, 2 * Math.PI);
       ctx.fill();
       ctx.stroke();
     }
@@ -215,12 +196,13 @@ export class Marker {
   }
 
   draw(grid, ctx) {
-    const p = grid.toPoint(this.point);
+    const p = grid.worldToScreen(this.point);
+    ctx.save();
     ctx.moveTo(p.x, p.y);
     ctx.fillStyle = "white";
     ctx.strokeStyle = "white";
     ctx.beginPath();
-    ctx.arc(p.x, p.y, HANDLE_RELATIVE_RADIUS * grid.size, 0, 2 * Math.PI);
+    ctx.arc(p.x, p.y, grid.size, 0, 2 * Math.PI);
     ctx.fill();
     ctx.stroke();
     ctx.font = "8pt arial";
