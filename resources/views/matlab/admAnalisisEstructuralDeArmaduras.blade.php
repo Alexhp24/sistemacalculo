@@ -12,6 +12,7 @@
         #zapatas,
         #zapatas * {
             box-sizing: content-box;
+            color: 
         }
     </style>
     <link href="https://netdna.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet">
@@ -79,7 +80,8 @@
                                             <div>
                                                 <form>
                                                     <textarea class="hidden" name="coords" readonly></textarea>
-                                                    <input class="hidden" type="range" name="zoom" min="5" max="40">
+                                                    <input class="hidden" type="range" name="zoom" min="5"
+                                                        max="40">
                                                 </form>
                                                 <ul class="flex gap-4">
                                                     <li id="arrows"><i class="fa fa-arrows" title="M: Move"></i>
@@ -93,6 +95,11 @@
                                                             title="V: Toggle Visibility"></i>
                                                     <li id="anchor"><i class="fa fa-anchor"
                                                             title="S: Toggle Grid Snap"></i>
+                                                    </li>
+                                                    <li><input type="number" name="snap"
+                                                            class="form-control w-3/4 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                            id="snap" value="1" step="any" min="0"
+                                                            required></i>
                                                     </li>
                                                 </ul>
                                                 <ul class="flex gap-4 hidden">

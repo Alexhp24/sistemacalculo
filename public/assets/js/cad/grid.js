@@ -7,6 +7,7 @@ export class Grid {
     this.scaleX = 1.0;
     this.scaleY = 1.0;
     this.size = 3;
+    this.gridSpacing = 1; // Define grid spacing in world coordinates
   }
 
   set(size, canvas) {
@@ -25,59 +26,46 @@ export class Grid {
 
   createGrid() {
     const ctx = this.ctx; // Assuming you're using a canvas context
-    const gridSpacing = 50; // Define grid spacing in world coordinates
 
-    const screenWidth = this.canvas.width;
-    const screenHeight = this.canvas.height;
+    ctx.fillStyle = "darkblue";
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    const topLeft = this.screenToWorld({ x: 0, y: 0 });
+    const bottomRigth = this.screenToWorld({ x: this.canvas.width, y: this.canvas.height });
+    let start = this.worldToScreen({ x: 0,y: topLeft.y });
+		let end   = this.worldToScreen({ x: 0,y: bottomRigth.y });
+    this.ctx.strokeStyle = "white";
+    ctx.setLineDash([5, 10]);
+    ctx.beginPath();
+    ctx.moveTo(start.x, start.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.stroke();
 
-    // Convert screen bounds to world coordinates
-    const topLeftWorld = this.screenToWorld({ x: 0, y: 0 });
-    const bottomRightWorld = this.screenToWorld({ x: screenWidth, y: screenHeight });
-
-    // Vertical lines
-    const minX = Math.floor(topLeftWorld.x / gridSpacing) * gridSpacing;
-    const maxX = Math.ceil(bottomRightWorld.x / gridSpacing) * gridSpacing;
-    for (let x = minX; x <= maxX; x += gridSpacing) {
-      const screenPoint1 = this.worldToScreen({ x: x, y: topLeftWorld.y });
-      const screenPoint2 = this.worldToScreen({ x: x, y: bottomRightWorld.y });
-
-      ctx.beginPath();
-      ctx.moveTo(screenPoint1.x, screenPoint1.y);
-      ctx.lineTo(screenPoint2.x, screenPoint2.y);
-      ctx.strokeStyle = "#ccc"; // Grid line color
-      ctx.stroke();
-    }
-
-    // Horizontal lines
-    const minY = Math.floor(topLeftWorld.y / gridSpacing) * gridSpacing;
-    const maxY = Math.ceil(bottomRightWorld.y / gridSpacing) * gridSpacing;
-    for (let y = minY; y <= maxY; y += gridSpacing) {
-      const screenPoint1 = this.worldToScreen({ x: topLeftWorld.x, y: y });
-      const screenPoint2 = this.worldToScreen({ x: bottomRightWorld.x, y: y });
-
-      ctx.beginPath();
-      ctx.moveTo(screenPoint1.x, screenPoint1.y);
-      ctx.lineTo(screenPoint2.x, screenPoint2.y);
-      ctx.strokeStyle = "#ccc"; // Grid line color
-      ctx.stroke();
-    }
+    start = this.worldToScreen({ x: topLeft.x,y: 0 });
+		end = this.worldToScreen({ x: bottomRigth.x,y: 0 });
+    this.ctx.strokeStyle = "white";
+    ctx.setLineDash([5, 10]);
+    ctx.beginPath();
+    ctx.moveTo(start.x, start.y);
+    ctx.lineTo(end.x, end.y);
+    ctx.stroke();
   }
 
   draw(ctx) {
+    this.createGrid();
     ctx.drawImage(this.canvas, 0, 0);
   }
 
   worldToScreen(p) {
     return {
       x: (p.x - this.offestX) * this.scaleX,
-      y: (p.y - this.offestY) * this.scaleY,
+      y: (this.offestY - p.y) * this.scaleY,
     };
   }
 
   screenToWorld(p) {
     return {
       x: p.x / this.scaleX + this.offestX,
-      y: p.y / this.scaleY + this.offestY,
+      y: this.offestY - p.y / this.scaleY,
     };
   }
 }

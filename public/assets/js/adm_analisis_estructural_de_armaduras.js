@@ -383,8 +383,9 @@ document.addEventListener("DOMContentLoaded", () => {
       };
       const distance = parseFloat(input.value);
       const newPoint = { x: last_point.x + unitVec.x * distance, y: last_point.y + unitVec.y * distance };
-      const isDone = shape.addPointToEnd(newPoint);
+      const isDone = shape.addPointToEnd(grid.worldToScreen(newPoint), grid);
       if (isDone) {
+        shape.calcularPropiedades();
         shapes.push(shape);
         editor.removeChild(input);
         shape = new Shape(true);
@@ -422,12 +423,23 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.set(parseInt(form.zoom.value), canvas);
     redraw();
   }
+  function closestMarker(searchPoint) {
+    // Returns null if there are 0 points in the shape
+    var shortestDistance = 5;
+    for (let index = 0; index < markers.length; index++) {
+      const p = markers[index].point;
+      const distance = pointDistance(searchPoint, grid.worldToScreen(p));
+      if (distance <= shortestDistance) {
+        return markers[index];
+      }
+    }
+  }
   function closestPoint(searchPoint) {
     // Returns null if there are 0 points in the shape
-    var shortestDistance = 0.65;
+    var shortestDistance = 5;
     for (let index = 0; index < shapes.length; index++) {
       const collided = shapes[index].points.find((p, index, points) => {
-        const distance = pointDistance(searchPoint, p);
+        const distance = pointDistance(searchPoint, grid.worldToScreen(p));
         return distance <= shortestDistance;
       });
       if (collided) {
@@ -436,20 +448,12 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
   function closestLine(searchPoint) {
-    var shortestDistance = 0.2;
+    var shortestDistance = 10;
     return shapes.find((s) => {
-      for (let index = 0; index < s.points.length - 1; index++) {
-        const lineLength = pointDistance(s.points[index], s.points[index + 1]);
-        const d1 = pointDistance(s.points[index], searchPoint);
-        const d2 = pointDistance(s.points[index + 1], searchPoint);
-        if (d1 + d2 >= lineLength - shortestDistance && d1 + d2 <= lineLength + shortestDistance) {
-          return true;
-        }
-      }
-      if (s.points.length > 2) {
-        const lineLength = pointDistance(s.points[0], s.points[s.points.length - 1]);
-        const d1 = pointDistance(s.points[0], searchPoint);
-        const d2 = pointDistance(s.points[s.points.length - 1], searchPoint);
+      for (let index = 0; index < s.points.length; index++) {
+        const lineLength = pointDistance(grid.worldToScreen(s.points[index % s.points.length]), grid.worldToScreen(s.points[(index + 1) % s.points.length]));
+        const d1 = pointDistance(grid.worldToScreen(s.points[index % s.points.length]), searchPoint);
+        const d2 = pointDistance(grid.worldToScreen(s.points[(index + 1) % s.points.length]), searchPoint);
         if (d1 + d2 >= lineLength - shortestDistance && d1 + d2 <= lineLength + shortestDistance) {
           return true;
         }
@@ -473,13 +477,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ctx.save();
     // Draw lines
     if (s.points.length >= 2) {
-      if (s.points[0].color) {
-        line_color = COLORS[s.points[0].color];
-      } else {
-        line_color = "white";
-      }
+      line_color = "white";
       ctx.strokeStyle = line_color;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1;
       ctx.beginPath();
       for (i = 0; i < s.points.length; i++) {
         p = grid.worldToScreen(s.points[i]);
@@ -489,20 +489,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         ctx.lineTo(p.x, p.y);
         ctx.stroke();
-        if (p.color) {
-          line_color = COLORS[p.color];
-        }
-        if (p.visible) {
-          ctx.strokeStyle = line_color;
-          ctx.setLineDash([]);
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-        } else {
-          ctx.strokeStyle = "gray";
-          ctx.setLineDash([5, 10]);
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-        }
+        ctx.strokeStyle = line_color;
+        ctx.setLineDash([]);
+        ctx.beginPath();
+        ctx.moveTo(p.x, p.y);
       }
       if (s.points.length > 2) {
         const begin = grid.worldToScreen(s.points[0]);
@@ -521,7 +511,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else if (i == 0) {
         color = "cyan";
       } else {
-        color = "green";
+        color = "red";
       }
       p = grid.worldToScreen(s.points[i]);
       ctx.fillStyle = color;
@@ -746,15 +736,14 @@ document.addEventListener("DOMContentLoaded", () => {
   canvas.onmousedown = function (evt) {
     evt.preventDefault();
     const { x, y } = getMousePos(canvas, evt);
-
-    const click = grid.screenToWorld({ x: x, y: y }, snap_enabled);
     switch (currentTool) {
       case Tools.LINE:
-        const isDone = shape.addPointToEnd(click);
+        const isDone = shape.addPointToEnd(grid.worldToScreen(mousePos), grid);
         if (shape.points.length >= 1) {
           editor.appendChild(input);
         }
         if (isDone) {
+          shape.calcularPropiedades();
           shapes.push(shape);
           editor.removeChild(input);
           shape = new Shape(true);
@@ -764,24 +753,34 @@ document.addEventListener("DOMContentLoaded", () => {
       case Tools.MOVE:
         if (evt.button == 1 || 1 == (evt.button & 2)) {
           isDragging = true;
+          dragStart = { x: x, y: y };
+          return;
         }
-        dragStart = { x: x, y: y };
         if (handleIsSelected) {
           handleIsSelected = false;
+          let marker = closestMarker({ x: x, y: y });
+          selectedHandleIndex.calcularPropiedades();
+          const { XC: xc, YC: yc } = selectedHandleIndex.propiedades();
+          const dX = marker.point.x - xc;
+          const dY = marker.point.y - yc;
+          selectedHandleIndex.points.forEach((point) => {
+            point.x += dX;
+            point.y += dY;
+          });
           history.commit(shape.points);
         } else {
-          let index = closestPoint(click);
+          let index = closestPoint({ x: x, y: y });
           if (index) {
             handleIsSelected = true;
             selectedHandleIndex = index;
-          } else if ((index = closestLine(click))) {
+          } else if ((index = closestLine({ x: x, y: y }))) {
             handleIsSelected = true;
             selectedHandleIndex = index;
           }
         }
         break;
       case Tools.CUT:
-        const deleteShape = closestLine(click);
+        const deleteShape = closestLine({ x: x, y: y });
         const index = shapes.indexOf(deleteShape);
         if (index !== -1) {
           shapes.splice(index, 1);
@@ -801,18 +800,22 @@ document.addEventListener("DOMContentLoaded", () => {
   };
   canvas.onmousemove = function (evt) {
     const { x, y } = getMousePos(canvas, evt);
-    const prevMouse = mousePos;
     mousePos = grid.screenToWorld({ x: x, y: y }, snap_enabled);
+    if (snap_enabled) {
+      mousePos.x = Math.floor((mousePos.x + 0.5) * grid.gridSpacing);
+      mousePos.y = Math.floor((mousePos.y + 0.5) * grid.gridSpacing);
+    }
     if (currentTool === Tools.LINE && shape) {
       const last_point = shape.getLastPoint();
       if (last_point) {
+        const lp = grid.worldToScreen(last_point);
         const unitVec = {
-          x: (mousePos.x - last_point.x) / pointDistance(last_point, mousePos),
-          y: (mousePos.y - last_point.y) / pointDistance(last_point, mousePos),
+          x: (x - lp.x) / pointDistance(lp, { x: x, y: y }),
+          y: (y - lp.y) / pointDistance(lp, { x: x, y: y }),
         };
         const perpUnitVec = { x: -unitVec.y, y: unitVec.x };
-        const midPoint = { x: (last_point.x + mousePos.x) * 0.5, y: (last_point.y + mousePos.y) * 0.5 };
-        const mid = grid.worldToScreen({ x: midPoint.x + perpUnitVec.x * 5, y: midPoint.y + perpUnitVec.y * 5 });
+        const midPoint = { x: (lp.x + x) * 0.5, y: (lp.y + y) * 0.5 };
+        const mid = { x: midPoint.x + perpUnitVec.x * 100, y: midPoint.y + perpUnitVec.y * 100 };
         input.style.top = mid.y + "px";
         input.style.left = mid.x + "px";
         input.value = pointDistance(last_point, mousePos).toFixed(2);
@@ -822,14 +825,11 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (currentTool === Tools.MOVE) {
       if (isDragging) {
         grid.offestX -= (x - dragStart.x) / grid.scaleX;
-        grid.offestY -= (y - dragStart.y) / grid.scaleY;
+        grid.offestY += (y - dragStart.y) / grid.scaleY;
         dragStart = { x: x, y: y };
       }
       if (handleIsSelected) {
         if (selectedHandleIndex instanceof Shape) {
-          /* const dX = mousePos.x - prevMouse.x;
-          const dY = mousePos.y - prevMouse.y;
-          selectedHandleIndex.calcularPropiedades(); */
           selectedHandleIndex.calcularPropiedades();
           const { XC: xc, YC: yc } = selectedHandleIndex.propiedades();
           const dX = mousePos.x - xc;
@@ -928,8 +928,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const cminy = markers.reduce((min, point) => (min < point.point.y ? min : point.point.y));
     const cmaxy = markers.reduce((max, point) => (max > point.point.y ? max : point.point.y));
-    grid.offestX = (cminx + cmaxx) * 0.5;
-    grid.offestY = (cminy + cmaxy) * 0.5;
+
+    const dX = Math.abs(cminx - cmaxx);
+    const scaleX = canvas.width / dX;
+    grid.scaleX = scaleX;
+    grid.scaleY = scaleX;
+
+    const dY = Math.abs(cminy - cmaxy);
+    const scaleY = canvas.height / dY;
+    grid.scaleY = grid.scaleX = scaleX < scaleY ? scaleX * 0.9 : scaleY * 0.9;
+
+    grid.offestX = 0;
+    grid.offestY = 0;
+    const range = grid.screenToWorld({ x: canvas.width * 0.5, y: canvas.height * 0.5 });
+
+    grid.offestX = (cminx + cmaxx) * 0.5 - range.x;
+    grid.offestY = (cminy + cmaxy) * 0.5 - range.y;
     redraw();
   });
 
