@@ -1,4 +1,4 @@
-function zapatas2(poligonos, column, PD, PL, SISMO, CoValue)
+function zapatas2(poligonos, column, PD, PL, SISMO, CoValue, Df, pesoEspecifico)
   ZZ = [];
   resultados = struct();
   poligonoN = fieldnames(poligonos);
@@ -79,22 +79,21 @@ function zapatas2(poligonos, column, PD, PL, SISMO, CoValue)
       FBA=[PD1;PL1;SISMO1]+FBA; %MATRIZ ARMADA CON FILAS BUSCADAS SUMADA A LOS DEMAS PUNTOS
     end
     %CARGAS sismicas
-    PS  = FBA(3,2);
-    MXS = FBA(3,3);
-    MYS = FBA(3,4);
+    ps  = FBA(3,2);
+    mxs = FBA(3,3);
+    mys = FBA(3,4);
     %cargas muertas
-    Pm  = FBA(1,2);
-    MXm = FBA(1,3);
-    MYm = FBA(1,4);
+    pm  = FBA(1,2);
+    mxm = FBA(1,3);
+    mym = FBA(1,4);
     %cargas vivas
-    Pv  = FBA(2,2);
-    MXv = FBA(2,3);
-    MYv = FBA(2,4);
+    pv  = FBA(2,2);
+    mxv = FBA(2,3);
+    myv = FBA(2,4);
     %PROPIEDADES
     A   = A;
     Ixx = IX;
     Iyy = IY;
-    Df  = 2;
     %VERTICES DEL POLIGONO
     xv = PUNTOS3(:,1); %puntos del poligono
     yv = PUNTOS3(:,2); %puntos del poligono
@@ -115,7 +114,7 @@ function zapatas2(poligonos, column, PD, PL, SISMO, CoValue)
     YL = yq(in);
     %%%%%calculo de esfuerzos
     Co = eval(CoValue);
-    k = ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, Df, 1, size(Co)(1));
+    k = ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, Df, pesoEspecifico, 1, size(Co)(1));
     poligonoi = ["poligono" num2str(poliN)];
     minz = min(k);
     maxz = max(k);

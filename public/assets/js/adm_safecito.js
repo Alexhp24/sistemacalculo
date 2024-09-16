@@ -1346,7 +1346,6 @@ document.addEventListener("DOMContentLoaded", () => {
       return (
         "[" +
         table
-          .getData()
           .map((row) => {
             return fields.map((field) => row[field]).join(",");
           })
@@ -1354,12 +1353,25 @@ document.addEventListener("DOMContentLoaded", () => {
         "]"
       );
     };
+    const columns = datosGenerales.getData();
     const formData = new FormData(event.target);
-    formData.append("column", octaveMatrix(datosGenerales, "column", "x", "y"));
-    formData.append("PD", octaveMatrix(datosGenerales, "column", "pd1", "pd2", "pd3"));
-    formData.append("PL", octaveMatrix(datosGenerales, "column", "pl1", "pl2", "pl3"));
-    formData.append("SISMO", octaveMatrix(datosGenerales, "column", "sismo1", "sismo2", "sismo3"));
-    formData.append("Co", octaveMatrix(combinacionDeCargas, "column1", "column2", "column3"));
+    formData.append("column", octaveMatrix(columns, "column", "x", "y"));
+    formData.append("PD", octaveMatrix(columns, "column", "pd1", "pd2", "pd3"));
+    formData.append("PL", octaveMatrix(columns, "column", "pl1", "pl2", "pl3"));
+    formData.append("SISMO", octaveMatrix(columns, "column", "sismo1", "sismo2", "sismo3"));
+    formData.append("dF", document.getElementById("dF").value);
+    formData.append("pesoEspecifico", document.getElementById("pesoEspecifico").value);
+    formData.append(
+      "Co",
+      octaveMatrix(
+        combinacionDeCargas.getData().map((row) => {
+          return { ...row, column1: row.column1.toLowerCase(), column2: row.column2.toLowerCase(), column3: row.column3.toLowerCase() };
+        }),
+        "column1",
+        "column2",
+        "column3"
+      )
+    );
     formData.append(
       "poligonos",
       `struct(${shapes
@@ -1368,7 +1380,6 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .join(",")})`
     );
-    const columns = datosGenerales.getData();
     const graficos = document.getElementById("graficos");
     graficos.innerHTML = "";
     combinacionDeCargas.getData().forEach((_, index) => {
@@ -1400,7 +1411,7 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(zapatas2);
         combinacionDeCargas.getData().forEach((title, index) => {
           const traces = Object.values(zapatas2.data.resultados).map(({ XX, YY, ZZ, max, min }, poligonoN) => {
-            const ZEscale = ZZ[index].length ? ZZ[index] : ZZ; 
+            const ZEscale = ZZ[index].length ? ZZ[index] : ZZ;
             return {
               x: XX, // X-axis data
               y: YY, // Y-axis data
