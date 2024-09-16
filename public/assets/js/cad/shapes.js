@@ -22,7 +22,6 @@ export class Shape {
 
   addPointAfterIndex(index, position) {
     this.points.splice(index + 1, 0, { x: position.x, y: position.y, visible: true, color: null });
-    this._optimize();
   }
 
   getLastPoint() {
@@ -39,28 +38,10 @@ export class Shape {
 
   deletePoint(index) {
     this.points.splice(index, 1);
-    this._optimize();
   }
 
   colorizePoint(index, color) {
     this.points[index].color = color;
-    this._optimize();
-  }
-
-  _optimize() {
-    // Optimize the color assignments.  Color only needs to be specified once, on
-    // the first node that the color is drawn TO (not from)
-    var i, point, color;
-    color = null;
-    for (i = 0; i < this.points.length; i++) {
-      point = this.points[i];
-      if (color !== null && point.color == color) {
-        point.color = null;
-      }
-      if (point.color !== null) {
-        color = point.color;
-      }
-    }
   }
 
   draw(grid_, ctx, handleIsSelected) {
@@ -80,6 +61,13 @@ export class Shape {
           ctx.moveTo(p.x, p.y);
           continue;
         }
+/*         ctx.fillStyle = "white";
+        ctx.font = "16pt arial";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        const midPoint = grid_.worldToScreen({ x: (this.points[i - 1].x + this.points[i].x) * 0.5, y: (this.points[i - 1].y + this.points[i].y) * 0.5 });
+        const length = pointDistance(this.points[i - 1], this.points[i]);
+        ctx.fillText(`${length.toFixed(2)}`, midPoint.x, midPoint.y); */
         ctx.lineTo(p.x, p.y);
         ctx.stroke();
         ctx.strokeStyle = line_color;

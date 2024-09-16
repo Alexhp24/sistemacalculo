@@ -1,4 +1,4 @@
-function zapatas2(poligonos, column, PD, PL, SISMO)
+function zapatas2(poligonos, column, PD, PL, SISMO, CoValue)
   ZZ = [];
   resultados = struct();
   poligonoN = fieldnames(poligonos);
@@ -90,18 +90,6 @@ function zapatas2(poligonos, column, PD, PL, SISMO)
     Pv  = FBA(2,2);
     MXv = FBA(2,3);
     MYv = FBA(2,4);
-    %Combinacion de cargas
-    Co = [Pm+Pv   , MXm+MXv    , MYm+MYv;
-          Pm+.7*PS   , MXm+0.7*MXS, MYm;
-          Pm+.7*PS   , MXm-0.7*MXS, MYm;
-          Pm+.7*PS   , MXm        , MYm+0.7*MYS;
-          Pm+.7*PS   , MXm        , MYm-0.7*MYS;
-          Pm+0.75*Pv+.7*.75*PS  , MXm+0.75*MXv+0.7*0.75*MXS, MYm+0.75*MYv;
-          Pm+0.75*Pv+.7*.75*PS  , MXm+0.75*MXv-0.7*0.75*MXS, MYm+0.75*MYv;
-          Pm+0.75*Pv+.7*.75*PS  , MXm+0.75*MXv        , MYm+0.75*MYv+0.7*0.75*MYS;
-          Pm+0.75*Pv+.7*.75*PS  , MXm+0.75*MXv        , MYm+0.75*MYv-0.7*0.75*MYS;
-          .6*Pm+.7*PS   ,.6* MXm        , .6*MYm+0.7*MYS;
-          .6*Pm+.7*PS   ,.6* MXm        , .6*MYm-0.7*MYS];
     %PROPIEDADES
     A   = A;
     Ixx = IX;
@@ -126,7 +114,8 @@ function zapatas2(poligonos, column, PD, PL, SISMO)
     XL = xq(in);
     YL = yq(in);
     %%%%%calculo de esfuerzos
-    k = ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, Df, 1, 6);
+    Co = eval(CoValue);
+    k = ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, Df, 1, size(Co)(1));
     poligonoi = ["poligono" num2str(poliN)];
     minz = min(k);
     maxz = max(k);

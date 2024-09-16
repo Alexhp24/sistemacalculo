@@ -2,9 +2,9 @@ import { Grid } from "./cad/grid.js";
 import { History } from "./cad/history.js";
 import { Shape, Marker } from "./cad/shapes.js";
 import { pointDistance, distanceToSegment, formatCoordinate } from "./cad/utils.js";
-import { makeCreateDeleteColumn } from "./tabulator_base/table.js";
-import { createSpreeadSheetTable } from "./tabulator_base/table_factory.js";
 import { matlabColorScale } from "./matlab/color_scale.js";
+
+("use strict");
 
 function getMousePos(canvas, evt) {
   const rect = canvas.getBoundingClientRect();
@@ -27,316 +27,14 @@ function getMousePos(canvas, evt) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const datosGeneralesModel = (id) => {
-    return {
-      id: id,
-      data: [
-        {
-          id: 1,
-          column: 27,
-          x: 0,
-          y: 0,
-          pd1: 5.1319,
-          pd2: -0.0348,
-          pd3: 0.0803,
-          pl1: 0.0912,
-          pl2: -0.0009,
-          pl3: 0.0001,
-          sismo1: 6.0318,
-          sismo2: 3.0391,
-          sismo3: 0.1554,
-        },
-        {
-          id: 2,
-          column: 1,
-          x: 0,
-          y: 14.13,
-          pd1: 10.2057,
-          pd2: 0.1979,
-          pd3: 0.1814,
-          pl1: 1.5233,
-          pl2: 0.1312,
-          pl3: 0.0191,
-          sismo1: 2.5603,
-          sismo2: 3.2251,
-          sismo3: 0.8937,
-        },
-        {
-          id: 3,
-          column: 3,
-          x: 4.8,
-          y: 14.13,
-          pd1: 9.8239,
-          pd2: 0.2463,
-          pd3: 0.0002,
-          pl1: 1.4297,
-          pl2: 0.1277,
-          pl3: 0.0185,
-          sismo1: 2.5856,
-          sismo2: 2.7967,
-          sismo3: 0.8873,
-        },
-        {
-          id: 4,
-          column: 5,
-          x: 0,
-          y: 10.87,
-          pd1: 13.3251,
-          pd2: -0.0238,
-          pd3: 0.1576,
-          pl1: 2.5238,
-          pl2: -0.0266,
-          pl3: 0.0146,
-          sismo1: 1.8216,
-          sismo2: 3.6588,
-          sismo3: 0.4599,
-        },
-        {
-          id: 5,
-          column: 7,
-          x: 4.8,
-          y: 10.87,
-          pd1: 18.7931,
-          pd2: 0.1901,
-          pd3: 0.0595,
-          pl1: 3.0877,
-          pl2: 0.0709,
-          pl3: 0.0257,
-          sismo1: 32.1112,
-          sismo2: 4.5443,
-          sismo3: 2.4735,
-        },
-        {
-          id: 6,
-          column: 12,
-          x: 0,
-          y: 7.23,
-          pd1: 14.7282,
-          pd2: -0.1881,
-          pd3: 0.1981,
-          pl1: 1.6038,
-          pl2: -0.1404,
-          pl3: 0.0089,
-          sismo1: 1.9516,
-          sismo2: 3.593,
-          sismo3: 0.419,
-        },
-        {
-          id: 7,
-          column: 13,
-          x: 4.8,
-          y: 7.23,
-          pd1: 14.7224,
-          pd2: -0.3165,
-          pd3: -0.1065,
-          pl1: 1.8861,
-          pl2: -0.2279,
-          pl3: 0.0054,
-          sismo1: 0.4018,
-          sismo2: 2.9011,
-          sismo3: 0.4681,
-        },
-        {
-          id: 8,
-          column: 15,
-          x: 6.72,
-          y: 7.23,
-          pd1: 9.9749,
-          pd2: 0.0000408,
-          pd3: -0.0061,
-          pl1: 0.807,
-          pl2: -0.0716,
-          pl3: 0.0027,
-          sismo1: 1.4632,
-          sismo2: 3.4036,
-          sismo3: 0.4395,
-        },
-        {
-          id: 9,
-          column: 17,
-          x: 0,
-          y: 2.73,
-          pd1: 9.4622,
-          pd2: -0.0227,
-          pd3: 0.0391,
-          pl1: -0.1035,
-          pl2: 0.0068,
-          pl3: 0.0023,
-          sismo1: 3.794,
-          sismo2: 3.6411,
-          sismo3: 0.2977,
-        },
-        {
-          id: 10,
-          column: 19,
-          x: 4.8,
-          y: 2.73,
-          pd1: 10.763,
-          pd2: -0.2191,
-          pd3: 0.0164,
-          pl1: 0.0193,
-          pl2: -0.0092,
-          pl3: 0.0033,
-          sismo1: 2.1638,
-          sismo2: 1.7708,
-          sismo3: 0.2303,
-        },
-        {
-          id: 11,
-          column: 21,
-          x: 6.72,
-          y: 2.73,
-          pd1: 6.3618,
-          pd2: 0.0513,
-          pd3: 0.0301,
-          pl1: -0.0489,
-          pl2: 0.0162,
-          pl3: 0.0047,
-          sismo1: 3.8355,
-          sismo2: 3.4022,
-          sismo3: 0.2552,
-        },
-        {
-          id: 12,
-          column: 23,
-          x: 4.8,
-          y: 0,
-          pd1: 8.2016,
-          pd2: -0.0442,
-          pd3: 0.0308,
-          pl1: 0.0553,
-          pl2: 0.0009,
-          pl3: 0.0035,
-          sismo1: 10.7601,
-          sismo2: 3.3956,
-          sismo3: 1.0017,
-        },
-        {
-          id: 13,
-          column: 25,
-          x: 6.72,
-          y: 0,
-          pd1: 5.4082,
-          pd2: 0.0524,
-          pd3: 0.0285,
-          pl1: -0.0155,
-          pl2: 0.0127,
-          pl3: 0.0034,
-          sismo1: 16.1751,
-          sismo2: 3.8987,
-          sismo3: 0.9936,
-        },
-        {
-          id: 14,
-          column: 166,
-          x: 6.72,
-          y: 10.87,
-          pd1: 10.6504,
-          pd2: 0.2522,
-          pd3: 0.05,
-          pl1: 0.9954,
-          pl2: 0.1076,
-          pl3: 0.0182,
-          sismo1: 32.9814,
-          sismo2: 4.4079,
-          sismo3: 2.3816,
-        },
-      ],
-      config: {
-        /* layout: "fitDataTable", */
-        height: 480,
-        columns: [
-          makeCreateDeleteColumn(id),
-          {
-            title: "Columna",
-            field: "column",
-            editor: "number",
-          },
-          {
-            title: "X",
-            field: "x",
-            editor: "number",
-          },
-          {
-            title: "Y",
-            field: "y",
-            editor: "number",
-          },
-          {
-            title: "PD",
-            columns: [
-              {
-                title: "",
-                field: "pd1",
-                editor: "number",
-              },
-              {
-                title: "",
-                field: "pd2",
-                editor: "number",
-              },
-              {
-                title: "",
-                field: "pd3",
-                editor: "number",
-              },
-            ],
-          },
-          {
-            title: "PL",
-            columns: [
-              {
-                title: "",
-                field: "pl1",
-                editor: "number",
-              },
-              {
-                title: "",
-                field: "pl2",
-                editor: "number",
-              },
-              {
-                title: "",
-                field: "pl3",
-                editor: "number",
-              },
-            ],
-          },
-          {
-            title: "SISMO",
-            columns: [
-              {
-                title: "",
-                field: "sismo1",
-                editor: "number",
-              },
-              {
-                title: "",
-                field: "sismo2",
-                editor: "number",
-              },
-              {
-                title: "",
-                field: "sismo3",
-                editor: "number",
-              },
-            ],
-          },
-        ],
-      },
-    };
-  };
-
-  const datosGenerales = createSpreeadSheetTable(datosGeneralesModel("#datosGenerales"));
-
   // Init GUI Components
   const canvas = document.querySelector("#plot canvas");
 
   const form = document.querySelector("#plot form");
-  const text = document.querySelector("#plot textarea");
   const ctx = canvas.getContext("2d");
   const editor = document.getElementById("editor");
   const input = document.createElement("input");
+
   input.type = "number";
   input.style.color = "black";
   input.style.position = "absolute";
@@ -356,15 +54,32 @@ document.addEventListener("DOMContentLoaded", () => {
     COLORIZE: 6,
     SELECT: 7,
     NONE: 8,
-  };
-  const Styles = {
-    ARRAY: 0,
-    ONE_ARRAY: 1,
-    NORMALIZED: 2,
-    ONE_NORMALIZED: 3,
+    EDIT: 9,
+    COPY: 10,
   };
   const shapes = [];
   let markers = [];
+
+  let selectedPoint = null;
+  let selectedMarker = null;
+  const xIn = document.getElementById("x");
+  const yIn = document.getElementById("y");
+
+  xIn.addEventListener("input", () => {
+    const value = parseFloat(xIn.value);
+    if (!isNaN(value) && selectedPoint) {
+      selectedPoint.x = value;
+    }
+    redraw();
+  });
+
+  yIn.addEventListener("input", () => {
+    const value = parseFloat(yIn.value);
+    if (!isNaN(value) && selectedPoint) {
+      selectedPoint.y = value;
+    }
+    redraw();
+  });
 
   var shape,
     isDragging = false,
@@ -392,28 +107,16 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   });
-  var handleIsSelected = false;
-  var selectedHandleIndex = 0;
-  var COLORS = [
-    "#000000", // 00 (Penup)
-    "#2020FF", // 01 BLUE
-    "#FFFFFF", // 02 WHITE
-    "#00FF00", // 03 GREEN
-    "#FFFF00", // 04 YELLOW
-    "#FF0000", // 05 RED
-    "#00FFFF", // 06 CYAN
-    "#FF00FF", // 07 MAGENTA
-    "#008080", // 08 CYAN_DK
-    "#E55300", // 09 ORANGE
-    "#8B4513", // 10 BROWN
-    "#808000", // 11 YELLOW_DK
-    "#808080", // 12 GRAY
-    "#404040", // 13 GRAY_DK
-    "#87CEFA", // 14 LIGHTSKYBLUE
-    "#1E90FF", // 15 DODGERBLUE
-    "#ADD8E6", // 16 LIGHTBLUE
-  ];
-  var current_selected_color = COLORS[1];
+
+  document.getElementById("snap").addEventListener("change", (e) => {
+    const value = parseFloat(e.target.value);
+    if (!isNaN(value)) {
+      grid.gridSpacing = value;
+    }
+  });
+
+  let handleIsSelected = false;
+  let selectedHandleIndex = 0;
   // Functions
   function windowResize() {
     // Set actual size in memory (scaled to account for extra pixel density).
@@ -554,7 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
     switch (currentTool) {
       case Tools.MOVE:
         modeText = "Move";
-        /* selectedHandleIndex.drawTranslated(position); */
         break;
       case Tools.LINE:
         modeText = "Line";
@@ -576,14 +278,11 @@ document.addEventListener("DOMContentLoaded", () => {
       case Tools.CUT:
         modeText = "Cut";
         break;
-      case Tools.ORIGIN:
-        modeText = "Change Origin";
+      case Tools.COPY:
+        modeText = "Clonar";
         break;
-      case Tools.VISIBILITY:
-        modeText = "Toggle Visibility";
-        break;
-      case Tools.COLORIZE:
-        modeText = "Colorize";
+      case Tools.EDIT:
+        modeText = "Editar Punto";
         break;
     }
     ctx.fillText(modeText, x_pos, y_pos);
@@ -756,17 +455,28 @@ document.addEventListener("DOMContentLoaded", () => {
           dragStart = { x: x, y: y };
           return;
         }
-        if (handleIsSelected) {
+        if (handleIsSelected || selectedMarker) {
           handleIsSelected = false;
           let marker = closestMarker({ x: x, y: y });
-          selectedHandleIndex.calcularPropiedades();
-          const { XC: xc, YC: yc } = selectedHandleIndex.propiedades();
-          const dX = marker.point.x - xc;
-          const dY = marker.point.y - yc;
-          selectedHandleIndex.points.forEach((point) => {
-            point.x += dX;
-            point.y += dY;
-          });
+          if (marker && !selectedMarker) {
+            selectedMarker = marker;
+          } else if (marker && selectedMarker) {
+            selectedHandleIndex.calcularPropiedades();
+            const { XC: xc, YC: yc } = selectedHandleIndex.propiedades();
+            const midPoints = { x: (marker.point.x + selectedMarker.point.x) * 0.5, y: (marker.point.y + selectedMarker.point.y) * 0.5 };
+            const dX = midPoints.x - xc;
+            const dY = midPoints.y - yc;
+            selectedHandleIndex.points.forEach((point) => {
+              point.x += dX;
+              point.y += dY;
+            });
+            selectedMarker = null;
+            selectedPoint = null;
+            selectedHandleIndex = null;
+            handleIsSelected = false;
+            switchTool(-1);
+            canvas.style.cursor = "default";
+          }
           history.commit(shape.points);
         } else {
           let index = closestPoint({ x: x, y: y });
@@ -786,8 +496,27 @@ document.addEventListener("DOMContentLoaded", () => {
           shapes.splice(index, 1);
         }
         break;
+      case Tools.COPY:
+        const cloneShape = closestLine({ x: x, y: y });
+        if (cloneShape) {
+          handleIsSelected = true;
+          shape = structuredClone(cloneShape);
+          shape = Object.assign(Object.create(Object.getPrototypeOf(cloneShape)), shape);
+          shapes.push(shape);
+          selectedHandleIndex = shape;
+          shape = new Shape(true);
+          switchTool(Tools.MOVE);
+          canvas.style.cursor = "move";
+        }
+        break;
+      case Tools.EDIT:
+        selectedPoint = closestPoint({ x: x, y: y });
+        if (selectedPoint) {
+          xIn.value = selectedPoint.x;
+          yIn.value = selectedPoint.y;
+        }
+        break;
     }
-
     redraw();
   };
   canvas.onmouseup = (evt) => {
@@ -802,8 +531,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const { x, y } = getMousePos(canvas, evt);
     mousePos = grid.screenToWorld({ x: x, y: y }, snap_enabled);
     if (snap_enabled) {
-      mousePos.x = Math.floor((mousePos.x + 0.5) * grid.gridSpacing);
-      mousePos.y = Math.floor((mousePos.y + 0.5) * grid.gridSpacing);
+      mousePos.x = Math.floor((mousePos.x + 0.5) * grid.gridSpacing) + grid.gridSpacing - Math.floor(grid.gridSpacing);
+      mousePos.y = Math.floor((mousePos.y + 0.5) * grid.gridSpacing) + grid.gridSpacing - Math.floor(grid.gridSpacing);
     }
     if (currentTool === Tools.LINE && shape) {
       const last_point = shape.getLastPoint();
@@ -866,6 +595,14 @@ document.addEventListener("DOMContentLoaded", () => {
     snap_enabled = !snap_enabled;
     redraw();
   };
+  document.getElementById("copy").onclick = function () {
+    switchTool(Tools.COPY);
+    canvas.style.cursor = "copy";
+  };
+  document.getElementById("crosshairs").onclick = function () {
+    switchTool(Tools.EDIT);
+    canvas.style.cursor = "cell";
+  };
   var color_index;
   for (color_index = 1; color_index <= 16; color_index++) {
     (function (_color_index) {
@@ -882,14 +619,19 @@ document.addEventListener("DOMContentLoaded", () => {
       case 27: // <escape>
         if (shape.points.length >= 2) {
           shape.calcularPropiedades();
+          editor.removeChild(input);
           shapes.push(shape);
         }
-        editor.removeChild(input);
         shape = new Shape(true);
-        switchTool(Tools.MOVE);
-        canvas.style.cursor = "move";
+        selectedMarker = null;
+        selectedPoint = null;
+        selectedHandleIndex = null;
+        handleIsSelected = false;
+        switchTool(-1);
+        canvas.style.cursor = "default";
+        redraw();
         break;
-      case 76: // "L"
+      /*       case 76: // "L"
         switchTool(Tools.LINE);
         break;
       case 65: // "A"
@@ -910,163 +652,10 @@ document.addEventListener("DOMContentLoaded", () => {
       case 82: // "R"
         redo();
         break;
-      case 83: // "S"
+      case 83: // "S" 
         snap_enabled = !snap_enabled;
         redraw();
-        break;
+        break; */
     }
-  });
-
-  document.getElementById("zapatas2Form").addEventListener("submit", (event) => {
-    event.preventDefault();
-    const data = datosGenerales.getData();
-    markers = data.map((row) => {
-      return new Marker({ x: row.x, y: row.y }, row.column);
-    });
-    const cminx = markers.reduce((min, point) => (min < point.point.x ? min : point.point.x));
-    const cmaxx = markers.reduce((max, point) => (max > point.point.x ? max : point.point.x));
-
-    const cminy = markers.reduce((min, point) => (min < point.point.y ? min : point.point.y));
-    const cmaxy = markers.reduce((max, point) => (max > point.point.y ? max : point.point.y));
-
-    const dX = Math.abs(cminx - cmaxx);
-    const scaleX = canvas.width / dX;
-    grid.scaleX = scaleX;
-    grid.scaleY = scaleX;
-
-    const dY = Math.abs(cminy - cmaxy);
-    const scaleY = canvas.height / dY;
-    grid.scaleY = grid.scaleX = scaleX < scaleY ? scaleX * 0.9 : scaleY * 0.9;
-
-    grid.offestX = 0;
-    grid.offestY = 0;
-    const range = grid.screenToWorld({ x: canvas.width * 0.5, y: canvas.height * 0.5 });
-
-    grid.offestX = (cminx + cmaxx) * 0.5 - range.x;
-    grid.offestY = (cminy + cmaxy) * 0.5 - range.y;
-    redraw();
-  });
-
-  document.getElementById("calcularZapatas2").addEventListener("submit", (event) => {
-    event.preventDefault();
-    const octaveMatrix = (table, ...fields) => {
-      return (
-        "[" +
-        table
-          .getData()
-          .map((row) => {
-            return fields.map((field) => row[field]).join(" ");
-          })
-          .join(";") +
-        "]"
-      );
-    };
-    const formData = new FormData(event.target);
-    formData.append("column", octaveMatrix(datosGenerales, "column", "x", "y"));
-    formData.append("PD", octaveMatrix(datosGenerales, "column", "pd1", "pd2", "pd3"));
-    formData.append("PL", octaveMatrix(datosGenerales, "column", "pl1", "pl2", "pl3"));
-    formData.append("SISMO", octaveMatrix(datosGenerales, "column", "sismo1", "sismo2", "sismo3"));
-    formData.append(
-      "poligonos",
-      `struct(${shapes
-        .map((shape, index) => {
-          return `'poligono${index + 1}', [${[...shape.points, shape.points[0]].map((p) => `${p.x},${p.y}`).join(";")}]`;
-        })
-        .join(",")})`
-    );
-    const columns = datosGenerales.getData();
-    console.log(Object.fromEntries(formData));
-    fetch("/zapatas2", {
-      method: "POST",
-      body: formData,
-    })
-      .then(async (response) => {
-        const contentType = response.headers.get("Content-Type");
-        if (contentType && contentType.includes("application/octet-stream")) {
-          return response.arrayBuffer();
-        } else {
-          const error = await response.text();
-          return Promise.reject(error);
-        }
-      })
-      .then((matData) => {
-        const zapatas2 = mat4js.read(matData);
-        console.log(zapatas2);
-        Array.from(Array(6), (_, index) => index).forEach((_, index) => {
-          const traces = Object.values(zapatas2.data.resultados).map(({ XX, YY, ZZ, max, min }, poligonoN) => {
-            return {
-              x: XX, // X-axis data
-              y: YY, // Y-axis data
-              z: ZZ[index],
-              mode: "markers", // Scatter plot mode
-              marker: {
-                size: 2, // Size of the markers
-                color: ZZ[index], // Color of the markers, based on Z data
-                //colorscale: "Viridis", // Color scale
-                //colorscale: "Jet", // Color scale
-                /* showscale: true, // Show the color scale */
-                coloraxis: "coloraxis",
-              },
-              name: `<b>Poligono ${poligonoN + 1}<br>σ<sub>min</sub> = ${min[index].toFixed(3)}<br>σ<sub>max</sub> = ${max[index].toFixed(3)}</b><br>`,
-              hovertemplate: "<b>x</b>: %{x}<br>" + "<b>y</b>: %{y}<br>" + "<b>z</b>: %{marker.color:.4f}" + "<extra></extra>",
-              type: "scattergl", // 3D scatter plot type
-              /* type: "pointcloudgl", // 3D scatter plot type */
-            };
-          });
-          const markers = columns.map((row) => {
-            return {
-              x: [row.x],
-              y: [row.y],
-              text: [`${row.column}`],
-              mode: "markers+text",
-              type: "scattergl",
-              textposition: "top right",
-              textfont: {
-                family: "Arial",
-                size: 10,
-                color: "lightgrey",
-              },
-              showlegend: false,
-            };
-          });
-          const layout = {
-            xaxis: {
-              scaleanchor: "y",
-              scaleratio: 1,
-            },
-            yaxis: {
-              constrain: "domain",
-            },
-            coloraxis: {
-              colorscale: matlabColorScale, // Color scale
-              colorbar: {
-                title: {
-                  text: "Presion Admisible (Tn/m)",
-                  side: "right",
-                },
-              },
-            },
-            showlegend: true,
-            legend: { x: 0, y: 0.5 },
-            annotations: Object.values(zapatas2.data.resultados).map(({ XC: [xc], YC: [yc] }, index) => {
-              return {
-                x: xc,
-                y: yc,
-                xref: "x",
-                yref: "y",
-                text: `P${index + 1}`,
-                font: {
-                  color: "lightgrey",
-                  size: 10,
-                },
-                align: "left",
-                showarrow: false,
-              };
-            }),
-          };
-          // Plot the chart using Plotly
-          Plotly.react(`zapata${index + 1}`, [...traces, ...markers], layout, { responsive: false });
-        });
-      });
   });
 });
