@@ -1400,14 +1400,15 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(zapatas2);
         combinacionDeCargas.getData().forEach((title, index) => {
           const traces = Object.values(zapatas2.data.resultados).map(({ XX, YY, ZZ, max, min }, poligonoN) => {
+            const ZEscale = ZZ[index].length ? ZZ[index] : ZZ; 
             return {
               x: XX, // X-axis data
               y: YY, // Y-axis data
-              z: ZZ[index],
+              z: ZEscale,
               mode: "markers", // Scatter plot mode
               marker: {
                 size: 2, // Size of the markers
-                color: ZZ[index], // Color of the markers, based on Z data
+                color: ZEscale, // Color of the markers, based on Z data
                 //colorscale: "Viridis", // Color scale
                 //colorscale: "Jet", // Color scale
                 /* showscale: true, // Show the color scale */
