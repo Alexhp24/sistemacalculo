@@ -115,7 +115,7 @@ function zapatas2(poligonos, column, PD, PL, SISMO, CoValue)
     YL = yq(in);
     %%%%%calculo de esfuerzos
     Co = eval(CoValue);
-    k = ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, Df, 1, length(Co));
+    k = ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, Df, 1, size(Co)(1));
     poligonoi = ["poligono" num2str(poliN)];
     minz = min(k);
     maxz = max(k);
