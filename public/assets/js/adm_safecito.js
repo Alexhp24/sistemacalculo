@@ -301,6 +301,7 @@ function createSpreeadSheetTable(tableModel) {
     if (spareRow) {
       table.addRow({});
     }
+    table.redraw();
   });
   table["spareRow"] = spareRow;
   return table;
@@ -627,7 +628,53 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   };
 
+  const combinacionDeCargasModel = (id) => {
+    return {
+      id: id,
+      data: [
+        { id: 1, column1: "Pm + Pv", column2: "MXm + MXv", column3: "MYm + MYv" },
+        { id: 2, column1: "Pm + 0.7 * PS", column2: "MXm + 0.7 * MXS", column3: "MYm" },
+        { id: 3, column1: "Pm + 0.7 * PS", column2: "MXm - 0.7 * MXS", column3: "MYm" },
+        { id: 4, column1: "Pm + 0.7 * PS", column2: "MXm", column3: "MYm + 0.7 * MYS" },
+        { id: 5, column1: "Pm + 0.7 * PS", column2: "MXm", column3: "MYm - 0.7 * MYS" },
+        { id: 6, column1: "Pm + 0.75 * Pv + 0.7 * 0.75 * PS", column2: "MXm + 0.75 * MXv + 0.7 * 0.75 * MXS", column3: "MYm + 0.75 * MYv" },
+        { id: 7, column1: "Pm + 0.75 * Pv + 0.7 * 0.75 * PS", column2: "MXm + 0.75 * MXv - 0.7 * 0.75 * MXS", column3: "MYm + 0.75 * MYv" },
+        { id: 8, column1: "Pm + 0.75 * Pv + 0.7 * 0.75 * PS", column2: "MXm + 0.75 * MXv", column3: "MYm + 0.75 * MYv + 0.7 * 0.75 * MYS" },
+        { id: 9, column1: "Pm + 0.75 * Pv + 0.7 * 0.75 * PS", column2: "MXm + 0.75 * MXv", column3: "MYm + 0.75 * MYv - 0.7 * 0.75 * MYS" },
+        { id: 10, column1: "0.6 * Pm + 0.7 * PS", column2: "0.6 * MXm", column3: "0.6 * MYm + 0.7 * MYS" },
+        { id: 11, column1: "0.6 * Pm + 0.7 * PS", column2: "0.6 * MXm", column3: "0.6 * MYm - 0.7 * MYS" },
+      ],
+      config: {
+        height: 480,
+        columns: [
+          makeCreateDeleteColumn(id),
+          {
+            title: "Combinacion de Cargas",
+            columns: [
+              {
+                title: "",
+                field: "column1",
+                editor: "input",
+              },
+              {
+                title: "",
+                field: "column2",
+                editor: "input",
+              },
+              {
+                title: "",
+                field: "column3",
+                editor: "input",
+              },
+            ],
+          },
+        ],
+      },
+    };
+  };
+
   const datosGenerales = createSpreeadSheetTable(datosGeneralesModel("#datosGenerales"));
+  const combinacionDeCargas = createSpreeadSheetTable(combinacionDeCargasModel("#combinacionDeCargas"));
 
   // Init GUI Components
   const canvas = document.querySelector("#plot canvas");
@@ -1267,8 +1314,8 @@ document.addEventListener("DOMContentLoaded", () => {
     markers = data.map((row) => {
       return new Marker({ x: row.x, y: row.y }, row.column);
     });
-    const xx = markers.map(m => m.point.x);
-    const yy = markers.map(m => m.point.y);
+    const xx = markers.map((m) => m.point.x);
+    const yy = markers.map((m) => m.point.y);
     const cminx = Math.min(...xx);
     const cmaxx = Math.max(...xx);
 
@@ -1301,7 +1348,7 @@ document.addEventListener("DOMContentLoaded", () => {
         table
           .getData()
           .map((row) => {
-            return fields.map((field) => row[field]).join(" ");
+            return fields.map((field) => row[field]).join(",");
           })
           .join(";") +
         "]"
@@ -1312,6 +1359,7 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("PD", octaveMatrix(datosGenerales, "column", "pd1", "pd2", "pd3"));
     formData.append("PL", octaveMatrix(datosGenerales, "column", "pl1", "pl2", "pl3"));
     formData.append("SISMO", octaveMatrix(datosGenerales, "column", "sismo1", "sismo2", "sismo3"));
+    formData.append("Co", octaveMatrix(combinacionDeCargas, "column1", "column2", "column3"));
     formData.append(
       "poligonos",
       `struct(${shapes
@@ -1321,6 +1369,18 @@ document.addEventListener("DOMContentLoaded", () => {
         .join(",")})`
     );
     const columns = datosGenerales.getData();
+    const graficos = document.getElementById("graficos");
+    graficos.innerHTML = "";
+    combinacionDeCargas.getData().forEach((_, index) => {
+      // Plot the chart using Plotly
+      graficos.innerHTML += `
+        <tr class="bg-gray-100 dark:bg-gray-600">
+          <td class="py-2 px-4" colspan="4">
+              <div id="zapata${index + 1}"></div>
+          </td>
+        </tr>`;
+    });
+
     console.log(Object.fromEntries(formData));
     fetch("/zapatas2", {
       method: "POST",
@@ -1338,7 +1398,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((matData) => {
         const zapatas2 = mat4js.read(matData);
         console.log(zapatas2);
-        Array.from(Array(6), (_, index) => index).forEach((_, index) => {
+        combinacionDeCargas.getData().forEach((title, index) => {
           const traces = Object.values(zapatas2.data.resultados).map(({ XX, YY, ZZ, max, min }, poligonoN) => {
             return {
               x: XX, // X-axis data
@@ -1409,8 +1469,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 showarrow: false,
               };
             }),
+            title: `<b>Comb: [${title.column1}, ${title.column2}, ${title.column3}]</b>`,
           };
-          // Plot the chart using Plotly
           Plotly.react(`zapata${index + 1}`, [...traces, ...markers], layout, { responsive: false });
         });
       });

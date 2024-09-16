@@ -30,6 +30,11 @@
                                             <div id="datosGenerales"></div>
                                         </td>
                                     </tr>
+                                    <tr class="bg-white dark:bg-gray-800">
+                                        <td class="py-2 px-4" colspan="4">
+                                            <div id="combinacionDeCargas"></div>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <th class="py-2 px-4 text-left" colspan="4">
                                             <div class="input-group mb-2 text-left inline-block">
@@ -172,7 +177,7 @@
                                 </thead>
                                 <tbody id="polygons">
                                 </tbody>
-                                <tbody>
+                                <tbody id="graficos">
                                     <tr class="bg-gray-100 dark:bg-gray-600">
                                         <td class="py-2 px-4" colspan="4">
                                             <div id="zapata1"></div>
