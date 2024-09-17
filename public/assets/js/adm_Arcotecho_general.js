@@ -169,13 +169,13 @@ $(document).ready(function () {
     const CSz = (CSx * (flecha - CGz)) / (luz * 0.5);
     const Axial3 = (CSx * CSx + CSz * CSz) ** 0.5;
     // FORMULAS
-    const FORMULApesoSismico1 = `CD+.25CL= B36 \\times 2`;
-    const FORMULApesosismico222 = `CD+.25CL= B26 + 0.25 \\times B31`;
-    const FORMULANADA = ` ZUCS/R=\\frac{B38 \\cdot B39 \\cdot B40 \\cdot B41}{B42}`;
-    const FORMULACS = `CE= B35\\cdot B43`;
-    const FORMULACSx = `CEx= \\frac{B45}{2}`;
-    const FORMULACSz = `CEz=\\frac{B46 \\cdot (B5 - B12)}{B4 \\cdot 0.5}`;
-    const FORMULAAxial3 = `AXIAL =(B46^2 + B47^2)^{0.5}`;
+    const FORMULApesoSismico1 = `CD+.25CL= CD+.25C \\times 2`;
+    const FORMULApesosismico222 = `CD+.25CL= CDz + 0.25 \\times CLz`;
+    const FORMULANADA = ` ZUCS/R=\\frac{Z \\cdot U \\cdot S \\cdot C}{R}`;
+    const FORMULACS = `CE= CD+.25CL\\cdot V`;
+    const FORMULACSx = `CEx= \\frac{CE}{2}`;
+    const FORMULACSz = `CEz=\\frac{CEx \\cdot (f - CGz)}{L \\cdot 0.5}`;
+    const FORMULAAxial3 = `AXIAL =(CEx^2 + CEz^2)^{0.5}`;
 
     document.getElementById("coeficientesismico").innerHTML = `
         <tr class="bg-gray-100 dark:bg-gray-600">
@@ -241,79 +241,93 @@ $(document).ready(function () {
     const CwxSota = (((CWSota * longArco) / 2) * cgmediaCuerda - (CwzSota * luz) / 2) / flecha;
     const Axial5 = (CwzSota * CwzSota + CwxSota * CwxSota) ** 0.5;
 
+    // FORMULAS
+    const FORMULAVh = `\\text{Vh} = C \\cdot \\left( \\frac{h + f}{10} \\right)^{0.22}`;
+    const FORMULAPh = `\\text{Ph} = 0.005 \\cdot Vh^2`;
+    const FORMULACWBar = `\\text{CWBar} = Ph \\cdot 0.8`;
+    const FORMULACWSota = `\\text{CWSota} = 0.5 \\cdot Ph`;
+    const FORMULACwBar2 = `\\text{CWBar} = CWBar \\cdot LS`;
+    const FORMULACwSota2 = `\\text{CWSota} = CWSota \\cdot LS`;
+    const FORMULACwzBar = `\\text{CWzBar} = CWSota \\cdot 0.5`;
+    const FORMULACwxBar = `\\text{CWxBar} = \\frac{\\left( \\left( CWBar \\cdot LS \\cdot \\frac{CGz3}{2} \\right) - CWzBar \\cdot \\frac{L}{2} \\right)}{f}`;
+    const FORMULAAxial4 = `\\text{AxialWBar} = (CWzBar^2 + CWxBar^2)^{0.5}`;
+    const FORMULACwzSota = `\\text{CWzSota} = CWSota \\cdot 0.5`;
+    const FORMULACwxSota = `\\text{CWxSota} = \\frac{\\left( \\left( CWSota \\cdot LS \\cdot \\frac{CGz3}{2} \\right) - CWzSota \\cdot \\frac{L}{2} \\right)}{f}`;
+    const FORMULAAxial5 = `\\text{AxialWSota} = (CWzSota^2 + CWxSota^2)^{0.5}`;
+
     document.getElementById("cargadeviento").innerHTML = `
         <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Velocidad de viento</td>
             <td class='py-2 px-4'>Vh</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULAVh}\\)</td>
             <td class='py-2 px-4 text-center'>${Vh.toFixed(2)}km/h</td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Presion de viento</td>
             <td class='py-2 px-4'>Ph</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULAPh}\\)</td>
             <td class='py-2 px-4 text-center'>${Ph.toFixed(2)}kg/m<sup>2</sup></td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga de viento barlovento</td>
             <td class='py-2 px-4'>CWBar</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULACWBar}\\)</td>
             <td class='py-2 px-4 text-center'>${CWBar.toFixed(2)}kg/m<sup>2</sup></td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga de viento sotavento</td>
             <td class='py-2 px-4'>CWSota</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULACWSota}\\)</td>
             <td class='py-2 px-4 text-center'>${CWSota.toFixed(2)}kg/m<sup>2</sup></td>
         </tr>
         
          <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga de viento barlovento</td>
             <td class='py-2 px-4'>CWBar</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULACwBar2}\\)</td>
             <td class='py-2 px-4 text-center'>${CwBar2.toFixed(2)}kg/m</td>
         </tr>
          <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga de viento sotavento</td>
             <td class='py-2 px-4'>CWSota</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULACwSota2}\\)</td>
             <td class='py-2 px-4 text-center'>${CwSota2.toFixed(2)}kg/m</td>
         </tr>
 
          <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga de viento barlovento</td>
             <td class='py-2 px-4'>CWzBar</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULACwzBar}\\)</td>
             <td class='py-2 px-4 text-center'>${CwzBar.toFixed(2)}kg/m</td>
         </tr>
           <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga de viento barlovento</td>
             <td class='py-2 px-4'>CWxBar</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULACwxBar}\\)</td>
             <td class='py-2 px-4 text-center'>${CwxBar.toFixed(2)}kg/m</td>
         </tr>
           <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Axial de viento</td>
             <td class='py-2 px-4'>AxialWBar</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULAAxial4}\\)</td>
             <td class='py-2 px-4 text-center'>${Axial4.toFixed(2)}kg/m</td>
         </tr>
           <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga de viento sotavento</td>
             <td class='py-2 px-4'>CWzSota</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULACwzSota}\\)</td>
             <td class='py-2 px-4 text-center'>${CwzSota.toFixed(2)}kg/m</td>
         </tr>
         <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga de viento sotavento</td>
             <td class='py-2 px-4'>CWxSota</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULACwxSota}\\)</td>
             <td class='py-2 px-4 text-center'>${CwxSota.toFixed(2)}kg/m</td>
         </tr>
          <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Axial de viento</td>
             <td class='py-2 px-4'>AxialWSota</td>
-            <td class='py-2 px-4'>-</td>
+            <td class='py-2 px-4'>\\(${FORMULAAxial5}\\)</td>
             <td class='py-2 px-4 text-center'>${Axial5.toFixed(2)}kg/m</td>
         </tr>
     `;
@@ -322,20 +336,19 @@ $(document).ready(function () {
     const Relacion = flecha / luz;
     const Qt = Ps;
     const QT = Ps * 0.8;
-
     const Cnieve = Qt * longArco;
-
     const Cnieve2 = Cnieve * 0.5;
     const CwxBar22 = (((Qt * longArco) / 2) * cgmediaCuerda - (Cnieve2 * luz) / 2) / flecha;
     const Axial6 = (Cnieve2 * Cnieve2 + CwxBar22 * CwxBar22) ** 0.5;
+
     // FORMULAS
-    const FORMULASRelacion =`h/L =\\frac{f}{L}` ;
+    const FORMULASRelacion = `h/L =\\frac{f}{L}`;
     const FORMULASQt = `Qt =40`;
     const FORMULASQT = `Qt=Ps \\cdot 0.8`;
     const FORMULASCnieve = `CS=Qt \\cdot LS`;
-    const FORMULASCnieve2 =`CSz=B72 \\cdot 0.5` ;
+    const FORMULASCnieve2 = `CSz=CS \\cdot 0.5`;
     const FORMULASCwxBar22 = `CSx= \\frac{\\left(\\left(\\frac{Qt \\cdot LS}{2} \\cdot CGz3\\right) - \\frac{CSz \\cdot L}{2}\\right)}{f}`;
-    const FORMULASAxial6=` Axial=(CSz^2 + B75^2)^{0.5}` ;
+    const FORMULASAxial6 = ` Axial=(CSz^2 + CSx^2)^{0.5}`;
 
     document.getElementById("carganieve").innerHTML = `
         <tr class="bg-gray-100 dark:bg-gray-600">
