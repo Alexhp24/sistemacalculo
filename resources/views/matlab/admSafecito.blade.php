@@ -25,25 +25,64 @@
                             <form id="zapatas2Form">
                                 @csrf
                                 <table class="table-auto w-full text-gray-800 dark:text-white px-6">
-                                    <tr class="bg-white dark:bg-gray-800">
-                                        <td class="py-2 px-4" colspan="4">
-                                            <div id="datosGenerales"></div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th class="py-2 px-4 text-left" colspan="4">
-                                            <div class="input-group mb-2 text-left inline-block">
-                                                <button id="calcular"
-                                                    class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-                                                    type="submit">CARGAR</button>
-                                            </div>
-                                            <div class="input-group mb-2 text-left inline-block">
-                                                <button id="generarPDF"
-                                                    class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
-                                                    type="button">PDF</button>
-                                            </div>
-                                        </th>
-                                    </tr>
+                                    <thead class="bg-white dark:bg-gray-800">
+                                        <tr class="text-center">
+                                            <th class="py-2 px-4">Nombre</th>
+                                            <th class="py-2 px-4">Simb.</th>
+                                            <th class="py-2 px-4">Entrada</th>
+                                            <th class="py-2 px-4">Unidad <br> Medida</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td class="py-2 px-4">-</td>
+                                            <td class="py-2 px-4">Df</td>
+                                            <td class="py-2 px-4"><input type="number" name="dF"
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    id="dF" step="any" value="2" required></td>
+                                            <td class="py-2 px-4">-</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="py-2 px-4">Peso Especifico</td>
+                                            <td class="py-2 px-4">𝛾<sub>e</sub></td>
+                                            <td class="py-2 px-4"><input type="number" name="pesoEspecifico"
+                                                    class="form-control w-full bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
+                                                    id="pesoEspecifico" step="any" value="1.8" required></td>
+                                            <td class="py-2 px-4">-</td>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-xl py-2 px-4 text-left border-b border-gray-600"
+                                                colspan="4" scope="col">Propiedades</th>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="py-2 px-4" colspan="4">
+                                                <div class="w-full">
+                                                    <div id="datosGenerales"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="bg-white dark:bg-gray-800">
+                                            <td class="py-2 px-4" colspan="4">
+                                                <div class="w-full">
+                                                    <div id="combinacionDeCargas"></div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th class="py-2 px-4 text-left" colspan="4">
+                                                <div class="input-group mb-2 text-left inline-block">
+                                                    <button id="calcular"
+                                                        class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                                        type="submit">CARGAR</button>
+                                                </div>
+                                                <div class="input-group mb-2 text-left inline-block">
+                                                    <button id="generarPDF"
+                                                        class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded"
+                                                        type="button">PDF</button>
+                                                </div>
+                                            </th>
+                                        </tr>
+                                    </tbody>
                                 </table>
                             </form>
                         </div>
@@ -77,8 +116,7 @@
                                                     <li id="pencil"><i class="fa fa-pencil" title="L: Linea"></i>
                                                     <li id="plus" class="hidden"><i class="fa fa-plus"
                                                             title="A: Add"></i>
-                                                    <li id="scissors"><i class="fa fa-eraser"
-                                                            title="C: Eliminar"></i>
+                                                    <li id="scissors"><i class="fa fa-eraser" title="C: Eliminar"></i>
                                                     <li id="copy"><i class="fa fa-clone" title="D: Copiar"></i>
                                                     <li id="eye-slash" class="hidden"><i class="fa fa-eye-slash"
                                                             title="V: Toggle Visibility"></i>
@@ -87,8 +125,8 @@
                                                     </li>
                                                     <li class="hidden"><input type="number" name="snap"
                                                             class="form-control w-20 bg-gray-50 dark:bg-gray-700 text-gray-800 dark:text-gray-200 p-2 px-1 rounded-md"
-                                                            id="snap" value="1" step="any" min="0"
-                                                            required></i>
+                                                            id="snap" value="1" step="any"
+                                                            min="0" required></i>
                                                     </li>
                                                     <li id="crosshairs"><i class="fa fa-crosshairs"
                                                             title="O: Editar Punto"></i>
@@ -172,7 +210,7 @@
                                 </thead>
                                 <tbody id="polygons">
                                 </tbody>
-                                <tbody>
+                                <tbody id="graficos">
                                     <tr class="bg-gray-100 dark:bg-gray-600">
                                         <td class="py-2 px-4" colspan="4">
                                             <div id="zapata1"></div>
