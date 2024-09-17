@@ -45,7 +45,7 @@ function zapatas(A, Ixx, Iyy, Df, PS, MXS, MYS, Pm, MXm, MYm, Pv, MXv, MYv, poli
        & !inpolygon(xq,yq,poligonos.poligonoInterior5(1,:),poligonos.poligonoInterior5(2,:));
   XL= xq(in);
   YL= yq(in);
-  ZL  = cat(2, ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, Df, 1, 6), ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, 1.8, 7, 11));
+  ZL  = cat(2, ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, Df, 1.8, 1, 6), ecuacion_de_flexion(Co, A, XL, YL, Ixx, Iyy, 1.8, 1.8, 7, 11));
   ZLT = ZL';
   mins = min(ZLT, [], 2);
   maxs = max(ZLT, [], 2);
