@@ -228,9 +228,7 @@
                                     </tr>
                                 </thead>
                                 <tbody id="carganieve" class="bg-gray-1"></tbody>
-                            </table>
-                            
-
+                            </table>                       
                         </div>
                     </div>
                 </div>

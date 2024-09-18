@@ -56,7 +56,7 @@ $(document).ready(function () {
             <td class='py-2 px-4'> \\(${FORMULARAD}\\)</td>
             <td class='py-2 px-4 text-center'>${rad.toFixed(2)} RAD</td>
         </tr>
-          <tr class="bg-gray-100 dark:bg-gray-600">
+        <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Longitud de arco</td>
             <td class='py-2 px-4'>LS</td>
             <td class='py-2 px-4'> \\(${FORMULAANGULOARCO}\\)</td>
@@ -101,14 +101,13 @@ $(document).ready(function () {
     const FORMULACMz = `CMz = PM\\cdot 0.5 `;
     const FORMULARIOCMx = `CMx =\\frac{\\left( \\left( (P.P + P.M) \\cdot LS	/ 2 \\cdot CGz3 \\right) - \\frac{CDx \\cdot L}{2} \\right)}{f} `;
     const FORMULAAxial = `Axial = \\sqrt{CDz^2 + CDx^2} `;
-
     document.getElementById("calculocargas").innerHTML = `
         <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga muerta por lado</td>
             <td class='py-2 px-4'>CD</td>
             <td class='py-2 px-4'>\\(${FORMULASCM}\\)</td>
             <td class='py-2 px-4 text-center'>${CM.toFixed(2)}kg/m</td>
-        </tr> 
+        </tr>  
         <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga muerta vertical</td>
             <td class='py-2 px-4'>CDz</td>
@@ -126,13 +125,17 @@ $(document).ready(function () {
             <td class='py-2 px-4'>AXIAL D</td>
             <td class='py-2 px-4'>\\(${FORMULAAxial}\\)</td>
             <td class='py-2 px-4 text-center'>${Axial.toFixed(2)}kg/m</td>
+        </tr>
+        <tr class="bg-gray-100 dark:bg-gray-600">
+            <td class='py-2 px-8' colspan="4" class="text-center">
+                <img src="../assets/img/image.png" alt="Descripción de la imagen" class="mx-auto">
+            </td>
         </tr>`;
     // FORMULAS
     const FORMULACV = ` CL =  CVT \\cdot LS `;
     const FORMULACVz = ` CLz= CL \\cdot 0.5 `;
     const FORMULARIOCVx = `\\frac{\\left(\\left(\\frac{B20 \\cdot B11}{2} \\cdot B15\\right) - \\frac{B31 \\cdot B4}{2}\\right)}{B5}`;
     const FORMULARIOAxial2 = `\\sqrt{B31^2 + B32^2}`;
-
     document.getElementById("cargavivas").innerHTML = `
         <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga viva por lado</td>
@@ -158,8 +161,12 @@ $(document).ready(function () {
             <td class='py-2 px-4'>\\(${FORMULARIOAxial2}\\)</td>
             <td class='py-2 px-4 text-center'>${Axial2.toFixed(2)}kg/m</td>
         </tr>
+        <tr class="bg-gray-100 dark:bg-gray-600">
+            <td class='py-2 px-8' colspan="4" class="text-center">
+                <img src="../assets/img/image.png" alt="Descripción de la imagen" class="mx-auto">
+            </td>
+        </tr>
         `;
-
     // ========================COEFICIENTE SISMICO=========================================
     const pesosismico222 = CMz + 0.25 * CVz;
     const pesoSismico1 = pesosismico222 * 2;
@@ -220,8 +227,12 @@ $(document).ready(function () {
             <td class='py-2 px-4'>\\(${FORMULAAxial3}\\)</td>
             <td class='py-2 px-4 text-center'>${Axial3.toFixed(2)}kg/m</td>
         </tr>
+        <tr class="bg-gray-100 dark:bg-gray-600">
+            <td class='py-2 px-8' colspan="4" class="text-center">
+                <img src="../assets/img/image22.png" alt="Descripción de la imagen" class="mx-auto">
+            </td>
+        </tr>
        `;
-
     //    =============Carga viento============
     const Vh = +cargaviento * Math.pow((alturacolumna + flecha) / 10, 0.22);
     const Ph = 0.005 * Vh * Vh;
@@ -280,8 +291,7 @@ $(document).ready(function () {
             <td class='py-2 px-4'>\\(${FORMULACWSota}\\)</td>
             <td class='py-2 px-4 text-center'>${CWSota.toFixed(2)}kg/m<sup>2</sup></td>
         </tr>
-        
-         <tr class="bg-gray-100 dark:bg-gray-600">
+        <tr class="bg-gray-100 dark:bg-gray-600">
             <td class='py-2 px-8'>Carga de viento barlovento</td>
             <td class='py-2 px-4'>CWBar</td>
             <td class='py-2 px-4'>\\(${FORMULACwBar2}\\)</td>
@@ -329,6 +339,11 @@ $(document).ready(function () {
             <td class='py-2 px-4'>AxialWSota</td>
             <td class='py-2 px-4'>\\(${FORMULAAxial5}\\)</td>
             <td class='py-2 px-4 text-center'>${Axial5.toFixed(2)}kg/m</td>
+        </tr>
+        <tr class="bg-gray-100 dark:bg-gray-600">
+            <td class='py-2 px-8' colspan="4" class="text-center">
+                <img src="../assets/img/image.png" alt="Descripción de la imagen" class="mx-auto">
+            </td>
         </tr>
     `;
     // ================carga nieves =================
@@ -392,6 +407,11 @@ $(document).ready(function () {
             <td class='py-2 px-4'>Axial S</td>
             <td class='py-2 px-4'>\\(${FORMULASAxial6}\\)</td>
             <td class='py-2 px-4 text-center'>${Axial6.toFixed(2)}kg/m</td>
+        </tr>
+        <tr class="bg-gray-100 dark:bg-gray-600">
+            <td class='py-2 px-8' colspan="4" class="text-center">
+                <img src="../assets/img/image.png" alt="Descripción de la imagen" class="mx-auto">
+            </td>
         </tr>
     `;
     // libreria para formulas
